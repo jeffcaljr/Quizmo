@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0-beta1/jars/libs/internal_impl-24.0.0-beta1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="23d564c059873f398dc5d967f56791a66472ce76">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.0.0-beta1_e26596d256f227372dac8f3b2818dfe9caf30dfa/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0-beta1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="8d3137a71200c47974c0454ae8ad272a09c533eb">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.0.0-beta1_2275530897e50620adc0dda43a47b649a68afee0/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.0.0-beta1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="3c0208faf42864e6695345e64d1b955070263819">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-24.0.0-beta1_d11e969b15151964c7ef3f36671dc480f5ed386c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-23.4.0_fe9d8d38355c117d0575314bc9ec6d01df9a4d66/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-beta1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="97f82fd0c185bd2881a93646954f2429be4baa86">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-24.0.0-beta1_53956da20fffc9894b69b4c4da93cb35487b3925/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="39d7364c07ad52a9b39dca8231ba96534eee6537">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_b804a6d8c0a23da4858445205a6fca4e0bd294fa/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/design/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-23.4.0_6b5366a5e0a1b12959caa1dedaaa5c4f50f885c1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-23.4.0_003e21da44a1b6fec7014e05d326d5110286c341/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.volley/volley/1.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.volley-volley-1.0.0_4d13b3fdbef3cde47c0e8c646df23521caf38567/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0-beta1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="f81eecb8d5e9e548f75f277830a94a9b37fbb987">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-24.0.0-beta1_47a81d819251ada923a9484548cbd13c9d87d596/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/24.0.0-beta1/support-annotations-24.0.0-beta1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="04705c19cdec60364bc04e2e928c274da1ba301b">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.0.0-beta1_80d7e7b7271ffcb5fe26318fa766767db9f15b6d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="1709cf199b4e61c2687e7f94b908b28483f3f920">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_3f23a320da3a93856590086ed68b67c5b8480e2e/classes.dex" />
+    </item>
+
+</items>
