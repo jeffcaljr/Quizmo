@@ -15,6 +15,8 @@ import com.example.jeff.viewpagerdelete.Models.Quiz;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import fr.castorflex.android.verticalviewpager.VerticalViewPager;
+
 /**
  * Author: Jeffery Calhoun
  * Description:
@@ -25,8 +27,8 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
     public static final String EXTRA_FINISH_BUTTON_TEXT = "EXTRA_FINISH_BUTTON_TEXT";
     public static final String EXTRA_QUIZ_QUESTION = "EXTRA_QUIZ_QUESTION";
 
-    private ViewPager mPager;
-    private PagerAdapter mAdapter;
+    private VerticalViewPager mPager;
+    private ScreenSlidePagerAdapter mAdapter;
 
 
     private Quiz quiz;
@@ -58,7 +60,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
 //            finish();
         }
 
-        mPager = (ViewPager) findViewById(R.id.question_pager);
+        mPager = (VerticalViewPager) findViewById(R.id.question_pager);
         mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
