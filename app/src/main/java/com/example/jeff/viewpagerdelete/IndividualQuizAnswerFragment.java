@@ -94,6 +94,7 @@ public class IndividualQuizAnswerFragment extends Fragment {
 
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -109,8 +110,6 @@ public class IndividualQuizAnswerFragment extends Fragment {
                 mPointsAllocated.setText(answer.incrementPointsAllocated() + "");
                 mListener.incrementButtonClicked();
             }
-
-
         }
     }
 
@@ -121,7 +120,6 @@ public class IndividualQuizAnswerFragment extends Fragment {
                 mPointsAllocated.setText(answer.decrementPointsAllocated() + "");
                 mListener.decrementButtonClicked();
             }
-
         }
     }
 
@@ -130,6 +128,7 @@ public class IndividualQuizAnswerFragment extends Fragment {
         int getPointsPossible();
         void incrementButtonClicked();
         void decrementButtonClicked();
+
     }
 
 }

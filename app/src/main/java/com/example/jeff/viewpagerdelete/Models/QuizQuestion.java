@@ -100,7 +100,6 @@ public class QuizQuestion implements Serializable{
         return --pointsRemaining;
     }
 
-
     //Setters and no-arg constructor included for seriliazibility
 
 

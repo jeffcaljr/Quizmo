@@ -23,6 +23,7 @@ public class QuizAnswer implements Serializable {
 
 
 
+
     public QuizAnswer(JSONObject json){
         try {
             String id = json.getString("id");
@@ -40,6 +41,20 @@ public class QuizAnswer implements Serializable {
             e.printStackTrace();
         }
 
+            try {
+                String id = json.getString("id");
+                String value = json.getString("value");
+                String text = json.getString("text");
+                int sortOrder = json.getInt("sortOrder");
+
+                this.id = id;
+                this.value = value;
+                this.text = text;
+                this.sortOrder = sortOrder;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
     }
 
     public String getId() {
@@ -92,6 +107,7 @@ public class QuizAnswer implements Serializable {
     public int getPointsAllocated() {
         return pointsAllocated;
     }
+
 
 //    public void setPointsAllocated(int pointsAllocated) {
 //        this.pointsAllocated = pointsAllocated;

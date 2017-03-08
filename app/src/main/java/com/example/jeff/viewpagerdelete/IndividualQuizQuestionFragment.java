@@ -92,6 +92,7 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
         if(question != null){
             mPointsRemainingTextView.setText(question.getPointsRemaining() + " points remaining");
+
             mQuestionTextView.setText(question.getText());
         }
     }
