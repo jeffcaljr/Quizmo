@@ -25,6 +25,7 @@ import com.example.jeff.viewpagerdelete.Models.QuizQuestion;
 public class IndividualQuizQuestionFragment extends Fragment implements IndividualQuizAnswerFragment.AnswerFragmentListener {
 
     public static final String ANSWER_EXTRA = "ANSWER_EXTRA";
+    public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
 
     QuizQuestion question;
 
@@ -34,11 +35,13 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
     private TextView mQuestionTextView;
     private TextView mAnswerTextView;
     private TextView mPointsRemainingTextView;
+    private TextView mQuestionNumberTextView;
 
     private ViewPager mPager;
     private PagerAdapter mAdapter;
 
     private String buttonText = "Next";
+    private int questionNumber;
 
 
     @Nullable
@@ -72,6 +75,11 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
         mQuestionTextView = (TextView) view.findViewById(R.id.question_text_tv);
         mAnswerTextView = (TextView) view.findViewById(R.id.answer_textview);
+
+        mQuestionNumberTextView = (TextView) view.findViewById(R.id.question_number_tv);
+        mQuestionNumberTextView.setText("Q: " + args.getInt(EXTRA_QUIZ_QUESTION_NUMBER));
+
+
 
         mPointsRemainingTextView = (TextView) view.findViewById(R.id.points_remaining_tv);
 
@@ -118,7 +126,8 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
     public interface PageFragmentListener{
         void advanceButtonClicked();
-        void quizStateUpdated();
+//        void quizStateUpdated();
+
 
     }
 
@@ -133,13 +142,13 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
     @Override
     public void incrementButtonClicked() {
         mPointsRemainingTextView.setText(question.decrementPointsRemaining() + " points remaining");
-        mListener.quizStateUpdated();
+//        mListener.quizStateUpdated();
     }
 
     @Override
     public void decrementButtonClicked() {
         mPointsRemainingTextView.setText(question.incrementPointsRemaining() + " points remaining");
-        mListener.quizStateUpdated();
+//        mListener.quizStateUpdated();
     }
 
     @Override

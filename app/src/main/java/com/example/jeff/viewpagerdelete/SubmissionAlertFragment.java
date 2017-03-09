@@ -15,7 +15,7 @@ import android.widget.Toast;
     //that info to the user, and prevent quiz submission
     //Note: This may be handled by a different dialog fragment
 
-public class SubmissionAlertFragment extends DialogFragment {
+public class SubmissionAlertFragment extends android.support.v4.app.DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

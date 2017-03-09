@@ -1,22 +1,19 @@
 package com.example.jeff.viewpagerdelete;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.Models.Quiz;
+import com.example.jeff.viewpagerdelete.Models.QuizQuestion;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
@@ -24,13 +21,14 @@ import fr.castorflex.android.verticalviewpager.VerticalViewPager;
  * Author: Jeffery Calhoun
  * Description:
  */
-public class IndividualQuizActivity extends AppCompatActivity implements IndividualQuizQuestionFragment.PageFragmentListener {
+public class IndividualQuizActivity extends AppCompatActivity implements IndividualQuizQuestionFragment.PageFragmentListener, QuestionsUnfinishedFragment.UnfinishedQuestionsInterface {
 
     //Constants used for key/value
     public static final String EXTRA_FINISH_BUTTON_TEXT = "EXTRA_FINISH_BUTTON_TEXT";
     public static final String EXTRA_QUIZ_QUESTION = "EXTRA_QUIZ_QUESTION";
+    public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
 
-    private VerticalViewPager mPager;
+    public VerticalViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
 
     private Quiz quiz;
@@ -42,7 +40,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.individual_quiz_activity_layout);
 
 
         Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
@@ -61,6 +59,24 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
 
         mPager = (VerticalViewPager) findViewById(R.id.question_pager);
         mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
+
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //Page was changed; save quiz
+                quiz.updateQuizInDatabase(dbReadable);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
@@ -92,14 +108,59 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
             mPager.setCurrentItem(currentItem + 1);
         }
         else{ //there isn't a next page to go to, and the user has clicked the "Finish" button
-            SubmissionAlertFragment submissionAlert = new SubmissionAlertFragment();
-            submissionAlert.show(getFragmentManager(), "CONFIRM_SUBMISSION");
+
+            quiz.updateQuizInDatabase(dbReadable);
+
+            //TODO: This code passes a list of unanswered questions, and a boolean array for all questions and whether
+                //or not they are answered. The plan is to allow the QuestionsUnfinishedFragment to display a list of
+                //unanswered questions, and then navigate the user to the first unanswered question. I hav
+
+            ArrayList<QuizQuestion> unansweredQuestions = new ArrayList<>();
+
+            for(QuizQuestion question: quiz.getQuestions()){
+                if(question.getPointsRemaining() != 0){
+                    unansweredQuestions.add(question);
+                }
+            }
+
+            if(unansweredQuestions.size() == 0){
+                //show finish confirmation alert
+                SubmissionAlertFragment submissionAlert = new SubmissionAlertFragment();
+                submissionAlert.show(getSupportFragmentManager(), "CONFIRM_SUBMISSION");
+
+            }
+            else{
+                //show unanswered questions alert
+                QuestionsUnfinishedFragment unfinishedFragment = new QuestionsUnfinishedFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("unansweredQuestions", unansweredQuestions);
+                unfinishedFragment.setArguments(args);
+                unfinishedFragment.show(getSupportFragmentManager(), "SHOW_UNANSWERED_QUESTIONS");
+
+            }
+
         }
     }
 
+
+    //UnfinishedQuestionsInterface Methods
+
+
     @Override
-    public void quizStateUpdated() {
-        quiz.updateQuizInDatabase(dbReadable);
+    public void userAcknowledgedUnfinishedQuestions() {
+
+        //Transition to first unanswered question
+        int firstUnansweredIndex = 0;
+
+        for(QuizQuestion question: quiz.getQuestions()){
+            if(question.getPointsRemaining() != 0){
+                mPager.setCurrentItem(firstUnansweredIndex);
+                break;
+            }
+            else{
+                ++firstUnansweredIndex;
+            }
+        }
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
@@ -115,6 +176,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
             if(position == quiz.getQuestions().size() - 1){
                 extras.putString(EXTRA_FINISH_BUTTON_TEXT, "Finish");
             }
+            extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
             extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
             newFrag.setArguments(extras);
             return newFrag;
@@ -124,5 +186,6 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         public int getCount() {
             return quiz.getQuestions().size();
         }
+
     }
 }

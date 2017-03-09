@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorCardBackground">#03A9F4</color>
+    <!--<color name="colorCardBackground">#4DB6AC</color>-->
     <color name="colorIndividualQuizQuestionText">#FFFFFF</color>
     <color name="colorIndividualQuizQuestionNavigationButtonBackground">#01579B</color>
     <color name="colorAnswerFragmentQuestionValue">#FF0000</color>

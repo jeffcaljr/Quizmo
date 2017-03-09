@@ -44,7 +44,7 @@ public class QuizLoaderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.quiz_loader_activity_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -77,7 +77,7 @@ public class QuizLoaderActivity extends AppCompatActivity {
 
 
             //The below code will likely be the behavior left in, the above code is for debugging purposes
-            
+
             //UNCOMMENT THE FOLLOWING TWO LINES
 //            Log.e("QuizLoader", "QuizLoaderActivity expects to find an Intent extra named 'quizID' of type String - none was found!");
 //            finish();
