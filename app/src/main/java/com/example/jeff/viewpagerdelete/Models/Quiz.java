@@ -1,13 +1,26 @@
 package com.example.jeff.viewpagerdelete.Models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Jeff on 2/11/17.
@@ -18,100 +31,98 @@ public class Quiz implements Serializable {
     private String id;
     private String description;
     private String text;
-    private String availableDate;
-    private String expiryDate;
+    private Date availableDate;
+    private Date expiryDate;
     private ArrayList<QuizQuestion> questions;
 
 
     public Quiz(JSONObject json){
-//        Quiz quiz;
+        try {
+            String id = json.getString("id");
+            String description = json.getString("description");
+            String text = json.getString("text");
+            String availableDate = json.getString("availableDate");
+            String expiryDate = json.getString("expiryDate");
+            JSONArray questionsJSONArray = (JSONArray) json.get("questions");
+            ArrayList<QuizQuestion> questions = new ArrayList<>();
 
-//        if(!json.has("id") || !json.has("description") || !json.has("text")
-//                || !json.has("availableDate") || !json.has("expiryDate") || !json.has("questions")){
-//            quiz = null;
-//        }
-//        else{
-            try {
-                String id = json.getString("id");
-                String description = json.getString("description");
-                String text = json.getString("text");
-                String availableDate = json.getString("availableDate");
-                String expiryDate = json.getString("expiryDate");
-                JSONArray questionsJSONArray = (JSONArray) json.get("questions");
-                ArrayList<QuizQuestion> questions = new ArrayList<>();
-
-                for(int i = 0; i < questionsJSONArray.length(); i++){
-                    questions.add(new QuizQuestion(((JSONObject) questionsJSONArray.get(i))));
-                }
-                this.id = id;
-                this.description = description;
-                this.text = text;
-                this.availableDate = availableDate;
-                this.expiryDate = expiryDate;
-                this.questions = questions;
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            for (int i = 0; i < questionsJSONArray.length(); i++) {
+                questions.add(new QuizQuestion(((JSONObject) questionsJSONArray.get(i))));
             }
-//        }
 
-//        return quiz;
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss");
+//            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            this.id = id;
+            this.description = description;
+            this.text = text;
+            this.availableDate = format.parse(availableDate);
+            this.expiryDate = format.parse(expiryDate);
+            this.questions = questions;
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
+    public Quiz() {
+    }
 
     public String getId() {
         return id;
     }
-
-//    public void setId(int id) {
-//        this.id = id;
-//    }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
     }
-
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getText() {
         return text;
     }
+    public void setText(String text) {
+        this.text = text;
+    }
 
-//    public void setText(String text) {
-//        this.text = text;
-//    }
-
-    public String getAvailableDate() {
+    public Date getAvailableDate() {
         return availableDate;
     }
+    public void setAvailableDate(Date availableDate) {
+        this.availableDate = availableDate;
+    }
 
-//    public void setAvailableDate(String availableDate) {
-//        this.availableDate = availableDate;
-//    }
-
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
-
-//    public void setExpiryDate(String expiryDate) {
-//        this.expiryDate = expiryDate;
-//    }
-//
-//    public void addQuestion(QuizQuestion newQuestion){
-//        questions.add(newQuestion);
-//    }
-//
-    public QuizQuestion getQuestionById(String id){
-        for(QuizQuestion q: questions){
-            if(q.getId().equals(id)){
-                return q;
-            }
-        }
-        return null;
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
+    public ArrayList<QuizQuestion> getQuestions(){
+        return questions;
+    }
+    public void setQuestions(ArrayList<QuizQuestion> questions) {
+        this.questions = questions;
+    }
+
+
+    //Convenience Methods
+
+    /**
+     * Retrieves a particular QuizQuestion associated with this Quiz from list of QuizQuestions
+     * @param index index of QuizQuestion in list
+     * @return QuizQuestion from list of QuizQuestions specified by index if possible, null if index is out of bounds
+     */
     public QuizQuestion getQuestionByIndex(int index){
         try{
             return questions.get(index);
@@ -122,49 +133,107 @@ public class Quiz implements Serializable {
         }
     }
 
-    //Setters and no-arg constructor included for seriliazibility
 
+    //Helper Functions
 
-    public Quiz() {
+    private String convertToJsonString(){
+        return new Gson().toJson(this);
+
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setAvailableDate(String availableDate) {
-        this.availableDate = availableDate;
-    }
-
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public ArrayList<QuizQuestion> getQuestions(){
-        return questions;
-    }
-
-    public void setQuestions(ArrayList<QuizQuestion> questions) {
-        this.questions = questions;
-    }
-
-    public static final class QuizDbContract{
-
-        private QuizDbContract(){}
-
-        public static class QuizEntry implements BaseColumns{
-            public static final String TABLE_NAME = "quizzes";
-            public static final String COLUMN_NAME_QUIZ_NAME = "quiz_name";
-            public static final String COLUMN_NAME_DATE_ADDED = "date_added";
-
+    private static Quiz buildQuizFromJsonString(String quizJsonString) throws JsonSyntaxException{
+        try{
+            return new Gson().fromJson(quizJsonString, new TypeToken<Quiz>() {}.getType());
+        } catch(JsonSyntaxException e){
+            throw new JsonSyntaxException("Could not parse provided Json string into Quiz object");
         }
+    }
+
+    //Internal class storing database schema
+    public static class QuizEntry implements BaseColumns{
+        public static final String TABLE_NAME = "quizzes";
+        public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
+        public static final String COLUMN_NAME_QUIZ_JSON = "quiz_json";
+    }
+
+
+    public boolean writeQuizToDatabase(SQLiteDatabase db){
+
+        boolean writeSuccessful = false;
+
+        ContentValues values = new ContentValues();
+        values.put(QuizEntry.COLUMN_NAME_QUIZ_ID, id);
+        values.put(QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
+
+        long newRowID = db.insert(QuizEntry.TABLE_NAME, null, values);
+
+        if(newRowID != -1){
+            writeSuccessful = true;
+        }
+
+        return writeSuccessful;
+
+    }
+
+    public boolean updateQuizInDatabase(SQLiteDatabase db){
+        boolean writeSuccessful = false;
+
+        ContentValues values = new ContentValues();
+        values.put(QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
+
+        String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
+        String[] selectionArgs = {id};
+
+        int count = db.update(
+                QuizEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs
+        );
+
+        if(count > 0){
+            writeSuccessful = true;
+        }
+
+        return writeSuccessful;
+    }
+
+    public static Quiz readQuizFromDatabase(SQLiteDatabase db, String quizID){
+        Quiz quiz = null;
+
+        String[] projection = {
+                QuizEntry.COLUMN_NAME_QUIZ_ID,
+                QuizEntry.COLUMN_NAME_QUIZ_JSON
+        };
+
+        String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
+        String[] selectionArgs = {quizID};
+
+        Cursor cursor = db.query(
+                QuizEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if(cursor.moveToNext()){
+            try{
+                String quizData = cursor.getString(cursor.getColumnIndexOrThrow(QuizEntry.COLUMN_NAME_QUIZ_JSON));
+
+                quiz = buildQuizFromJsonString(quizData);
+            } catch (IllegalArgumentException e){
+                e.printStackTrace();
+                return null;
+            } catch(JsonSyntaxException e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return quiz;
+
     }
 }

@@ -26,5 +26,6 @@
     <string name="iqqfDefaultQuestionTitleLabel">Question ?</string>
 
     <string name="iqqfDefaultPointsRemainingLabel">Points Left</string>
+    <string name="title_activity_root_delete_me">RootActivityDeleteMe</string>
 
 </resources>

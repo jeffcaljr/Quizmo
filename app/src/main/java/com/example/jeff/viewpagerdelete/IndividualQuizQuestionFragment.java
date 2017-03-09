@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.Models.Quiz;
 import com.example.jeff.viewpagerdelete.Models.QuizQuestion;
@@ -119,6 +118,7 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
     public interface PageFragmentListener{
         void advanceButtonClicked();
+        void quizStateUpdated();
 
     }
 
@@ -133,13 +133,13 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
     @Override
     public void incrementButtonClicked() {
         mPointsRemainingTextView.setText(question.decrementPointsRemaining() + " points remaining");
-//        Toast.makeText(this.getActivity().getBaseContext(), "Increment Points allocated if possible", Toast.LENGTH_SHORT).show();
+        mListener.quizStateUpdated();
     }
 
     @Override
     public void decrementButtonClicked() {
         mPointsRemainingTextView.setText(question.incrementPointsRemaining() + " points remaining");
-//        Toast.makeText(this.getActivity().getBaseContext(), "Decrement Points allocated if possible", Toast.LENGTH_SHORT).show();
+        mListener.quizStateUpdated();
     }
 
     @Override

@@ -1,6 +1,10 @@
 package com.example.jeff.viewpagerdelete.Models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,9 +25,8 @@ public class QuizQuestion implements Serializable{
     private String title;
     private String text;
     private int pointsPossible;
-    private ArrayList<QuizAnswer> availableAnswers;
-
     private int pointsRemaining;
+    private ArrayList<QuizAnswer> availableAnswers;
 
 
     public QuizQuestion(JSONObject json){
@@ -54,36 +57,74 @@ public class QuizQuestion implements Serializable{
         }
     }
 
+    public QuizQuestion() {
+    }
+
     public String getId() {
         return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getText() {
         return text;
+    }
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getPointsPossible() {
         return pointsPossible;
     }
+    public void setPointsPossible(int pointsPossible) {
+        this.pointsPossible = pointsPossible;
+    }
 
     public ArrayList<QuizAnswer> getAvailableAnswers() {
         return availableAnswers;
     }
-
-
-    public QuizAnswer getAnswerById(String id){
-        for(QuizAnswer a: availableAnswers){
-            if(a.getId().equals(id)){
-                return a;
-            }
-        }
-        return null;
+    public void setAvailableAnswers(ArrayList<QuizAnswer> availableAnswers) {
+        this.availableAnswers = availableAnswers;
     }
 
+    public int getPointsRemaining() {
+        return pointsRemaining;
+    }
+    public void setPointsRemaining(int pointsRemaining) {
+        this.pointsRemaining = pointsRemaining;
+    }
+
+    //Convenience Methods
+
+    /**
+     * Increments the points number of unallocated confidence points available for this question by 1
+     * @return
+     */
+    public int incrementPointsRemaining(){
+        return ++pointsRemaining;
+    }
+
+    /**
+     * Decrements the points number of unallocated confidence points available for this question by 1
+     * @return
+     */
+    public int decrementPointsRemaining(){
+        return --pointsRemaining;
+    }
+
+    /**
+     * Retrieves a particular QuizAnswer associated with this QuizQuestion from list of QuizAnswers
+     * @param index index of QuizAnswer in list
+     * @return QuizAnswer from list of QuizAnswers specified by index if possible, null if index is out of bounds
+     */
     public QuizAnswer getAnswerByIndex(int index){
         try{
             return availableAnswers.get(index);
@@ -94,58 +135,18 @@ public class QuizQuestion implements Serializable{
         }
     }
 
-
-    public int incrementPointsRemaining(){
-        return ++pointsRemaining;
-    }
-
-    public int decrementPointsRemaining(){
-        return --pointsRemaining;
-    }
-
-    //Setters and no-arg constructor included for seriliazibility
-
-
-    public QuizQuestion() {
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setPointsPossible(int pointsPossible) {
-        this.pointsPossible = pointsPossible;
-    }
-
-    public void setAvailableAnswers(ArrayList<QuizAnswer> availableAnswers) {
-        this.availableAnswers = availableAnswers;
-    }
-
-    public int getPointsRemaining() {
-        return pointsRemaining;
-    }
-
-    public void setPointsRemaining(int pointsRemaining) {
-        this.pointsRemaining = pointsRemaining;
-    }
-
-    public static final class QuizQuestionDbContract{
-
-        private QuizQuestionDbContract(){}
-
-        public static class QuizQuestionEntry implements BaseColumns {
-            public static final String TABLE_NAME = "questions";
-            public static final String COLUMN_NAME_CORRECT_ANSWER_ID = "correct_answer_id";
-            public static final String COLUMN_NAME_QUESTION = "question";
-            public static final String COLUMN_NAME_AVAILABLE_POINTS = "available_points";
+    /**
+     * Retrieves a particular QuizAnswer associated with this QuizQuestion from list of QuizAnswers
+     * @param value value of 'value' property of QuizAnswer you wish to retrieve
+     * @return first QuizAnswer from list of QuizAnswers with 'value' property matching the id argument, null if no QuizAnswer with provided 'value' found
+     */
+    public QuizAnswer getAnswerByValue(String value){
+        for(QuizAnswer a: availableAnswers){
+            if(a.getValue().equals(value)){
+                return a;
+            }
         }
+        return null;
     }
+
 }

@@ -1,6 +1,8 @@
 package com.example.jeff.viewpagerdelete;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -8,6 +10,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.Models.Quiz;
@@ -30,8 +33,11 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
     private VerticalViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
 
-
     private Quiz quiz;
+
+    private IndividualQuizDbHelper dbHelper;
+    private SQLiteDatabase dbReadable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +47,16 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
 
         Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
 
-//        quizzesArray = new ArrayList<>();
-
-
-
         Intent i = getIntent();
         if(i.hasExtra("quiz")){
-//            quizzesArray = (ArrayList<Quiz>) i.getSerializableExtra("quizzes");
-            try {
-                quiz = new Quiz(new JSONObject(i.getStringExtra("quiz")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Toast.makeText(this, "Got extras", Toast.LENGTH_SHORT).show();
+            quiz = (Quiz) i.getSerializableExtra("quiz");
+            dbHelper = new IndividualQuizDbHelper(this);
+            dbReadable = dbHelper.getReadableDatabase();
+
         }
         else{
             Toast.makeText(this, "No 'quizzes' extra", Toast.LENGTH_SHORT).show();
-//            finish();
+            finish();
         }
 
         mPager = (VerticalViewPager) findViewById(R.id.question_pager);
@@ -65,6 +64,12 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbReadable.close();
     }
 
     @Override
@@ -76,6 +81,8 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
+
+    //MARK: IndividualQuizQuestionFragmentListener Methods
 
     @Override
     public void advanceButtonClicked() {
@@ -90,6 +97,10 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         }
     }
 
+    @Override
+    public void quizStateUpdated() {
+        quiz.updateQuizInDatabase(dbReadable);
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
 

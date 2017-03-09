@@ -48,12 +48,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/design/23.4.0/jars/classes.jar"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support.constraint/constraint-layout/1.0.0-beta4/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.3"
-        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
-        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/com.android.support-design-23.4.0_6b5366a5e0a1b12959caa1dedaaa5c4f50f885c1.jar" />
+        sha1="662d7533b25a666c649c10a16b42edfb95f25a4f">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/com.android.support.constraint-constraint-layout-1.0.0-beta4_a46db445d8a53c549040fc83f0694c94573ba47b.jar" />
     </item>
     <item
         is-multidex="false"
@@ -75,6 +75,42 @@
     </item>
     <item
         is-multidex="false"
+        jar="/Users/Jeff/Library/Android/sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.0-beta4/constraint-layout-solver-1.0.0-beta4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="0a9cb567dc008f570c28531720168f19148da965">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.0-beta4_a7a582008838e084537550e9966cee814cf15157.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/com.android.support-cardview-v7-23.4.0_fe9d8d38355c117d0575314bc9ec6d01df9a4d66.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/design/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/com.android.support-design-23.4.0_6b5366a5e0a1b12959caa1dedaaa5c4f50f885c1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Jeff/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/gson-2.6.2_38ac3c49aeb2f138a299a7914e938949d687af9c.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0-beta1/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -90,15 +126,6 @@
         revision="23.0.3"
         sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
         <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.4.0_003e21da44a1b6fec7014e05d326d5110286c341.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.4.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
-        <dex dex="/Users/Jeff/Dropbox/ViewPagerDelete/app/build/intermediates/pre-dexed/debug/com.android.support-cardview-v7-23.4.0_fe9d8d38355c117d0575314bc9ec6d01df9a4d66.jar" />
     </item>
 
 </items>
