@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".IndividualQuizActivity"></activity>
+        <activity android:name=".IndividualQuizActivity" />
         <activity
             android:name=".QuizLoaderActivity"
             android:label="@string/title_activity_main2"
@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StartUpActivity"></activity>
     </application>
 
 </manifest>
