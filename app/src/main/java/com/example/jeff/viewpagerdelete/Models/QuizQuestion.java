@@ -12,8 +12,6 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Created by Jeff on 2/11/17.
@@ -43,8 +41,6 @@ public class QuizQuestion implements Serializable{
             }
 
             //randomly shuffle answers so they're not in the same order in all quizzes
-            Collections.shuffle(availableAnswers);
-
             this.id = id;
             this.title = title;
             this.text = text;

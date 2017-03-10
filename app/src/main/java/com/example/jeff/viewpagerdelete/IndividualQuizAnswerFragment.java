@@ -96,8 +96,8 @@ public class IndividualQuizAnswerFragment extends Fragment {
 
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         mListener = null;
     }
 
