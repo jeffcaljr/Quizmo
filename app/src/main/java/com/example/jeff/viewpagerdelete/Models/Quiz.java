@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -49,6 +50,8 @@ public class Quiz implements Serializable {
             for (int i = 0; i < questionsJSONArray.length(); i++) {
                 questions.add(new QuizQuestion(((JSONObject) questionsJSONArray.get(i))));
             }
+
+            Collections.shuffle(questions);
 
             SimpleDateFormat format = new SimpleDateFormat(
                     "yyyy-MM-dd'T'HH:mm:ss");

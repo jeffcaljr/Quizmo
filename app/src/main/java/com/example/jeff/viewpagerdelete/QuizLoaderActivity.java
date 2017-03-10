@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,149 +30,70 @@ import org.json.JSONObject;
  * In the final app, this behavior may be performed by Ryan's portion after a quiz code has been entered
  */
 
-public class QuizLoaderActivity extends AppCompatActivity {
+public class QuizLoaderActivity extends AppCompatActivity implements QuizLoadingFragment.QuizLoaderListener, QuizStarterFragment.QuizStarterListener {
 
     private Quiz quiz = null;
 
     private String quizID;
-    private String urlString = "https://immense-brushlands-50268.herokuapp.com/v1/quiz/";
 
-    private IndividualQuizDbHelper dbHelper;
-    private SQLiteDatabase dbReadable;
-    private SQLiteDatabase dbWritable;
+    public static final String LOADING_FRAGMENT_TAG = "LOADING_FRAGMENT_TAG";
+    public static final String STARTER_FRAGMENT_TAG = "STARTER_FRAGMENT_TAG";
+
+
+
+    FragmentManager manager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_loader_activity_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        manager = getSupportFragmentManager();
         final Context context = this;
-
-//        final Intent receivedIntent = getIntent();
 
         Bundle extras = getIntent().getExtras();
 
         if(extras != null && extras.containsKey("quizID")){
             quizID = extras.getString("quizID");
-            urlString = urlString + quizID;
 
-            dbHelper = new IndividualQuizDbHelper(this);
-            dbReadable = dbHelper.getReadableDatabase();
-            dbWritable = dbHelper.getWritableDatabase();
+            QuizLoadingFragment loadingFragment = (QuizLoadingFragment) manager.findFragmentByTag(LOADING_FRAGMENT_TAG);
+
+            if(loadingFragment == null){
+                loadingFragment = new QuizLoadingFragment();
+                Bundle quizLoadingExtras = new Bundle();
+                quizLoadingExtras.putString("quizID", quizID);
+                manager.beginTransaction()
+                        .replace(R.id.quiz_loader_container_frame, loadingFragment)
+                        .commit();
+
+            }
 
         }
         else{
             //NOTE!: To link this app with Ryan's portion, comment out the following lines between the =====s,
-                //and uncomment the last 2 lines of this block
+            //and uncomment the last 2 lines of this block
 
             //===============================================================
             quizID = "8e21fdc6-2a2a-4023-9a32-6313b3e142b1";
-            urlString = urlString + quizID;
+            QuizLoadingFragment loadingFragment = (QuizLoadingFragment) manager.findFragmentByTag(LOADING_FRAGMENT_TAG);
 
-            dbHelper = new IndividualQuizDbHelper(this);
-            dbReadable = dbHelper.getReadableDatabase();
-            dbWritable = dbHelper.getWritableDatabase();
-
+            if(loadingFragment == null){
+                loadingFragment = new QuizLoadingFragment();
+                Bundle quizLoadingExtras = new Bundle();
+                quizLoadingExtras.putString("quizID", quizID);
+                loadingFragment.setArguments(quizLoadingExtras);
+                manager.beginTransaction()
+                        .replace(R.id.quiz_loader_container_frame, loadingFragment)
+                        .commit();
+                //===============================================================
 
             //The below code will likely be the behavior left in, the above code is for debugging purposes
 
             //UNCOMMENT THE FOLLOWING TWO LINES
 //            Log.e("QuizLoader", "QuizLoaderActivity expects to find an Intent extra named 'quizID' of type String - none was found!");
 //            finish();
-        }
-
-        //First, attempt to read quiz from sqlite database
-
-        quiz = Quiz.readQuizFromDatabase(dbReadable, quizID);
-
-        if (quiz != null) {
-            Log.d("QUIZ_LOADER", "Loading quiz from sql file");
-            Toast.makeText(context, "Loading quiz from sqlite", Toast.LENGTH_SHORT).show();
-
-
-            Intent i = new Intent(context, IndividualQuizActivity.class);
-            i.putExtra("quiz", quiz);
-
-            startActivity(i);
-            finish();
-
-        } else {
-
-            //if quiz not stored in sqlite, try to download quiz from network
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    //If quiz successfully loaded from network, save it to sqlite
-
-                    Log.d("QUIZ_LOADER", "Loading quiz from network");
-                    Toast.makeText(context, "Loading quiz from network", Toast.LENGTH_SHORT).show();
-
-                    try {
-                        Quiz loadedQuiz = new Quiz(new JSONObject(response.toString()));
-
-                        boolean writeSuccess = loadedQuiz.writeQuizToDatabase(dbWritable);
-
-                        if(writeSuccess){
-
-                            quiz = loadedQuiz;
-
-                            Intent i = new Intent(context, IndividualQuizActivity.class);
-                            i.putExtra("quiz", quiz);
-
-                            startActivity(i);
-                            finish();
-                        }
-                        else{
-                            Toast.makeText(context, "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("RESPONSE", error.toString());
-                    Log.d("QUIZ_LOADER", "Loading quiz from sample file");
-                    Toast.makeText(context, "Loading quiz from sample file", Toast.LENGTH_SHORT).show();
-
-                    //TODO: Handle case where network fails to load quiz properly
-                    //Currently, if the quiz fails to load from the network for whatever reason, this error
-                    //response will get sample data stored in SampleJson class
-                    //This behavior is for debugging purposes and should be deleted later
-
-                    try {
-                        Quiz loadedQuiz = new Quiz(new JSONObject(SampleJson.getSampleJSON()));
-
-                        boolean writeSuccess = loadedQuiz.writeQuizToDatabase(dbWritable);
-
-                        if(writeSuccess){
-                            quiz = loadedQuiz;
-
-                            Intent i = new Intent(context, IndividualQuizActivity.class);
-                            i.putExtra("quiz", quiz);
-
-                            startActivity(i);
-                            finish();
-                        }
-                        else{
-                            Toast.makeText(context, "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            Volley.newRequestQueue(this).add(jsonObjectRequest);
+            }
 
         }
 
@@ -180,7 +102,34 @@ public class QuizLoaderActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbReadable.close();
-        dbWritable.close();
+
+    }
+
+    //QuizLoaderListener Methods
+
+
+    @Override
+    public void quizLoaded(Quiz quiz) {
+        this.quiz = quiz;
+
+        //switch to QuizStarter Fragment
+
+        QuizStarterFragment starterFragment = (QuizStarterFragment) manager.findFragmentByTag(LOADING_FRAGMENT_TAG);
+
+        if(starterFragment == null) {
+            starterFragment = new QuizStarterFragment();
+            manager.beginTransaction()
+                    .replace(R.id.quiz_loader_container_frame, starterFragment)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void quizStartInitiated() {
+        Intent i = new Intent(this, IndividualQuizActivity.class);
+        i.putExtra("quiz", quiz);
+
+        startActivity(i);
+        finish();
     }
 }
