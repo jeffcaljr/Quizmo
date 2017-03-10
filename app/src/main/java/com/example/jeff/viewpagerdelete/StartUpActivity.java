@@ -10,4 +10,10 @@ public class StartUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_up);
     }
+
+    private void authenticate(){
+        
+    }
 }
+
+

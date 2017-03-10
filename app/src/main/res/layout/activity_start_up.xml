@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_start_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    style="@style/StartUpTheme"
+    android:weightSum="8"
     tools:context="com.example.jeff.viewpagerdelete.StartUpActivity">
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_margin="40dp"
+        android:src="@drawable/logo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <EditText
+            style="@style/TextBoxStyling"
+            android:id = "@+id/loginUserName"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:hint="User Name"
+            android:background="#FFF"/>
+        <EditText
+            style="@style/TextBoxStyling"
+            android:id = "@+id/loginPassword"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:inputType = "textPassword"
+            android:hint="Password"
+            android:background="#FFF"/>
+        <Button
+            android:id = "@+id/loginSubmit"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:onClick = "login"
+            android:text="LOGIN"
+            android:minWidth="@dimen/stdTextBoxMinWidth"
+            />
+
+    </LinearLayout>
+</LinearLayout>
