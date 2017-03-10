@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/quiz_code_fragment"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:name="edu.umsl.androidcs4020.frontrow_expressscriptsgroupproject_homepage_and_quizcode_cs4020.QuizCodeEntryFragment"
+        tools:layout="@layout/quiz_code_fragment_layout"/>
+</LinearLayout>

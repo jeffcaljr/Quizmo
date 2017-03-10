@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_marginBottom="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              >
+    <TextView
+        android:text="@string/quiz_code_fragment_title"
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/quiz_code_title"
+        android:textAppearance="@android:style/TextAppearance.Material.Title"
+        android:textAlignment="center"
+        android:textStyle="normal|bold|italic"
+        android:textSize="36sp"
+        android:textAllCaps="false"
+        />
+    <EditText
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/code_input"
+        android:textColorHint="@color/colorAccent"
+        android:layout_margin="30dp"
+        android:hint="Enter Code Here"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.EditText"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        />
+    <Button
+        android:layout_margin="40dp"
+        android:id="@+id/submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_quiz_code_button"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
+        android:textStyle="normal|bold|italic"
+        style="@style/Widget.AppCompat.Button"
+        />
+</LinearLayout>
