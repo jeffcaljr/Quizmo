@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_margin="0dp"
     style="@style/StartUpTheme"
     android:weightSum="8"
     tools:context="com.example.jeff.viewpagerdelete.StartUpActivity">
@@ -42,8 +43,11 @@
             android:id = "@+id/loginSubmit"
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
-            android:onClick = "login"
             android:text="LOGIN"
+            android:background="#000000"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
             android:minWidth="@dimen/stdTextBoxMinWidth"
             />
 

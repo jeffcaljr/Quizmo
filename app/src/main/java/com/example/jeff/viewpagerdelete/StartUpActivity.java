@@ -27,6 +27,7 @@ public class StartUpActivity extends AppCompatActivity {
     private void authenticate(){
         Intent quizMe = new Intent(this, QuizLoaderActivity.class);
         startActivity(quizMe);
+        finish();
     }
 }
 
