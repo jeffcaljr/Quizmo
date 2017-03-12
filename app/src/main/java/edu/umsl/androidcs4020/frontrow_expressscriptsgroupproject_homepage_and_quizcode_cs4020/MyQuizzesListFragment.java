@@ -40,36 +40,36 @@ public class MyQuizzesListFragment extends Fragment {
 
         //load quizzes from sqlite
 
-        ArrayList<Quiz> quizzes = new ArrayList<>();
-
-        quizzes.add(loadedQuizzes)
-                ...
-        ...
-        ...
-
-        quizListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(this, QuizLoaderActivity.class);
-                    i.putExtra("quiz", quizzes.get(position));
-                    i.startActivity();
-            }
-        });
-
+//        ArrayList<Quiz> quizzes = new ArrayList<>();
+//
+//        quizzes.add(loadedQuizzes)
+//                ...
+//        ...
+//        ...
+//
 //        quizListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
+//                @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                if (position == 0) {
-//                    Toast.makeText(getActivity(), "You clicked the 1st item!", Toast.LENGTH_SHORT).show();
-//                } else if (position == 1) {
-//                    Toast.makeText(getActivity(), "You clicked the 2nd item!", Toast.LENGTH_SHORT).show();
-//                } else if (position == 2) {
-//                    Toast.makeText(getActivity(), "You clicked the 3rd item!", Toast.LENGTH_SHORT).show();
-//                }
-//
+//                Intent i = new Intent(this, QuizLoaderActivity.class);
+//                    i.putExtra("quiz", quizzes.get(position));
+//                    i.startActivity();
 //            }
 //        });
+
+        quizListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (position == 0) {
+                    Toast.makeText(getActivity(), "You clicked the 1st item!", Toast.LENGTH_SHORT).show();
+                } else if (position == 1) {
+                    Toast.makeText(getActivity(), "You clicked the 2nd item!", Toast.LENGTH_SHORT).show();
+                } else if (position == 2) {
+                    Toast.makeText(getActivity(), "You clicked the 3rd item!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         Log.e("test", "tracer");
 

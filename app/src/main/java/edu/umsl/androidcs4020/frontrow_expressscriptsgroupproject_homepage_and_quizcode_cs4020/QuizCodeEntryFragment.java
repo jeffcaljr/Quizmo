@@ -39,27 +39,28 @@ public class QuizCodeEntryFragment extends Fragment {
         quizCodeModel.setQuizCode("123456789");
         //just for testing
 
-        enterCode.setOnClickListener(new View.OnClickListener() {
+        submitCode.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                quizCodeModel.mUserCodeEntry = enterCode.getText().toString();
-                quizCodeModel.validate_Code_Entry(); //remember to return getResult
-                Log.e("QUIZCODE", "getResult = " + quizCodeModel.getReult());
+            quizCodeModel.mUserCodeEntry = enterCode.getText().toString();
+            quizCodeModel.validate_Code_Entry(); //remember to return getResult
+            Log.e("QUIZCODE", "getResult = " + quizCodeModel.getReult());
 
-                if (quizCodeModel.getReult() == "CORRECT CODE ENTERED") {
-                    Toast.makeText(getActivity(), "New Quiz Added!", Toast.LENGTH_LONG).show();
-                    Intent launchHomePageActivity = new Intent(getActivity(), HomePageActivity.class);
-                    try {
-                        sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    startActivity(launchHomePageActivity);
-                    //quizCodeModel.mGroupList.add(quizCodeModel.getNextQuiz()); //do this in model?
-                    //need an Interface to update the MyQuizzesListFragment
+            if (quizCodeModel.getReult() == "CORRECT CODE ENTERED") {
+                Toast.makeText(getActivity(), "New Quiz Added!", Toast.LENGTH_LONG).show();
+                Intent launchHomePageActivity = new Intent(getActivity(), HomePageActivity.class);
+                try {
+                    sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                startActivity(launchHomePageActivity);
+                //quizCodeModel.mGroupList.add(quizCodeModel.getNextQuiz()); //do this in model?
+                //need an Interface to update the MyQuizzesListFragment
             }
-        });
+        }
+    });
 
         return view;
     }
