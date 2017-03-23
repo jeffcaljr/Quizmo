@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_start_up"
+    style="@style/StartUpTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="8">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_margin="40dp"
+        android:src="@drawable/logo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <EditText
+            style="@style/TextBoxStyling"
+            android:id = "@+id/loginUserName"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:hint="User Name"
+            android:background="#FFF"/>
+        <EditText
+            style="@style/TextBoxStyling"
+            android:id = "@+id/loginPassword"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:inputType = "textPassword"
+            android:hint="Password"
+            android:background="#FFF"/>
+        <Button
+            android:id = "@+id/loginSubmit"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text="LOGIN"
+            android:minWidth="@dimen/stdTextBoxMinWidth"
+            android:layout_margin="10dp" />
+        <!--style="@style/BlackButton"-->
+    </LinearLayout>
+
+</LinearLayout>

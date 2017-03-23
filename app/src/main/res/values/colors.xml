@@ -5,6 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackground">#47648C</color>
     <color name="colorCardBackground">#47648C</color>
+    <color name="buttonBackground">#000000</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+
+
     <!--<color name="colorCardBackground">#03A9F4</color>-->
     <!--<color name="colorCardBackground">#4DB6AC</color>-->
     <color name="colorIndividualQuizQuestionText">#FFFFFF</color>
