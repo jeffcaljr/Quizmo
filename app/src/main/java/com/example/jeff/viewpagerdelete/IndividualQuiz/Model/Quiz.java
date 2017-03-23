@@ -137,12 +137,12 @@ public class Quiz implements Serializable {
 
     //Helper Functions
 
-    private String convertToJsonString(){
+    public String convertToJsonString(){
         return new Gson().toJson(this);
 
     }
 
-    private static Quiz buildQuizFromJsonString(String quizJsonString) throws JsonSyntaxException{
+    public static Quiz buildQuizFromJsonString(String quizJsonString) throws JsonSyntaxException{
         try{
             return new Gson().fromJson(quizJsonString, new TypeToken<Quiz>() {}.getType());
         } catch(JsonSyntaxException e){
@@ -153,83 +153,4 @@ public class Quiz implements Serializable {
 
 
 
-    public boolean writeQuizToDatabase(SQLiteDatabase db){
-
-        boolean writeSuccessful = false;
-
-        ContentValues values = new ContentValues();
-        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, id);
-        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
-
-        long newRowID = db.insert(QuizSchema.TABLE_NAME, null, values);
-
-        if(newRowID != -1){
-            writeSuccessful = true;
-        }
-
-        return writeSuccessful;
-
-    }
-
-    public boolean updateQuizInDatabase(SQLiteDatabase db){
-        boolean writeSuccessful = false;
-
-        ContentValues values = new ContentValues();
-        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
-
-        String selection = QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
-        String[] selectionArgs = {id};
-
-        int count = db.update(
-                QuizSchema.TABLE_NAME,
-                values,
-                selection,
-                selectionArgs
-        );
-
-        if(count > 0){
-            writeSuccessful = true;
-        }
-
-        return writeSuccessful;
-    }
-
-    public static Quiz readQuizFromDatabase(SQLiteDatabase db, String quizID){
-        Quiz quiz = null;
-
-        String[] projection = {
-                QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID,
-                QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON
-        };
-
-        String selection = QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
-        String[] selectionArgs = {quizID};
-
-        Cursor cursor = db.query(
-                QuizSchema.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        if(cursor.moveToNext()){
-            try{
-                String quizData = cursor.getString(cursor.getColumnIndexOrThrow(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON));
-
-                quiz = buildQuizFromJsonString(quizData);
-            } catch (IllegalArgumentException e){
-                e.printStackTrace();
-                return null;
-            } catch(JsonSyntaxException e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        return quiz;
-
-    }
 }

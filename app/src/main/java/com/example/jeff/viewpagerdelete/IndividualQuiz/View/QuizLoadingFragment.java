@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
@@ -84,7 +85,7 @@ public class QuizLoadingFragment extends Fragment {
         dbWriteable = dbHelper.getWritableDatabase();
 
         //Attempt to load quiz from SQLite
-        quiz = Quiz.readQuizFromDatabase(dbWriteable, quizID);
+        quiz = QuizPersistence.sharedInstance(getActivity()).readIndividualQuizFromDatabase(quizID);
 
         if(quiz != null){
             //Loaded Quiz From SQLite Successfully
@@ -104,7 +105,7 @@ public class QuizLoadingFragment extends Fragment {
                     try {
                         Quiz loadedQuiz = new Quiz(new JSONObject(response.toString()));
 
-                        boolean writeSuccess = loadedQuiz.writeQuizToDatabase(dbWriteable);
+                        boolean writeSuccess = QuizPersistence.sharedInstance(getActivity()).writeIndividualQuizToDatabase(loadedQuiz);
 
                         if(writeSuccess){
                             quiz = loadedQuiz;
@@ -134,7 +135,7 @@ public class QuizLoadingFragment extends Fragment {
                     try {
                         Quiz loadedQuiz = new Quiz(new JSONObject(SampleJson.getSampleJSON()));
 
-                        boolean writeSuccess = loadedQuiz.writeQuizToDatabase(dbWriteable);
+                        boolean writeSuccess = QuizPersistence.sharedInstance(getActivity()).writeIndividualQuizToDatabase(loadedQuiz);
 
                         if(writeSuccess){
                             quiz = loadedQuiz;

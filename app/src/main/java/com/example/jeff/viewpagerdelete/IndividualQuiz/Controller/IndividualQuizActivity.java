@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
@@ -47,6 +49,8 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.individual_quiz_activity_layout);
 
+        final Context context = this;
+
 
         Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
 
@@ -74,7 +78,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
             @Override
             public void onPageSelected(int position) {
                 //Page was changed; save quiz
-                quiz.updateQuizInDatabase(dbReadable);
+                QuizPersistence.sharedInstance(context).updateQuizInDatabase(quiz);
             }
 
             @Override
@@ -114,7 +118,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         }
         else{ //there isn't a next page to go to, and the user has clicked the "Finish" button
 
-            quiz.updateQuizInDatabase(dbReadable);
+            QuizPersistence.sharedInstance(this).updateQuizInDatabase(quiz);
 
             //TODO: This code passes a list of unanswered questions, and a boolean array for all questions and whether
                 //or not they are answered. The plan is to allow the QuestionsUnfinishedFragment to display a list of
