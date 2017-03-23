@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Misc;
 
 /**
  * Created by Jeff on 3/1/17.

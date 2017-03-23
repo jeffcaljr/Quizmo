@@ -1,8 +1,7 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Networking;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Jeff on 2/11/17.

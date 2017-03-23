@@ -1,7 +1,6 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +18,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.jeff.viewpagerdelete.Models.Quiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.R;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
 
 import org.json.JSONException;
 import org.json.JSONObject;

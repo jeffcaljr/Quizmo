@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.Models;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
 
 import org.json.JSONException;

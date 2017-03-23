@@ -1,6 +1,5 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.jeff.viewpagerdelete.Models.QuizAnswer;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
+import com.example.jeff.viewpagerdelete.R;
 
 /**
  * Created by Jeff on 3/1/17.

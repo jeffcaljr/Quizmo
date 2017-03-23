@@ -1,24 +1,15 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.jeff.viewpagerdelete.Models.Quiz;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuizLoadingFragment;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuizStarterFragment;
+import com.example.jeff.viewpagerdelete.R;
 
 /**
  * Author: Jeffery Calhoun

@@ -1,10 +1,4 @@
-package com.example.jeff.viewpagerdelete.Models;
-
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
-import android.util.Log;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.jeff.viewpagerdelete.Models.Quiz;
-import com.example.jeff.viewpagerdelete.Models.QuizQuestion;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
+import com.example.jeff.viewpagerdelete.R;
 
 /**
  * Created by Jeff on 2/10/17.

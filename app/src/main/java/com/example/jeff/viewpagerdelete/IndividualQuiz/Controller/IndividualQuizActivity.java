@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,8 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.jeff.viewpagerdelete.Models.Quiz;
-import com.example.jeff.viewpagerdelete.Models.QuizQuestion;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuestionsUnfinishedFragment;
+import com.example.jeff.viewpagerdelete.R;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
 
 import java.util.ArrayList;
 
