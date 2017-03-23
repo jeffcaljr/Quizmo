@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
 
@@ -93,65 +94,9 @@ public class QuizLoadingFragment extends Fragment {
         }
         else{
             //Quiz not found in SQLite; attempt to load from network
+            JsonObjectRequest request = QuizFetcher.sharedInstance(getActivity()).getQuizDownloadRequest(urlString);
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    //If quiz successfully loaded from network, save it to sqlite
-
-                    Toast.makeText(getActivity().getApplicationContext(), "Loading quiz from network", Toast.LENGTH_SHORT).show();
-
-                    try {
-                        Quiz loadedQuiz = new Quiz(new JSONObject(response.toString()));
-
-                        boolean writeSuccess = QuizPersistence.sharedInstance(getActivity()).writeIndividualQuizToDatabase(loadedQuiz);
-
-                        if(writeSuccess){
-                            quiz = loadedQuiz;
-                            mListener.quizLoaded(quiz);
-                        }
-                        else{
-                            Toast.makeText(getActivity().getApplicationContext(), "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Failed to load quiz from SQLite and from the network, load sample quiz from file
-                    Log.e("RESPONSE", error.toString());
-                    Toast.makeText(getContext().getApplicationContext(), "Loading quiz from sample file", Toast.LENGTH_SHORT).show();
-
-                    //TODO: Handle case where network fails to load quiz properly
-                    //Currently, if the quiz fails to load from the network for whatever reason, this error
-                    //response will get sample data stored in SampleJson class
-                    //This behavior is for debugging purposes and should be deleted later
-
-                    try {
-                        Quiz loadedQuiz = new Quiz(new JSONObject(SampleJson.getSampleJSON()));
-
-                        boolean writeSuccess = QuizPersistence.sharedInstance(getActivity()).writeIndividualQuizToDatabase(loadedQuiz);
-
-                        if(writeSuccess){
-                            quiz = loadedQuiz;
-                            mListener.quizLoaded(quiz);
-                        }
-                        else{
-                            Toast.makeText(getActivity().getApplicationContext(), "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
+            Volley.newRequestQueue(getActivity().getApplicationContext()).add(request);
         }
 
 

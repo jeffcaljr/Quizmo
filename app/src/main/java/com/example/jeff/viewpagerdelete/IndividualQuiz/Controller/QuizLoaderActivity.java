@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuizLoadingFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuizStarterFragment;
 import com.example.jeff.viewpagerdelete.R;
@@ -21,7 +23,7 @@ import com.example.jeff.viewpagerdelete.R;
  * In the final app, this behavior may be performed by Ryan's portion after a quiz code has been entered
  */
 
-public class QuizLoaderActivity extends AppCompatActivity implements QuizLoadingFragment.QuizLoaderListener, QuizStarterFragment.QuizStarterListener {
+public class QuizLoaderActivity extends AppCompatActivity implements QuizLoadingFragment.QuizLoaderListener, QuizStarterFragment.QuizStarterListener, QuizFetcher.IndividualQuizFetcherListener {
 
     private Quiz quiz = null;
 
@@ -122,5 +124,10 @@ public class QuizLoaderActivity extends AppCompatActivity implements QuizLoading
 
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void quizFecthed(Quiz q) {
+        quizLoaded(q);
     }
 }
