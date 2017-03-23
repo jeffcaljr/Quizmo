@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/startup_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="8">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_margin="40dp"
+        android:src="@drawable/logo"/>
+
+    <FrameLayout
+        android:id="@+id/startup_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"></FrameLayout>
+
+
 </LinearLayout>

@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="android:background">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -14,10 +15,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="StartUpTheme">
-        <item name="android:background">@color/colorBackground</item>
-        <!--<item name="android:layout_margin">5dp</item>-->
-    </style>
 
     <style name="TextBoxStyling">
         <item name="android:background">#FFF</item>

@@ -27,5 +27,7 @@
 
     <string name="iqqfDefaultPointsRemainingLabel">Points Left</string>
     <string name="title_activity_root_delete_me">RootActivityDeleteMe</string>
+    <string name="button_login">LOGIN</string>
+    <string name="hint_user_name">User Name</string>
 
 </resources>

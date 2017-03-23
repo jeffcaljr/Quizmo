@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".IndividualQuizActivity" />
         <activity
-            android:name=".StartUpActivity"
+            android:name=".Startup.StartUpActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

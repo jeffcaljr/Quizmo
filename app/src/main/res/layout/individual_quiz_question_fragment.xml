@@ -106,9 +106,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/next_btn"
                 android:layout_gravity="right"
-                android:textColor="@color/colorIndividualQuizQuestionText"
-                android:background="@color/colorIndividualQuizQuestionNavigationButtonBackground"/>
-
+                android:textColor="@color/colorIndividualQuizQuestionText"/>
 
         </LinearLayout>
 

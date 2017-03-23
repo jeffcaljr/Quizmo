@@ -4,26 +4,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal">
-    <EditText
+
+
+<EditText
         style="@style/TextBoxStyling"
-        android:id = "@+id/loginUserName"
+        android:id = "@+id/newUserUserName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:hint="@string/hint_user_name"
         android:background="#FFF"/>
     <EditText
         style="@style/TextBoxStyling"
-        android:id = "@+id/loginPassword"
+        android:id = "@+id/newUserScreenName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:inputType = "textPassword"
-        android:hint="Password"
+        android:hint="Screen Name"
         android:background="#FFF"/>
     <Button
-        android:id = "@+id/loginSubmit"
+        android:id = "@+id/newUserSaveButton"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:text="@string/button_login"
         android:minWidth="@dimen/stdTextBoxMinWidth"
         android:layout_margin="10dp" />
+
 </LinearLayout>

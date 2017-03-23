@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.Startup;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.jeff.viewpagerdelete.R;
 
 /**
  * Created by jamy on 3/22/17.

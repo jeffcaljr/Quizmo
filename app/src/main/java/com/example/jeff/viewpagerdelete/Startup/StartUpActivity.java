@@ -1,16 +1,16 @@
-package com.example.jeff.viewpagerdelete;
+package com.example.jeff.viewpagerdelete.Startup;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+
+import com.example.jeff.viewpagerdelete.QuizLoaderActivity;
+import com.example.jeff.viewpagerdelete.R;
 
 
-public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener{
+public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener {
     Fragment mLoginFragment;
     FragmentTransaction fragTransaction;
 
