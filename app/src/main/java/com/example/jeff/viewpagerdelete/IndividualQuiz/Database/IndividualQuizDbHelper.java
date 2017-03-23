@@ -18,13 +18,13 @@ public class IndividualQuizDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "FrontRowLearningApp.db";
 
     private static final String SQL_QUIZZES =
-            "CREATE TABLE " + Quiz.QuizEntry.TABLE_NAME + " (" +
-                    Quiz.QuizEntry._ID + " INTEGER PRIMARY KEY," +
-                    Quiz.QuizEntry.COLUMN_NAME_QUIZ_ID + " TEXT," +
-                    Quiz.QuizEntry.COLUMN_NAME_QUIZ_JSON + " TEXT)";
+            "CREATE TABLE " + QuizSchema.TABLE_NAME + " (" +
+                    QuizSchema.QuizEntry._ID + " INTEGER PRIMARY KEY," +
+                    QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " TEXT," +
+                    QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON + " TEXT)";
 
     private static final String SQL_DELETE_QUIZZES =
-            "DROP TABLE IF EXISTS " + Quiz.QuizEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + QuizSchema.TABLE_NAME;
 
 
     public IndividualQuizDbHelper(Context context) {

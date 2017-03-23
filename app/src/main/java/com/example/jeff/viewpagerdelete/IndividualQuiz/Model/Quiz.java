@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizSchema;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -149,12 +150,7 @@ public class Quiz implements Serializable {
         }
     }
 
-    //Internal class storing database schema
-    public static class QuizEntry implements BaseColumns{
-        public static final String TABLE_NAME = "quizzes";
-        public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
-        public static final String COLUMN_NAME_QUIZ_JSON = "quiz_json";
-    }
+
 
 
     public boolean writeQuizToDatabase(SQLiteDatabase db){
@@ -162,10 +158,10 @@ public class Quiz implements Serializable {
         boolean writeSuccessful = false;
 
         ContentValues values = new ContentValues();
-        values.put(QuizEntry.COLUMN_NAME_QUIZ_ID, id);
-        values.put(QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
+        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, id);
+        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
 
-        long newRowID = db.insert(QuizEntry.TABLE_NAME, null, values);
+        long newRowID = db.insert(QuizSchema.TABLE_NAME, null, values);
 
         if(newRowID != -1){
             writeSuccessful = true;
@@ -179,13 +175,13 @@ public class Quiz implements Serializable {
         boolean writeSuccessful = false;
 
         ContentValues values = new ContentValues();
-        values.put(QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
+        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, convertToJsonString());
 
-        String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
+        String selection = QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
         String[] selectionArgs = {id};
 
         int count = db.update(
-                QuizEntry.TABLE_NAME,
+                QuizSchema.TABLE_NAME,
                 values,
                 selection,
                 selectionArgs
@@ -202,15 +198,15 @@ public class Quiz implements Serializable {
         Quiz quiz = null;
 
         String[] projection = {
-                QuizEntry.COLUMN_NAME_QUIZ_ID,
-                QuizEntry.COLUMN_NAME_QUIZ_JSON
+                QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID,
+                QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON
         };
 
-        String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
+        String selection = QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
         String[] selectionArgs = {quizID};
 
         Cursor cursor = db.query(
-                QuizEntry.TABLE_NAME,
+                QuizSchema.TABLE_NAME,
                 projection,
                 selection,
                 selectionArgs,
@@ -221,7 +217,7 @@ public class Quiz implements Serializable {
 
         if(cursor.moveToNext()){
             try{
-                String quizData = cursor.getString(cursor.getColumnIndexOrThrow(QuizEntry.COLUMN_NAME_QUIZ_JSON));
+                String quizData = cursor.getString(cursor.getColumnIndexOrThrow(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON));
 
                 quiz = buildQuizFromJsonString(quizData);
             } catch (IllegalArgumentException e){

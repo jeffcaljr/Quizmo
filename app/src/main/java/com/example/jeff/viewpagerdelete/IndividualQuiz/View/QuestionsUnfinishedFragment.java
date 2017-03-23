@@ -66,7 +66,9 @@ public class QuestionsUnfinishedFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        mListener.userAcknowledgedUnfinishedQuestions();
+        if(mListener != null){
+            mListener.userAcknowledgedUnfinishedQuestions();
+        }
     }
 
     @Override
