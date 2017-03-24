@@ -99,4 +99,6 @@ public class QuizAnswer implements Serializable {
         return pointsAllocated;
     }
 
+
+
 }

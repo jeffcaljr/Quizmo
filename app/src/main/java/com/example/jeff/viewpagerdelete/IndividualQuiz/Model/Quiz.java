@@ -137,18 +137,26 @@ public class Quiz implements Serializable {
 
     //Helper Functions
 
-    public String convertToJsonString(){
+    public String toJSON(){
         return new Gson().toJson(this);
 
     }
 
     public static Quiz buildQuizFromJsonString(String quizJsonString) throws JsonSyntaxException{
-        try{
-            return new Gson().fromJson(quizJsonString, new TypeToken<Quiz>() {}.getType());
-        } catch(JsonSyntaxException e){
-            throw new JsonSyntaxException("Could not parse provided Json string into Quiz object");
+        try {
+            return new Quiz(new JSONObject(quizJsonString));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
         }
+//        try{
+//            return new Gson().fromJson(quizJsonString, new TypeToken<Quiz>() {}.getType());
+//        } catch(JsonSyntaxException e){
+//            throw new JsonSyntaxException("Could not parse provided Json string into Quiz object");
+//        }
     }
+
+
 
 
 

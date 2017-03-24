@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.View.QuizCodeEntryFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
@@ -85,11 +87,17 @@ public class QuizCodeActivity extends AppCompatActivity implements QuizCodeEntry
 
 
     @Override
-    public void quizFecthed(Quiz q) {
+    public void onQuizDownloadSuccess(Quiz q) {
         Intent i = new Intent(this, IndividualQuizActivity.class);
+        Log.d("QUIZ", q.toJSON());
         i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, q);
 
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void onQuizDownloadFailure(VolleyError error) {
+        Toast.makeText(this, "Failed to download quiz from network.\n" + error.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

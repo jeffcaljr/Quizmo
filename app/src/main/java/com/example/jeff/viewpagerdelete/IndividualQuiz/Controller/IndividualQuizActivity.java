@@ -116,7 +116,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
     public void advanceButtonClicked() {
 
         int currentItem = mPager.getCurrentItem();
-        if(currentItem < quiz.getQuestions().size() - 1){ //there is a next page to go to
+        if(currentItem < mPager.getChildCount() - 1){ //there is a next page to go to
             mPager.setCurrentItem(currentItem + 1);
         }
         else{ //there isn't a next page to go to, and the user has clicked the "Finish" button
@@ -185,7 +185,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         public Fragment getItem(int position) {
             IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
             Bundle extras = new Bundle();
-            if(position == quiz.getQuestions().size() - 1){
+            if(position == getCount() - 1){
                 extras.putString(EXTRA_FINISH_BUTTON_TEXT, "Finish");
             }
             extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);

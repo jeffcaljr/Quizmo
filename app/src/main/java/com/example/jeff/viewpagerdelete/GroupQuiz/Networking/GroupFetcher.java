@@ -8,7 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.RequestService;
 import com.example.jeff.viewpagerdelete.ServerProperties;
@@ -67,13 +66,14 @@ public class GroupFetcher {
                         e.printStackTrace();
                     }
                 }
-                mListener.get().groupsDownloaded(groups);
+                mListener.get().onDownloadAllGroupsSuccess(groups);
+
             }
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GROUP_FETCHER", "Failed to load groups from server");
-                mListener.get().failedgroupsDownload();
+                mListener.get().onDownloadAllGroupsFailure(error);
             }
         });
 
@@ -85,12 +85,12 @@ public class GroupFetcher {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                mListener.get().singleGroupDownloaded(new Group(response));
+                mListener.get().onDownloadSingleGroupSuccess(new Group(response));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mListener.get().failedSingleGroupDownload();
+                mListener.get().onDownloadSingleGroupFailure(error);
             }
         });
 
@@ -104,13 +104,13 @@ public class GroupFetcher {
             @Override
             public void onResponse(JSONObject response) {
 
-                mListener.get().singleGroupDownloaded(new Group(response));
+                mListener.get().onDownloadSingleGroupSuccess(new Group(response));
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mListener.get().failedSingleGroupDownload();
+                mListener.get().onDownloadSingleGroupFailure(error);
             }
         });
 
@@ -118,9 +118,9 @@ public class GroupFetcher {
     }
 
     public interface GroupFetcherListener{
-        void groupsDownloaded(ArrayList<Group> groups);
-        void singleGroupDownloaded(Group group);
-        void failedgroupsDownload();
-        void failedSingleGroupDownload();
+        void onDownloadAllGroupsSuccess(ArrayList<Group> groups);
+        void onDownloadSingleGroupSuccess(Group group);
+        void onDownloadAllGroupsFailure(VolleyError error);
+        void onDownloadSingleGroupFailure(VolleyError error);
     }
 }

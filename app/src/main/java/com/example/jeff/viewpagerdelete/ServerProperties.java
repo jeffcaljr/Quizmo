@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class ServerProperties {
 
-    public static final String baseURL = "https://immense-brushlands-50268.herokuapp.com/v1/";
-    public static final String quizzesURL = "https://immense-brushlands-50268.herokuapp.com/v1/quizes/";
-    public static final String quizURL = "https://immense-brushlands-50268.herokuapp.com/v1/quiz/";
-    public static final String groupURL = "https://immense-brushlands-50268.herokuapp.com/v1/groups/";
-    public static final String userGroupURL = "https://immense-brushlands-50268.herokuapp.com/v1/groupForUser/";
+    public static final String baseURL = "https://learning-api-4020.herokuapp.com/v1/";
+    public static final String quizzesURL = "https://learning-api-4020.herokuapp.com/v1/quizes/";
+    public static final String quizURL = "https://learning-api-4020.herokuapp.com/v1/quiz/";
+    public static final String groupURL = "https://learning-api-4020.herokuapp.com/v1/groups/";
+    public static final String userGroupURL = "https://learning-api-4020.herokuapp.com/v1/groupForUser/";
 
 
     public static ArrayList<String> getUserFields(){

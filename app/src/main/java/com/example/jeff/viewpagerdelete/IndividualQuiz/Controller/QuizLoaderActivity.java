@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuizLoadingFragment;
@@ -128,7 +129,12 @@ public class QuizLoaderActivity extends AppCompatActivity implements QuizLoading
     }
 
     @Override
-    public void quizFecthed(Quiz q) {
+    public void onQuizDownloadSuccess(Quiz q) {
         quizLoaded(q);
+    }
+
+    @Override
+    public void onQuizDownloadFailure(VolleyError error) {
+        Toast.makeText(this, "Failed to load quiz from network.\n" + error.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

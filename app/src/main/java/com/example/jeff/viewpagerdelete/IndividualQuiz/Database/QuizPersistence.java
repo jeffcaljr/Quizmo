@@ -108,7 +108,7 @@ public class QuizPersistence {
     private ContentValues getContentValues(Quiz quiz){
         ContentValues values = new ContentValues();
         values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
-        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.convertToJsonString());
+        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
 
         return values;
     }

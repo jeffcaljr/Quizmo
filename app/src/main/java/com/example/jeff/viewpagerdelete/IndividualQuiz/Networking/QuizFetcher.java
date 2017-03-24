@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.RequestService;
 import com.example.jeff.viewpagerdelete.ServerProperties;
@@ -68,7 +67,7 @@ public class QuizFetcher {
                 boolean writeSuccess = QuizPersistence.sharedInstance(context).writeIndividualQuizToDatabase(downloadedQuiz);
 
                 if(writeSuccess){
-                    mListner.get().quizFecthed(downloadedQuiz);
+                    mListner.get().onQuizDownloadSuccess(downloadedQuiz);
                 }
                 else{
                     Toast.makeText(context.getApplicationContext(), "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
@@ -79,29 +78,9 @@ public class QuizFetcher {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Failed to load quiz from SQLite and from the network, load sample quiz from file
-                Log.e("RESPONSE", error.toString());
-                Toast.makeText(context.getApplicationContext(), "Loading quiz from sample file", Toast.LENGTH_SHORT).show();
 
-                //TODO: Handle case where network fails to load quiz properly
-                //Currently, if the quiz fails to load from the network for whatever reason, this error
-                //response will get sample data stored in SampleJson class
-                //This behavior is for debugging purposes and should be deleted later
+                mListner.get().onQuizDownloadFailure(error);
 
-                try {
-                    Quiz loadedQuiz = new Quiz(new JSONObject(SampleJson.getSampleJSON()));
-
-                    boolean writeSuccess = QuizPersistence.sharedInstance(context).writeIndividualQuizToDatabase(loadedQuiz);
-
-                    if(writeSuccess){
-                        mListner.get().quizFecthed(loadedQuiz);
-                    }
-                    else{
-                        Toast.makeText(context.getApplicationContext(), "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
@@ -119,6 +98,7 @@ public class QuizFetcher {
     }
 
     public interface IndividualQuizFetcherListener{
-        void quizFecthed(Quiz q);
+        void onQuizDownloadSuccess(Quiz q);
+        void onQuizDownloadFailure(VolleyError error);
     }
 }
