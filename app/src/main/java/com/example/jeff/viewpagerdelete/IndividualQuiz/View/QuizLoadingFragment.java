@@ -5,30 +5,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.RequestService;
 import com.example.jeff.viewpagerdelete.R;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
 import com.example.jeff.viewpagerdelete.ServerProperties;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Jeff on 3/9/17.
