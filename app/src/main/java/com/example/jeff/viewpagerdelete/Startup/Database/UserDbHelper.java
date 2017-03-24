@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.Startup;
+package com.example.jeff.viewpagerdelete.Startup.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

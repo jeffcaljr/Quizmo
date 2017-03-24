@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.ServerProperties;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,8 +50,11 @@ public class QuizFetcher {
         this.context = context.getApplicationContext();
     }
 
-    public JsonObjectRequest getQuizDownloadRequest(String urlString){
-        return new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
+    public void submitQuizDownloadRequest(String quizCode){
+
+        String urlString = ServerProperties.quizURL + quizCode;
+
+        JsonObjectRequest request = new  JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -59,7 +63,6 @@ public class QuizFetcher {
                 Toast.makeText(context.getApplicationContext(), "Loading quiz from network", Toast.LENGTH_SHORT).show();
 
                 Quiz downloadedQuiz = getQuizFromResponse(response);
-
 
 
                 boolean writeSuccess = QuizPersistence.sharedInstance(context).writeIndividualQuizToDatabase(downloadedQuiz);
@@ -101,6 +104,8 @@ public class QuizFetcher {
                 }
             }
         });
+
+        RequestService.getInstance(context).addRequest(request);
     }
 
 

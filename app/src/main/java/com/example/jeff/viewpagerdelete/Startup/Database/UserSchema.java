@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.Startup;
+package com.example.jeff.viewpagerdelete.Startup.Database;
 
 /**
  * Created by jamy on 3/22/17.

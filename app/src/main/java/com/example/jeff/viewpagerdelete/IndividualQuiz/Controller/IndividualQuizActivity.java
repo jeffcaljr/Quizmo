@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
@@ -31,6 +32,7 @@ import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 public class IndividualQuizActivity extends AppCompatActivity implements IndividualQuizQuestionFragment.PageFragmentListener, QuestionsUnfinishedFragment.UnfinishedQuestionsInterface {
 
     //Constants used for key/value
+    public static final String INTENT_EXTRA_QUIZ = "QUIZ";
     public static final String EXTRA_FINISH_BUTTON_TEXT = "EXTRA_FINISH_BUTTON_TEXT";
     public static final String EXTRA_QUIZ_QUESTION = "EXTRA_QUIZ_QUESTION";
     public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
@@ -40,8 +42,8 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
 
     private Quiz quiz;
 
-    private IndividualQuizDbHelper dbHelper;
-    private SQLiteDatabase dbReadable;
+//    private IndividualQuizDbHelper dbHelper;
+//    private SQLiteDatabase dbReadable;
 
 
     @Override
@@ -55,10 +57,11 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
 
         Intent i = getIntent();
-        if(i.hasExtra("quiz")){
-            quiz = (Quiz) i.getSerializableExtra("quiz");
-            dbHelper = new IndividualQuizDbHelper(this);
-            dbReadable = dbHelper.getReadableDatabase();
+        if(i.hasExtra(INTENT_EXTRA_QUIZ)){
+            quiz = (Quiz) i.getSerializableExtra(INTENT_EXTRA_QUIZ);
+            Log.d("TAG", "found quiz extra in IndividualQuizActivity");
+//            dbHelper = new IndividualQuizDbHelper(this);
+//            dbReadable = dbHelper.getReadableDatabase();
 
         }
         else{
@@ -94,7 +97,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbReadable.close();
+//        dbReadable.close();
     }
 
     @Override

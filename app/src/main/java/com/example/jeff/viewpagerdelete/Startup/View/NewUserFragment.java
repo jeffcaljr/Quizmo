@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.Startup;
+package com.example.jeff.viewpagerdelete.Startup.View;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,26 +17,26 @@ import com.example.jeff.viewpagerdelete.R;
  * Created by jamy on 3/22/17.
  */
 
-public class LoginFragment extends Fragment {
+public class NewUserFragment extends Fragment {
 
-    private Button loginButton;
-    private LoginClickListener mLoginClickListener;
+    private Button saveButton;
+    private SaveUserClickListener mSaveUserClickListener;
 
-    public interface LoginClickListener{
-        public void onLoginClick();
+    public interface SaveUserClickListener{
+        public void onSaveUserClick();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_fragment, container, false);
+        View view = inflater.inflate(R.layout.new_user_fragment, container, false);
 
         EditText uidField = (EditText) view.findViewById(R.id.loginUserName);
         EditText passwordField = (EditText) view.findViewById(R.id.loginPassword);
-        loginButton = (Button) view.findViewById(R.id.loginSubmit);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        saveButton = (Button) view.findViewById(R.id.loginSubmit);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mLoginClickListener.onLoginClick();
+                mSaveUserClickListener.onSaveUserClick();
             }
         });
         return view;
@@ -50,9 +50,10 @@ public class LoginFragment extends Fragment {
 
         if (context instanceof Activity) {
             a = (Activity) context;
-            mLoginClickListener = (LoginClickListener) a;
+            mSaveUserClickListener = (SaveUserClickListener) a;
         }
     }
 
 
 }
+

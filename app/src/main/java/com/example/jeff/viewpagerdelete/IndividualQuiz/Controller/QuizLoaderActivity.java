@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
@@ -68,25 +69,25 @@ public class QuizLoaderActivity extends AppCompatActivity implements QuizLoading
             //and uncomment the last 2 lines of this block
 
             //===============================================================
-            quizID = "8e21fdc6-2a2a-4023-9a32-6313b3e142b1";
-            QuizLoadingFragment loadingFragment = (QuizLoadingFragment) manager.findFragmentByTag(LOADING_FRAGMENT_TAG);
+//            quizID = "8e21fdc6-2a2a-4023-9a32-6313b3e142b1";
+//            QuizLoadingFragment loadingFragment = (QuizLoadingFragment) manager.findFragmentByTag(LOADING_FRAGMENT_TAG);
 
-            if(loadingFragment == null){
-                loadingFragment = new QuizLoadingFragment();
-                Bundle quizLoadingExtras = new Bundle();
-                quizLoadingExtras.putString("quizID", quizID);
-                loadingFragment.setArguments(quizLoadingExtras);
-                manager.beginTransaction()
-                        .replace(R.id.quiz_loader_container_frame, loadingFragment)
-                        .commit();
+//            if(loadingFragment == null){
+//                loadingFragment = new QuizLoadingFragment();
+//                Bundle quizLoadingExtras = new Bundle();
+//                quizLoadingExtras.putString("quizID", quizID);
+//                loadingFragment.setArguments(quizLoadingExtras);
+//                manager.beginTransaction()
+//                        .replace(R.id.quiz_loader_container_frame, loadingFragment)
+//                        .commit();
                 //===============================================================
 
             //The below code will likely be the behavior left in, the above code is for debugging purposes
 
             //UNCOMMENT THE FOLLOWING TWO LINES
-//            Log.e("QuizLoader", "QuizLoaderActivity expects to find an Intent extra named 'quizID' of type String - none was found!");
-//            finish();
-            }
+            Log.e("QuizLoader", "QuizLoaderActivity expects to find an Intent extra named 'quizID' of type String - none was found!");
+            finish();
+//            }
 
         }
 

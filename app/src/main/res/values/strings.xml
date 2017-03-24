@@ -29,5 +29,10 @@
     <string name="title_activity_root_delete_me">RootActivityDeleteMe</string>
     <string name="button_login">LOGIN</string>
     <string name="hint_user_name">User Name</string>
-
+    <string name="add_new_quiz_button">Add New Quiz</string>
+    <string name="groups_list_title">My Groups</string>
+    <string name="quiz_code_fragment_title">Quiz Code</string>
+    <string name="submit_quiz_code_button">Submit Code</string>
+    <string name="quiz_list_title">My Quizzes</string>
+    <string name="Quiz_Code_Manifest_Label">quiz_code_activity</string>
 </resources>

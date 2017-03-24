@@ -22,8 +22,10 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDb
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.RequestService;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Misc.SampleJson;
+import com.example.jeff.viewpagerdelete.ServerProperties;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +38,7 @@ public class QuizLoadingFragment extends Fragment {
 
     private Quiz quiz;
     private String quizID;
-    private String urlString = "https://immense-brushlands-50268.herokuapp.com/v1/quiz/";
+    private String urlString = ServerProperties.quizURL;
 
     private ProgressBar spinner;
     private TextView loadingText;
@@ -94,9 +96,7 @@ public class QuizLoadingFragment extends Fragment {
         }
         else{
             //Quiz not found in SQLite; attempt to load from network
-            JsonObjectRequest request = QuizFetcher.sharedInstance(getActivity()).getQuizDownloadRequest(urlString);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(request);
+            QuizFetcher.sharedInstance(getActivity()).submitQuizDownloadRequest(quizID);
         }
 
 
