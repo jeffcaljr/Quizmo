@@ -5,11 +5,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.QuizLoaderActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.View.LoginFragment;
+
+import java.util.ArrayList;
 
 
 public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener {
@@ -35,6 +40,7 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         startActivity(quizMe);
         finish();
     }
+
 }
 
 

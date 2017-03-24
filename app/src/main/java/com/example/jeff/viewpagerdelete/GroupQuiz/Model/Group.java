@@ -21,9 +21,9 @@ public class Group {
 
     public Group(JSONObject json){
         try{
-            for(String userField: ServerProperties.getUserFields()){
-                if(! json.has(userField)){
-                    throw new JSONException("User Json does not contain expected field '" + userField + "'");
+            for(String groupField: ServerProperties.getGroupFields()){
+                if(! json.has(groupField)){
+                    throw new JSONException("User Json does not contain expected field '" + groupField + "'");
                 }
             }
 

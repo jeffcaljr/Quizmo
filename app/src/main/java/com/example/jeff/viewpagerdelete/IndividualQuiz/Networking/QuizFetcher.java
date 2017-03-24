@@ -31,7 +31,6 @@ public class QuizFetcher {
 
     private static QuizFetcher quizFetcher;
 
-
     public static QuizFetcher sharedInstance(Context context){
         try{
             IndividualQuizFetcherListener listener = (IndividualQuizFetcherListener) context;
