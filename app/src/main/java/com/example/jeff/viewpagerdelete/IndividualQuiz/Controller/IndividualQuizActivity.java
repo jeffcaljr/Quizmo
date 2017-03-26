@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
@@ -29,7 +30,10 @@ import fr.castorflex.android.verticalviewpager.VerticalViewPager;
  * Author: Jeffery Calhoun
  * Description:
  */
-public class IndividualQuizActivity extends AppCompatActivity implements IndividualQuizQuestionFragment.PageFragmentListener, QuestionsUnfinishedFragment.UnfinishedQuestionsInterface {
+public class IndividualQuizActivity extends AppCompatActivity
+        implements IndividualQuizQuestionFragment.PageFragmentListener,
+                    QuestionsUnfinishedFragment.UnfinishedQuestionsInterface,
+                    SubmissionAlertFragment.SubmissionAlertFragmentListener{
 
     //Constants used for key/value
     public static final String INTENT_EXTRA_QUIZ = "QUIZ";
@@ -54,7 +58,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
         final Context context = this;
 
 
-        Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
 
         Intent i = getIntent();
         if(i.hasExtra(INTENT_EXTRA_QUIZ)){
@@ -65,7 +69,7 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
 
         }
         else{
-            Toast.makeText(this, "No 'quizzes' extra", Toast.LENGTH_SHORT).show();
+            Log.e("TAG", "No 'quizzes' extra");
             finish();
         }
 
@@ -199,5 +203,15 @@ public class IndividualQuizActivity extends AppCompatActivity implements Individ
             return quiz.getQuestions().size();
         }
 
+    }
+
+    //MARK: SubmissionAlertFragmentListener Methods
+
+
+    @Override
+    public void userConfirmedSubmission() {
+        Intent i = new Intent(this, GroupQuizCodeActivity.class);
+        startActivity(i);
+        finish();
     }
 }
