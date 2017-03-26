@@ -4,11 +4,15 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <fragment
-        android:id="@+id/quiz_code_fragment"
+
+    <FrameLayout
+        android:id="@+id/quiz_code_container"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:name="com.example.jeff.viewpagerdelete.Homepage.View.QuizCodeEntryFragment"
-        tools:layout="@layout/quiz_code_fragment_layout"/>
+        android:layout_height="match_parent"></FrameLayout>
+    <!--<fragment-->
+        <!--android:id="@+id/quiz_code_fragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:name="com.example.jeff.viewpagerdelete.Homepage.View.QuizCodeEntryFragment"-->
+        <!--tools:layout="@layout/quiz_code_fragment_layout"/>-->
 </LinearLayout>

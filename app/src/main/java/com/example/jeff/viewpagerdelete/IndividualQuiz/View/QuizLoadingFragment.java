@@ -12,9 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.ServerProperties;
 
@@ -76,7 +75,7 @@ public class QuizLoadingFragment extends Fragment {
         dbWriteable = dbHelper.getWritableDatabase();
 
         //Attempt to load quiz from SQLite
-        quiz = QuizPersistence.sharedInstance(getActivity()).readIndividualQuizFromDatabase(quizID);
+        quiz = IndividualQuizPersistence.sharedInstance(getActivity()).readIndividualQuizFromDatabase(quizID);
 
         if(quiz != null){
             //Loaded Quiz From SQLite Successfully
@@ -84,7 +83,7 @@ public class QuizLoadingFragment extends Fragment {
         }
         else{
             //Quiz not found in SQLite; attempt to load from network
-            QuizFetcher.sharedInstance(getActivity()).submitQuizDownloadRequest(quizID);
+//            QuizFetcher.sharedInstance(getActivity()).submitQuizDownloadRequest(getActivity(), quizID);
         }
 
 

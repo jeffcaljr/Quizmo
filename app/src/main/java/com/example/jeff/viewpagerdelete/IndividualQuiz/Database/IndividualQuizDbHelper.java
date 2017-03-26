@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
-
 
 /**
  * Created by Jeff on 3/8/17.
@@ -18,13 +16,13 @@ public class IndividualQuizDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "FrontRowLearningApp.db";
 
     private static final String SQL_QUIZZES =
-            "CREATE TABLE " + QuizSchema.TABLE_NAME + " (" +
-                    QuizSchema.QuizEntry._ID + " INTEGER PRIMARY KEY," +
-                    QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " TEXT," +
-                    QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON + " TEXT)";
+            "CREATE TABLE " + IndividualQuizSchema.TABLE_NAME + " (" +
+                    IndividualQuizSchema.QuizEntry._ID + " INTEGER PRIMARY KEY," +
+                    IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " TEXT," +
+                    IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON + " TEXT)";
 
     private static final String SQL_DELETE_QUIZZES =
-            "DROP TABLE IF EXISTS " + QuizSchema.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + IndividualQuizSchema.TABLE_NAME;
 
 
     public IndividualQuizDbHelper(Context context) {

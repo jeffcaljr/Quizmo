@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dd.morphingbutton.MorphingButton;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.HomePage_and_QuizCode_Model;
 import com.example.jeff.viewpagerdelete.R;
@@ -70,6 +71,7 @@ public class QuizCodeEntryFragment extends Fragment {
 //                    //need an Interface to update the MyQuizzesListFragment
 //                }
 
+                setSubmitCodeButtonEnabled(false);
                 String quizCodeEntered = enterCode.getText().toString();
                 mListener.quizCodeSubmitted(quizCodeEntered);
             }
@@ -101,6 +103,10 @@ public class QuizCodeEntryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mListener = null;
+    }
+
+    public void setSubmitCodeButtonEnabled(boolean isEnabled){
+        submitCode.setEnabled(isEnabled);
     }
 
     public interface  QuizCodeEntryListener{

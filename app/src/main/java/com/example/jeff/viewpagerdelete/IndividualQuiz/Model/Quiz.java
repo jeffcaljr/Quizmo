@@ -1,11 +1,5 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
-
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.QuizSchema;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -20,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Jeff on 2/11/17.
@@ -36,11 +31,13 @@ public class Quiz implements Serializable {
 
 
     public Quiz(JSONObject json){
+
+
         try {
             String id = json.getString("id");
             String description = json.getString("description");
             String text = json.getString("text");
-            String availableDate = json.getString("availableDate");
+            String  availableDate = json.getString("availableDate");
             String expiryDate = json.getString("expiryDate");
             JSONArray questionsJSONArray = (JSONArray) json.get("questions");
             ArrayList<QuizQuestion> questions = new ArrayList<>();
@@ -53,15 +50,15 @@ public class Quiz implements Serializable {
 
             SimpleDateFormat format = new SimpleDateFormat(
                     "yyyy-MM-dd'T'HH:mm:ss");
-//            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
 
             this.id = id;
             this.description = description;
             this.text = text;
-            this.availableDate = format.parse(availableDate);
-            this.expiryDate = format.parse(expiryDate);
             this.questions = questions;
-
+             this.availableDate = format.parse(availableDate);
+            this.expiryDate = format.parse(expiryDate);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -69,6 +66,7 @@ public class Quiz implements Serializable {
         catch (ParseException e){
             e.printStackTrace();
         }
+
     }
 
     public Quiz() {
@@ -143,17 +141,11 @@ public class Quiz implements Serializable {
     }
 
     public static Quiz buildQuizFromJsonString(String quizJsonString) throws JsonSyntaxException{
-        try {
-            return new Quiz(new JSONObject(quizJsonString));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
+        try{
+            return new Gson().fromJson(quizJsonString, new TypeToken<Quiz>() {}.getType());
+        } catch(JsonSyntaxException e){
+            throw new JsonSyntaxException("Could not parse provided Json string into Quiz object");
         }
-//        try{
-//            return new Gson().fromJson(quizJsonString, new TypeToken<Quiz>() {}.getType());
-//        } catch(JsonSyntaxException e){
-//            throw new JsonSyntaxException("Could not parse provided Json string into Quiz object");
-//        }
     }
 
 

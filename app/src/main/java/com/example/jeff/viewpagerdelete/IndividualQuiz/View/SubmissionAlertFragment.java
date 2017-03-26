@@ -2,7 +2,6 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -17,14 +16,25 @@ import android.widget.Toast;
 
 public class SubmissionAlertFragment extends android.support.v4.app.DialogFragment {
 
+    private SubmissionAlertFragmentListener mListener;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
+
+        try{
+            mListener = (SubmissionAlertFragmentListener) getActivity();
+        } catch(ClassCastException e){
+            e.printStackTrace();
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Are you sure you're ready to submit the quiz?\nYou cannot go back later.")
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getActivity().getApplicationContext(), "At this point, the application would check that all confidence points have been allocated and move to the group quiz portion.", Toast.LENGTH_LONG).show();
+                        if(mListener != null){
+                            mListener.userConfirmedSubmission();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -33,5 +43,21 @@ public class SubmissionAlertFragment extends android.support.v4.app.DialogFragme
                     }
                 });
         return builder.create();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mListener = null;
+    }
+
+    public interface SubmissionAlertFragmentListener{
+        void userConfirmedSubmission();
     }
 }

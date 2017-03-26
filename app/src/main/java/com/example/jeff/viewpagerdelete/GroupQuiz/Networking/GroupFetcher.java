@@ -26,19 +26,10 @@ import java.util.ArrayList;
 public class GroupFetcher {
 
     private Context context;
-    private static WeakReference<GroupFetcherListener> mListener;
 
     private static GroupFetcher thisInstance;
 
     public static GroupFetcher sharedInstance(Context context){
-
-        try{
-            GroupFetcherListener listener = (GroupFetcherListener) context;
-            mListener = new WeakReference<GroupFetcherListener>(listener);
-        }
-        catch (ClassCastException e){
-            e.printStackTrace();
-        }
 
         if(thisInstance == null){
             thisInstance = new GroupFetcher(context.getApplicationContext());
@@ -51,7 +42,12 @@ public class GroupFetcher {
     }
 
 
-    public void downloadAllGroups(){
+    public void downloadAllGroups(final GroupFetcherListener listener){
+
+        if(listener == null){
+            return;
+        }
+
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, ServerProperties.groupURL, null, new Response.Listener<JSONArray>(){
             @Override
             public void onResponse(JSONArray response) {
@@ -66,51 +62,61 @@ public class GroupFetcher {
                         e.printStackTrace();
                     }
                 }
-                mListener.get().onDownloadAllGroupsSuccess(groups);
+                listener.onDownloadAllGroupsSuccess(groups);
 
             }
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GROUP_FETCHER", "Failed to load groups from server");
-                mListener.get().onDownloadAllGroupsFailure(error);
+                listener.onDownloadAllGroupsFailure(error);
             }
         });
 
         RequestService.getInstance(context).addRequest(request);
     }
 
-    public void downloadGroup(String groupID){
+    public void downloadGroup(final GroupFetcherListener listener, String groupID){
+
+        if(listener == null){
+            return;
+        }
+
         String urlString = ServerProperties.groupURL + groupID;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                mListener.get().onDownloadSingleGroupSuccess(new Group(response));
+                listener.onDownloadSingleGroupSuccess(new Group(response));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mListener.get().onDownloadSingleGroupFailure(error);
+                listener.onDownloadSingleGroupFailure(error);
             }
         });
 
         RequestService.getInstance(context).addRequest(request);
     }
 
-    public void downloadGroupForUser(String userName){
+    public void downloadGroupForUser(final GroupFetcherListener listener, String userName){
+
+        if(listener == null){
+            return;
+        }
+
         String urlString = ServerProperties.userGroupURL + userName;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
-                mListener.get().onDownloadSingleGroupSuccess(new Group(response));
+                listener.onDownloadSingleGroupSuccess(new Group(response));
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mListener.get().onDownloadSingleGroupFailure(error);
+                listener.onDownloadSingleGroupFailure(error);
             }
         });
 

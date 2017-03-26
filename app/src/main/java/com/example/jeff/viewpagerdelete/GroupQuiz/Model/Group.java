@@ -1,20 +1,23 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.Model;
 
 import com.example.jeff.viewpagerdelete.ServerProperties;
-import com.example.jeff.viewpagerdelete.Startup.User;
+import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Jeff on 3/23/17.
  */
 
-public class Group {
+public class Group implements Serializable{
     private String id;
     private String name;
     private ArrayList<User> members;
@@ -72,6 +75,12 @@ public class Group {
     }
 
     public ArrayList<User> getMembers() {
+        Collections.sort(members, new Comparator<User>() {
+            @Override
+            public int compare(User user1, User user2) {
+                return user1.getFirstName().toLowerCase().compareTo(user2.getFirstName().toLowerCase());
+            }
+        });
         return members;
     }
 
@@ -82,4 +91,6 @@ public class Group {
     public String toJSON(){
         return new Gson().toJson(this);
     }
+
+
 }

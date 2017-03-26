@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.Startup;
+package com.example.jeff.viewpagerdelete.Startup.Model;
 
 import com.example.jeff.viewpagerdelete.ServerProperties;
 import com.google.gson.Gson;

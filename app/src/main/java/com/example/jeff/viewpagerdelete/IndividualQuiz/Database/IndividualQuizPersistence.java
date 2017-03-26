@@ -12,37 +12,37 @@ import com.google.gson.JsonSyntaxException;
  * Created by Jeff on 3/23/17.
  */
 
-public class QuizPersistence {
+public class IndividualQuizPersistence {
     private Context context;
     private SQLiteDatabase db;
 
-    private static QuizPersistence quizPersistence;
-    public static QuizPersistence sharedInstance(Context context){
+    private static IndividualQuizPersistence quizPersistence;
+    public static IndividualQuizPersistence sharedInstance(Context context){
         if(quizPersistence == null){
-            quizPersistence = new QuizPersistence(context);
+            quizPersistence = new IndividualQuizPersistence(context);
         }
         return quizPersistence;
     }
 
-    private QuizPersistence(Context context){
+    private IndividualQuizPersistence(Context context){
         this.context = context.getApplicationContext();
         this.db = new IndividualQuizDbHelper((context)).getWritableDatabase();
     }
 
 
     public Quiz readIndividualQuizFromDatabase(String quizID){
-        Quiz quiz = null;
+        Quiz quiz;
 
         String[] projection = {
-                QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID,
-                QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON
+                IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID,
+                IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON
         };
 
-        String selection = QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
+        String selection = IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
         String[] selectionArgs = {quizID};
 
         Cursor cursor = db.query(
-                QuizSchema.TABLE_NAME,
+                IndividualQuizSchema.TABLE_NAME,
                 projection,
                 selection,
                 selectionArgs,
@@ -51,11 +51,12 @@ public class QuizPersistence {
                 null
         );
 
-        if(cursor.moveToNext()){
-            try{
-                String quizData = cursor.getString(cursor.getColumnIndexOrThrow(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON));
+        IndividualQuizCursorWrapper cursorWrapper = new IndividualQuizCursorWrapper(cursor);
 
-                quiz = Quiz.buildQuizFromJsonString(quizData);
+        if(cursorWrapper.moveToNext()){
+            try{
+                quiz = cursorWrapper.getQuiz();
+                return quiz;
             } catch (IllegalArgumentException e){
                 e.printStackTrace();
                 return null;
@@ -63,10 +64,11 @@ public class QuizPersistence {
                 e.printStackTrace();
                 return null;
             }
+
         }
-
-        return quiz;
-
+        else{
+            return null;
+        }
     }
 
 
@@ -76,7 +78,7 @@ public class QuizPersistence {
 
         ContentValues values = getContentValues(quiz);
 
-        long newRowID = db.insert(QuizSchema.TABLE_NAME, null, values);
+        long newRowID = db.insert(IndividualQuizSchema.TABLE_NAME, null, values);
 
         if(newRowID != -1){
             writeSuccessful = true;
@@ -88,15 +90,14 @@ public class QuizPersistence {
 
 
     public void updateQuizInDatabase(Quiz quiz){
-        boolean writeSuccessful = false;
 
         ContentValues values = getContentValues(quiz);
 
-        String selection = QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
+        String selection = IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
         String[] selectionArgs = {quiz.getId()};
 
         db.update(
-                QuizSchema.TABLE_NAME,
+                IndividualQuizSchema.TABLE_NAME,
                 values,
                 selection,
                 selectionArgs
@@ -107,8 +108,8 @@ public class QuizPersistence {
 
     private ContentValues getContentValues(Quiz quiz){
         ContentValues values = new ContentValues();
-        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
-        values.put(QuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
+        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
+        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
 
         return values;
     }

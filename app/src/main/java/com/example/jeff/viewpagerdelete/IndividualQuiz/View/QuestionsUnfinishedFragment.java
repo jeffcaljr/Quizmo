@@ -39,7 +39,7 @@ public class QuestionsUnfinishedFragment extends DialogFragment {
         if(args != null && args.containsKey("unansweredQuestions")){
 
             unansweredQuestions = (ArrayList<QuizQuestion>) args.getSerializable("unansweredQuestions");
-            dialogBuilder.setMessage(unansweredQuestions.size() + " unanswered questions");
+            dialogBuilder.setMessage(unansweredQuestions.size() + " unfinished questions");
             //TODO: Do something more ineteresting with the unanswered questions data, rather than just show a count
             // (potentially show question titles or question numbers)
         }
