@@ -1,13 +1,16 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
@@ -34,7 +37,7 @@ public class IndividualQuizAnswerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.answer_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_answer_card, container, false);
 
         //bind the views of the IndividualQuizAnswerFragment
 
@@ -77,6 +80,26 @@ public class IndividualQuizAnswerFragment extends Fragment {
         else{
             Log.e("ANSWER_FRAGMENT", "Answer is null!");
         }
+
+
+        /* Drawing a mask over an answer view
+            CardView root = (CardView) view.findViewById(R.id.answer_card_root);
+            View mask = new View(getActivity());
+            mask.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mask.setBackgroundColor(Color.GREEN);
+            mask.setAlpha(0.5f);
+
+            mask.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //absorb click events on the view
+                }
+            });
+            root.addView(mask);
+         */
+
+
+
 
         return view;
     }

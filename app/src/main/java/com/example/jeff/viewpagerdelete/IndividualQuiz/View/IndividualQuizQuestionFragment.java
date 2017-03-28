@@ -1,6 +1,7 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.R;
 
@@ -33,11 +34,11 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
     private PageFragmentListener mListener;
 
-    private Button mNextButton;
     private TextView mQuestionTextView;
-    private TextView mAnswerTextView;
     private TextView mPointsRemainingTextView;
-    private TextView mQuestionNumberTextView;
+
+    private Button mPreviousAnswerButton;
+    private Button mNextAnswerButton;
 
     private ViewPager mPager;
     private PagerAdapter mAdapter;
@@ -49,8 +50,7 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("TAG", "IndividualQuizQuestionFragment onCreateView called");
-        View view = inflater.inflate(R.layout.individual_quiz_question_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_question_card, container, false);
 
         //Get QuizQuestion extra arg
         Bundle args = getArguments();
@@ -65,45 +65,81 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
         //Bind Views
 
 
-        mNextButton = (Button) view.findViewById(R.id.next_btn);
-        mNextButton.setText(buttonText);
+        mQuestionTextView = (TextView) view.findViewById(R.id.question_text_tv);
+        mPointsRemainingTextView = (TextView) view.findViewById(R.id.points_remaining_tv);
+        mPreviousAnswerButton = (Button) view.findViewById(R.id.previous_answer_available_indicator);
+        mNextAnswerButton = (Button) view.findViewById(R.id.next_answer_available_indicator);
 
-        mNextButton.setOnClickListener(new View.OnClickListener() {
+        mPointsRemainingTextView.setText("Points Remaining: " + question.getPointsRemaining());
+
+
+        String questionLabel = "Q" + args.getInt(EXTRA_QUIZ_QUESTION_NUMBER) + ".) ";
+        mQuestionTextView.setText(questionLabel + " " + question.getText());
+
+
+
+        mPreviousAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.advanceButtonClicked();
+                int currentItem = mPager.getCurrentItem();
+                if(currentItem - 1 >= 0){ //there is a previous page
+                    mPager.setCurrentItem(currentItem - 1);
+                }
             }
         });
 
-        mQuestionTextView = (TextView) view.findViewById(R.id.question_text_tv);
-        mAnswerTextView = (TextView) view.findViewById(R.id.answer_textview);
+        mNextAnswerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentItem = mPager.getCurrentItem();
+                if(currentItem < mPager.getChildCount() - 1){ //there is a previous page
+                    mPager.setCurrentItem(currentItem + 1);
+                }
+            }
+        });
 
-        mQuestionNumberTextView = (TextView) view.findViewById(R.id.question_number_tv);
-        mQuestionNumberTextView.setText("Q: " + args.getInt(EXTRA_QUIZ_QUESTION_NUMBER));
-
-
-
-        mPointsRemainingTextView = (TextView) view.findViewById(R.id.points_remaining_tv);
 
 
         mPager = (ViewPager) view.findViewById(R.id.answer_pager);
+        mPager.setPageTransformer(true, new StackTransformer());
         mPager.setOffscreenPageLimit(question.getAvailableAnswers().size() - 1);
         mAdapter = new IndividualQuizQuestionFragment.ScreenSlidePagerAdapter(getChildFragmentManager());
+
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //page changed
+
+                if(position == 0){
+                    mPreviousAnswerButton.setEnabled(false);
+                }
+                else{
+                    mPreviousAnswerButton.setEnabled(true);
+                }
+
+                if(position == mPager.getChildCount() - 1){
+                    mNextAnswerButton.setEnabled(false);
+                }
+                else{
+                    mNextAnswerButton.setEnabled(true);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mPager.setAdapter(mAdapter);
 
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if(question != null){
-            mPointsRemainingTextView.setText(question.getPointsRemaining() + " points remaining");
-
-            mQuestionTextView.setText(question.getText());
-        }
     }
 
 
@@ -133,23 +169,19 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
     }
 
-    public void configureFromQuiz(Quiz quiz){
-        mQuestionTextView.setText(quiz.getQuestionByIndex(0).getText());
-        mAnswerTextView.setText(quiz.getQuestionByIndex(0).getAnswerByIndex(0).getText());
-    }
 
 
     //MARK: AnswerFragmentListenerMethods
 
     @Override
     public void incrementButtonClicked() {
-        mPointsRemainingTextView.setText(question.decrementPointsRemaining() + " points remaining");
+        mPointsRemainingTextView.setText("Points Remaining: " + question.decrementPointsRemaining());
 //        mListener.quizStateUpdated();
     }
 
     @Override
     public void decrementButtonClicked() {
-        mPointsRemainingTextView.setText(question.incrementPointsRemaining() + " points remaining");
+        mPointsRemainingTextView.setText("Points Remaining: " + question.incrementPointsRemaining());
 //        mListener.quizStateUpdated();
     }
 

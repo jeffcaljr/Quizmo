@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
+import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,12 @@ public class QuestionsUnfinishedFragment extends DialogFragment {
     ArrayList<QuizQuestion> unansweredQuestions = new ArrayList<>();
     UnfinishedQuestionsInterface mListener = null;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.IndividualQuizDialogStyle);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,6 +38,8 @@ public class QuestionsUnfinishedFragment extends DialogFragment {
         } catch(ClassCastException e){
             e.printStackTrace();
         }
+
+        dialogBuilder.setTitle("Uh-oh");
 
         StringBuilder questionsStringBuilder = new StringBuilder();
         questionsStringBuilder.append("Oops, you haven't fully completed the quiz:\n");

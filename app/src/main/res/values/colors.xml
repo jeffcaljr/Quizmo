@@ -13,4 +13,14 @@
     <!--<color name="colorCardBackground">#4DB6AC</color>-->
     <color name="colorIndividualQuizQuestionText">#FFFFFF</color>
     <color name="colorAnswerFragmentQuestionValue">#FF0000</color>
+
+    <color name="jccolorPrimary">#C62828</color>
+    <color name="jccolorPrimaryDark">#8E1717</color>
+    <color name="colorPrimaryBright">#F44336</color>
+    <color name="jccolorAccent">#50E3C2</color>
+    <color name="colorAccentTranslucent">#78F0BE</color>
+    <color name="colorNullDark">#897878</color>
+    <color name="colorNullLight">#A99393</color>
+    <color name="colorNullDarkTranslucent">#897878</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

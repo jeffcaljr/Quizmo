@@ -1,6 +1,7 @@
 package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.QuizLoaderActivity;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuestionsUnfinishedFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.View.LoginFragment;
 
@@ -30,6 +32,8 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         fragTransaction = getSupportFragmentManager().beginTransaction();
         fragTransaction.add(R.id.startup_container, mLoginFragment);
         fragTransaction.commit();
+
+
 
     }
 

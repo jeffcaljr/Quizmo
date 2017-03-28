@@ -1,15 +1,27 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
+import com.eftimoff.viewpagertransformers.AccordionTransformer;
+import com.eftimoff.viewpagertransformers.DepthPageTransformer;
+import com.eftimoff.viewpagertransformers.DrawFromBackTransformer;
+import com.eftimoff.viewpagertransformers.FlipVerticalTransformer;
+import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
@@ -41,34 +53,65 @@ public class IndividualQuizActivity extends AppCompatActivity
     public VerticalViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
 
+    private Button previousQuestionButton;
+    private Button nextQuestionButton;
+    private Button submitButton;
+
     private Quiz quiz;
 
-//    private IndividualQuizDbHelper dbHelper;
-//    private SQLiteDatabase dbReadable;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.individual_quiz_activity_layout);
-
-        final Context context = this;
-
-
-//        Toast.makeText(this, "At this point, the user has logged in, been presented the quiz instructions, and any other setup", Toast.LENGTH_LONG).show();
+        setContentView(R.layout.activity_individual_quiz);
 
         Intent i = getIntent();
         if(i.hasExtra(INTENT_EXTRA_QUIZ)){
             quiz = (Quiz) i.getSerializableExtra(INTENT_EXTRA_QUIZ);
-            Log.d("TAG", "found quiz extra in IndividualQuizActivity");
-//            dbHelper = new IndividualQuizDbHelper(this);
-//            dbReadable = dbHelper.getReadableDatabase();
 
         }
         else{
-            Log.e("TAG", "No 'quizzes' extra");
+            Log.e("TAG", "No 'quizzes' extra found in IndividualQuizActivity.java");
             finish();
         }
+
+        final Context context = this;
+
+        getSupportActionBar().setTitle(quiz.getDescription());
+
+
+        previousQuestionButton = (Button) findViewById(R.id.previous_question_available_indicator);
+        nextQuestionButton = (Button) findViewById(R.id.next_question_available_indicator);
+        submitButton = (Button) findViewById(R.id.submit_button);
+
+        previousQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentItem = mPager.getCurrentItem();
+                if(currentItem - 1 >= 0){ //there is a previous page to go to
+                    mPager.setCurrentItem(currentItem - 1);
+                }
+            }
+        });
+
+        nextQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentItem = mPager.getCurrentItem();
+                if(currentItem < mPager.getChildCount() - 1){ //there is a next page to go to
+                    mPager.setCurrentItem(currentItem + 1);
+                }
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                advanceButtonClicked();
+            }
+        });
+
 
         mPager = (VerticalViewPager) findViewById(R.id.question_pager);
         mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
@@ -83,6 +126,24 @@ public class IndividualQuizActivity extends AppCompatActivity
             public void onPageSelected(int position) {
                 //Page was changed; save quiz
                 IndividualQuizPersistence.sharedInstance(context).updateQuizInDatabase(quiz);
+
+                if(position == 0){
+                    previousQuestionButton.setEnabled(false);
+                }
+                else {
+                    previousQuestionButton.setEnabled(true);
+                }
+
+                if(position == mPager.getChildCount() - 1){
+                    nextQuestionButton.setVisibility(View.INVISIBLE);
+                    submitButton.setVisibility(View.VISIBLE);
+                }
+                else{
+                    nextQuestionButton.setVisibility(View.VISIBLE);
+                    submitButton.setVisibility(View.INVISIBLE);
+                }
+
+
             }
 
             @Override
@@ -90,25 +151,42 @@ public class IndividualQuizActivity extends AppCompatActivity
 
             }
         });
+
+        mPager.setPageTransformer(true, new DrawFromBackTransformer());
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
+
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        dbReadable.close();
     }
 
     @Override
     public void onBackPressed() {
-        if(mPager.getCurrentItem() == 0){
-            super.onBackPressed();
-        }
-        else{
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
+
+        final AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+        exitDialog.setTitle("Exit Quiz");
+        exitDialog.setMessage("Are you sure you wish to exit the quiz? You can resume it later if there is time remaining.");
+        exitDialog.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                IndividualQuizActivity.super.onBackPressed();
+            }
+        });
+
+        exitDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(exitDialog != null){
+                    //dismiss
+                }
+            }
+        });
+
+        exitDialog.create().show();
     }
 
     //MARK: IndividualQuizQuestionFragmentListener Methods

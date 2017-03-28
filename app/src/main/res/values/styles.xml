@@ -1,13 +1,16 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:buttonStyle">@style/ButtonStyle</item>
-        <item name="android:background">@color/colorBackground</item>
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <item name="colorPrimary">@color/jccolorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/jccolorPrimaryDark</item>
+        <item name="colorAccent">@color/jccolorAccent</item>
+        <!--<item name="android:buttonStyle">@style/ButtonStyle</item>-->
+        <!--<item name="android:background">@color/colorBackground</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,15 +26,25 @@
         <item name="android:minWidth">@dimen/stdTextBoxMinWidth</item>
         <item name="android:minHeight">@dimen/stdTextBoxMinHeight</item>
     </style>
-    <style name="ButtonStyle" parent="android:style/Widget.Button">
-        <item name="android:background">@color/buttonBackground</item>
-        <item name="android:textColor">@color/buttonTextColor</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:textSize">18sp</item>
-    </style>
+    <!--<style name="ButtonStyle" parent="android:style/Widget.Button">-->
+        <!--<item name="android:background">@color/buttonBackground</item>-->
+        <!--<item name="android:textColor">@color/buttonTextColor</item>-->
+        <!--<item name="android:padding">10dp</item>-->
+        <!--<item name="android:textSize">18sp</item>-->
+    <!--</style>-->
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.CustomTheme" parent="@android:style/Theme.Light">
+        <item name="android:alertDialogTheme">@style/IndividualQuizDialogStyle</item>
+    </style>
+
+    <style name="IndividualQuizDialogStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 
 </resources>
