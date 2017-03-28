@@ -1,5 +1,7 @@
 package com.example.jeff.viewpagerdelete;
 
+import android.content.Context;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
@@ -8,17 +10,21 @@ import com.android.volley.toolbox.Volley;
  * Created by Jeff on 2/11/17.
  */
 public class RequestService {
-    private static RequestService ourInstance = new RequestService();
 
-    public static RequestService getInstance() {
+    private RequestQueue queue;
+
+    private static RequestService ourInstance;
+
+    public static RequestService getInstance(Context context) {
+        if(ourInstance == null){
+            ourInstance = new RequestService(context);
+        }
         return ourInstance;
     }
 
-    private RequestService() {
-//        queue = Volley.newRequestQueue()
+    private RequestService(Context context) {
+        queue = Volley.newRequestQueue(context.getApplicationContext());
     }
-
-    private RequestQueue queue;
 
     public void addRequest(JsonRequest request){
         this.queue.add(request);
