@@ -21,9 +21,11 @@ public class NewUserFragment extends Fragment {
 
     private Button saveButton;
     private SaveUserClickListener mSaveUserClickListener;
+    private String newUid;
+    private String newScreenName;
 
     public interface SaveUserClickListener{
-        public void onSaveUserClick();
+        public void onSaveUserClick(String uid, String scrnName);
     }
 
     @Nullable
@@ -31,12 +33,16 @@ public class NewUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.new_user_fragment, container, false);
 
-        EditText uidField = (EditText) view.findViewById(R.id.loginUserName);
-        EditText passwordField = (EditText) view.findViewById(R.id.loginPassword);
+        final EditText uidField = (EditText) view.findViewById(R.id.newUserUserName);
+        final EditText screenNameField = (EditText) view.findViewById(R.id.newUserScreenName);
         saveButton = (Button) view.findViewById(R.id.loginSubmit);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mSaveUserClickListener.onSaveUserClick();
+                newUid = uidField.getText().toString();
+                newScreenName = screenNameField.getText().toString();
+                if (newScreenName != "" && newUid != "") {
+                    mSaveUserClickListener.onSaveUserClick(newUid, newScreenName);
+                }
             }
         });
         return view;

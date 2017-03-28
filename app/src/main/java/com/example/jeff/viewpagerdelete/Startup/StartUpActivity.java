@@ -10,14 +10,17 @@ import com.example.jeff.viewpagerdelete.QuizLoaderActivity;
 import com.example.jeff.viewpagerdelete.R;
 
 
-public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener {
+public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener, NewUserFragment.SaveUserClickListener {
     Fragment mLoginFragment;
     FragmentTransaction fragTransaction;
+    StartModel mStartModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_up);
+
+        mStartModel = new StartModel(this);
 
         mLoginFragment = new LoginFragment();
         fragTransaction = getSupportFragmentManager().beginTransaction();
@@ -32,6 +35,13 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         Intent quizMe = new Intent(this, QuizLoaderActivity.class);
         startActivity(quizMe);
         finish();
+    }
+
+    @Override
+    public void onSaveUserClick(String uid, String scrnName) {
+        StartModel.User.setUid(uid);
+        StartModel.User.setScreenName(scrnName);
+        mStartModel.PushUserToSQL();
     }
 }
 
