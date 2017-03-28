@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.jeff.viewpagerdelete.R;
 
@@ -35,12 +36,16 @@ public class NewUserFragment extends Fragment {
 
         final EditText uidField = (EditText) view.findViewById(R.id.newUserUserName);
         final EditText screenNameField = (EditText) view.findViewById(R.id.newUserScreenName);
-        saveButton = (Button) view.findViewById(R.id.loginSubmit);
+        saveButton = (Button) view.findViewById(R.id.newUserSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 newUid = uidField.getText().toString();
                 newScreenName = screenNameField.getText().toString();
-                if (newScreenName != "" && newUid != "") {
+                if (newScreenName.isEmpty() && newUid.isEmpty()) {
+                    Toast toast = Toast.makeText(getActivity(), "A valid user ID and Screen Name are required.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else{
                     mSaveUserClickListener.onSaveUserClick(newUid, newScreenName);
                 }
             }

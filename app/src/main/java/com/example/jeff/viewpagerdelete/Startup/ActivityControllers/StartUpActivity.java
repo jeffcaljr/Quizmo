@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 
 public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener, NewUserFragment.SaveUserClickListener {
-    Fragment mLoginFragment;
+    Fragment mUIFragment;
     FragmentTransaction fragTransaction;
     StartModel mStartModel;
 
@@ -31,11 +31,15 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
 
         mStartModel = new StartModel(this);
 
-        mLoginFragment = new LoginFragment();
+        if (mStartModel.PullUserInfo()) {
+            mUIFragment = new LoginFragment();
+        }
+        else{
+            mUIFragment = new NewUserFragment();
+        }
         fragTransaction = getSupportFragmentManager().beginTransaction();
-        fragTransaction.add(R.id.startup_container, mLoginFragment);
+        fragTransaction.add(R.id.startup_container, mUIFragment);
         fragTransaction.commit();
-
     }
 
 
@@ -51,6 +55,9 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         StartModel.User.setUid(uid);
         StartModel.User.setScreenName(scrnName);
         mStartModel.PushUserToSQL();
+        Intent quizMe = new Intent(this, HomePageActivity.class);
+        startActivity(quizMe);
+        finish();
     }
 
 }
