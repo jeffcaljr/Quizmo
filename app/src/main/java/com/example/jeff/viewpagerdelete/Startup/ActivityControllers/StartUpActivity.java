@@ -12,7 +12,9 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.QuizLoaderActivity;
 import com.example.jeff.viewpagerdelete.R;
+import com.example.jeff.viewpagerdelete.Startup.Model.StartModel;
 import com.example.jeff.viewpagerdelete.Startup.View.LoginFragment;
+import com.example.jeff.viewpagerdelete.Startup.View.NewUserFragment;
 
 import java.util.ArrayList;
 
@@ -44,15 +46,13 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         finish();
     }
 
-<<<<<<< HEAD:app/src/main/java/com/example/jeff/viewpagerdelete/Startup/StartUpActivity.java
     @Override
     public void onSaveUserClick(String uid, String scrnName) {
         StartModel.User.setUid(uid);
         StartModel.User.setScreenName(scrnName);
         mStartModel.PushUserToSQL();
     }
-=======
->>>>>>> 5857d9a54b47bec85772b73c983ce215db32b2f9:app/src/main/java/com/example/jeff/viewpagerdelete/Startup/ActivityControllers/StartUpActivity.java
+
 }
 
 
