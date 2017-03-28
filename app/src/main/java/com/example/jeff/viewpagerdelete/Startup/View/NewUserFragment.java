@@ -41,7 +41,7 @@ public class NewUserFragment extends Fragment {
             public void onClick(View v) {
                 newUid = uidField.getText().toString();
                 newScreenName = screenNameField.getText().toString();
-                if (newScreenName.isEmpty() && newUid.isEmpty()) {
+                if (newScreenName.isEmpty() || newUid.isEmpty()) {
                     Toast toast = Toast.makeText(getActivity(), "A valid user ID and Screen Name are required.", Toast.LENGTH_LONG);
                     toast.show();
                 }

@@ -14,11 +14,9 @@
     >
     <TextView
         android:text="Homepage"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/homepage_title"
-        android:textAppearance="@android:style/TextAppearance.Material.DialogWindowTitle"
-        android:textStyle="normal|bold|italic"
         android:fontFamily="sans-serif-medium"/>
     <Button
         android:id="@+id/new_quiz_button"
