@@ -3,66 +3,59 @@ package com.example.jeff.viewpagerdelete.GroupQuiz.View;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.R;
-import com.example.jeff.viewpagerdelete.Startup.Model.User;
-
-import java.util.ArrayList;
 
 /**
- * Created by Jeff on 3/24/17.
+ * Created by Joshua on 3/24/2017.
  */
 
 public class GroupQuizCodeFragment extends Fragment {
+    private static final String ARG_SSO_ID = "sso_id";
 
-    private Group group;
-
-    private EditText quizCodeField;
-    private TextView groupNameTextview;
-    private ListView groupMemberListView;
-
-    private ArrayAdapter<String> mAdapter;
-
+    private EditText mCodeEditText;
+    private Button mEnterButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_quiz_code, container, false);
 
-        View view = inflater.inflate(R.layout.group_quiz_code_fragment, container, false);
+//        mCodeEditText = (EditText) view.findViewById(R.id.);
+//        mCodeEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
 
-        Bundle args = getArguments();
-
-        if(args != null && args.containsKey(GroupQuizCodeActivity.ARG_GROUP)) {
-            group = (Group) args.getSerializable(GroupQuizCodeActivity.ARG_GROUP);
-            quizCodeField = (EditText) view.findViewById(R.id.group_quiz_code_edittext);
-            groupNameTextview = (TextView) view.findViewById(R.id.group_name_textview);
-            groupMemberListView = (ListView) view.findViewById(R.id.group_member_list_view);
-
-            ArrayList<String> memberNames = new ArrayList<>();
-
-            for(User member: group.getMembers()){
-                memberNames.add(member.getFirstName() + " " + member.getLastName());
-            }
-
-            groupNameTextview.setText(group.getName());
-
-            mAdapter = new ArrayAdapter<>(getActivity(), R.layout.group_listview_item, R.id.group_listview_item_user_name, memberNames);
-
-            groupMemberListView.setAdapter(mAdapter);
-        }
-
+        mEnterButton = (Button) view.findViewById(R.id.enter_code);
+        mEnterButton.setOnClickListener(enterButtonPressed);
 
         return view;
     }
 
+    View.OnClickListener enterButtonPressed = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
 
+        }
+    };
 }
