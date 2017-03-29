@@ -29,7 +29,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_fragment, container, false);
+        View view = inflater.inflate(R.layout.start_login_fragment, container, false);
 
         EditText uidField = (EditText) view.findViewById(R.id.loginUserName);
         EditText passwordField = (EditText) view.findViewById(R.id.loginPassword);
