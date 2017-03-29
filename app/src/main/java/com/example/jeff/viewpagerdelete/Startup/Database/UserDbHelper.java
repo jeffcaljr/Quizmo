@@ -22,7 +22,8 @@ public class UserDbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + UserSchema.Table.NAME +
                 "(_id  INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 UserSchema.Cols.USER_ID + " TEXT, " +
-                UserSchema.Cols.SCREEN_NAME + " TEXT)"
+                UserSchema.Cols.F_NAME + " TEXT)" +
+                UserSchema.Cols.L_NAME + " TEXT)"
         );
     }
 

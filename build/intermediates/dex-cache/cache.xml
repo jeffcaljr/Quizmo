@@ -43,7 +43,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="5fa7219e106f81ccff1d79359e5c197e8c25ad15">
+        sha1="f1aa0e2c21bc3d11fa14dee6c7dfdfaddf89ef41">
         <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_b66ba5102d200bcc031761fe9613e49168e2298e/classes.dex" />
     </item>
     <item
@@ -61,7 +61,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="0282ced991bd16fcc157be256fe16f6992f639cb">
+        sha1="a0031e34dcfca6a3f256b304407d4fe8797ed716">
         <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6fedb4a67b1247200094e218435f5247b0b43a1f/classes.dex" />
     </item>
     <item
@@ -126,6 +126,15 @@
         revision="25.0.2"
         sha1="0a9cb567dc008f570c28531720168f19148da965">
         <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.0-beta4_82ad0c04e2b31ee8184d19783b135344bdbc1a53/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.eftimoff/android-viewpager-transformers/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4e23b78a184d3262fded46f4799f3b529aaca5b1">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.eftimoff-android-viewpager-transformers-1.0.1_1f1fb8f6ce336d5acc64ca7cef12566bf6c4a40a/classes.dex" />
     </item>
     <item
         is-multidex="true"

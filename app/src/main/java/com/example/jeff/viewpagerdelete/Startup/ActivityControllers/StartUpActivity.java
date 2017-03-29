@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.R;
-import com.example.jeff.viewpagerdelete.Startup.Model.StartModel;
+import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.View.LoginFragment;
 import com.example.jeff.viewpagerdelete.Startup.View.NewUserFragment;
 import com.example.jeff.viewpagerdelete.Startup.View.WelcomeCheckFragment;
@@ -16,17 +16,17 @@ import com.example.jeff.viewpagerdelete.Startup.View.WelcomeCheckFragment;
 public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener, NewUserFragment.SaveUserClickListener, WelcomeCheckFragment.WelcomeClickListeners {
     Fragment mUIFragment;
     int fragTransaction;
-    StartModel mStartModel;
+    User mStartModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
 
-        mStartModel = new StartModel(this);
+        mStartModel = new User(this);
 
         if (savedInstanceState == null) {
-            if (mStartModel.PullUserInfo()) {
+            if (mStartModel.PullUserInfoFromSQL()) {
                 mUIFragment = new WelcomeCheckFragment();
             } else {
                 mUIFragment = new NewUserFragment();
@@ -47,8 +47,8 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
 
     @Override
     public void onSaveUserClick(String uid, String scrnName) {
-        StartModel.User.setUid(uid);
-        StartModel.User.setScreenName(scrnName);
+        mStartModel.set_id(uid);
+        mStartModel.setFirstName(scrnName);
         mStartModel.PushUserToSQL();
         Intent quizMe = new Intent(this, HomePageActivity.class);
         startActivity(quizMe);
