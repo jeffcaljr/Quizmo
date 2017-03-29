@@ -26,7 +26,7 @@
             android:name=".Homepage.ActivityControllers.QuizCodeActivity"
             android:label="@string/Quiz_Code_Manifest_Label" />
         <activity android:name=".Homepage.ActivityControllers.HomePageActivity" />
-        <activity android:name=".GroupQuiz.ActivityControllers.GroupQuizCodeActivity"></activity>
+        <activity android:name=".GroupQuiz.GroupQuizCodeActivity"></activity>
     </application>
 
 </manifest>

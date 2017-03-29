@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity">
+    tools:context="com.example.jeff.viewpagerdelete.GroupQuiz.GroupQuizCodeActivity">
 
     <FrameLayout
         android:id="@+id/group_code_fragment_container"
