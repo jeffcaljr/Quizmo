@@ -32,7 +32,7 @@ public class NewUserFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_user_fragment, container, false);
+        View view = inflater.inflate(R.layout.start_new_user_fragment, container, false);
 
         final EditText uidField = (EditText) view.findViewById(R.id.newUserUserName);
         final EditText screenNameField = (EditText) view.findViewById(R.id.newUserScreenName);

@@ -2,44 +2,39 @@ package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.QuizLoaderActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.StartModel;
 import com.example.jeff.viewpagerdelete.Startup.View.LoginFragment;
 import com.example.jeff.viewpagerdelete.Startup.View.NewUserFragment;
+import com.example.jeff.viewpagerdelete.Startup.View.WelcomeCheckFragment;
 
-import java.util.ArrayList;
 
-
-public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener, NewUserFragment.SaveUserClickListener {
+public class StartUpActivity extends AppCompatActivity implements LoginFragment.LoginClickListener, NewUserFragment.SaveUserClickListener, WelcomeCheckFragment.WelcomeClickListeners {
     Fragment mUIFragment;
-    FragmentTransaction fragTransaction;
+    int fragTransaction;
     StartModel mStartModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start_up);
+        setContentView(R.layout.start_activity);
 
         mStartModel = new StartModel(this);
 
-        if (mStartModel.PullUserInfo()) {
-            mUIFragment = new LoginFragment();
+        if (savedInstanceState == null) {
+            if (mStartModel.PullUserInfo()) {
+                mUIFragment = new WelcomeCheckFragment();
+            } else {
+                mUIFragment = new NewUserFragment();
+            }
+            fragTransaction = getSupportFragmentManager().beginTransaction()
+                    .add(R.id.startup_container, mUIFragment)
+                    .commit();
         }
-        else{
-            mUIFragment = new NewUserFragment();
-        }
-        fragTransaction = getSupportFragmentManager().beginTransaction();
-        fragTransaction.add(R.id.startup_container, mUIFragment);
-        fragTransaction.commit();
     }
 
 
@@ -60,6 +55,21 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         finish();
     }
 
+    @Override
+    public void onNotMeClick() {
+        mUIFragment = new NewUserFragment();
+        fragTransaction = getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.startup_container, mUIFragment)
+                .commit();
+    }
+
+    @Override
+    public void onIsMeClick() {
+        Intent quizMe = new Intent(this, HomePageActivity.class);
+        startActivity(quizMe);
+        finish();
+    }
 }
 
 
