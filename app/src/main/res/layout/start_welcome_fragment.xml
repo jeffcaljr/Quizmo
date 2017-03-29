@@ -10,8 +10,7 @@
         android:id = "@+id/welcome_back"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        style="@style/TextBoxStyling"
-        android:background="@color/colorBackground"/>
+        style="@style/TextBoxStyling"/>
     <Button
         android:id = "@+id/notMeButton"
         android:layout_width = "wrap_content"

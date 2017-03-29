@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.jeff.viewpagerdelete.ServerProperties;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
@@ -14,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+
+import static android.database.sqlite.SQLiteDatabase.deleteDatabase;
 
 /**
  * Created by Jeff on 3/23/17.
@@ -48,49 +51,16 @@ public class User implements Serializable{
             e.printStackTrace();
         }
     }
-    private UserDbHelper mDbHelper;
-    private SQLiteDatabase db;
-    private Cursor cursor;
 
-    public User (Context context){
-        mDbHelper = new UserDbHelper(context);
-    }
 
-    public User(String _id, String userID, String email, String firstName, String lastName, Context context) {
+    public User(){ }
+
+    public User(String _id, String userID, String email, String firstName, String lastName) {
         this._id = _id;
         this.userID = userID;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        mDbHelper = new UserDbHelper(context);
-    }
-    public void PushUserToSQL() {
-        db = mDbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(UserSchema.Cols.USER_ID, get_id());
-        values.put(UserSchema.Cols.F_NAME, getFirstName());
-        values.put(UserSchema.Cols.L_NAME, getLastName());
-        db.insert(UserSchema.Table.NAME, null, values);
-    }
-
-    public boolean PullUserInfoFromSQL(){
-        db = mDbHelper.getReadableDatabase();
-
-        if (db == null)return false;
-        else{
-            cursor = db.rawQuery("SELECT * FROM " + UserSchema.Table.NAME, null);
-            if (cursor.moveToFirst()){
-                set_id(cursor.getString(cursor.getColumnIndex(UserSchema.Cols.USER_ID)));
-                setFirstName(cursor.getString(cursor.getColumnIndex(UserSchema.Cols.F_NAME)));
-                setLastName(cursor.getString(cursor.getColumnIndex(UserSchema.Cols.L_NAME)));
-
-            }
-            else return false;
-        }
-        if (get_id().equals("")) return false;
-
-        return true;
     }
 
     public String get_id() {

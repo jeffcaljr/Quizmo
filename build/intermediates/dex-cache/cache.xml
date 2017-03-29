@@ -2,157 +2,157 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support.constraint/constraint-layout/1.0.0-beta4/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="662d7533b25a666c649c10a16b42edfb95f25a4f">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support.constraint-constraint-layout-1.0.0-beta4_66c75e0dea4de123228b9d14154d333b86f1b52c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="3bd97cfefd783e9de1dd1c30574a6adb44b4409b">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.0.0_921ceb05e7b2454922eaaa9e94322266cec138bf/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.github.castorflex.verticalviewpager/library/19.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="cac65d41873c63e90b9406c9dbccc05b15113c45">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.github.castorflex.verticalviewpager-library-19.0.1_b775956d6d3468b90402545c74fb80e3273edd4a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/jars/libs/internal_impl-24.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.0.0_8613c5b0df3e2eb3189b24bb3456bdf4fcea4fdd/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f1aa0e2c21bc3d11fa14dee6c7dfdfaddf89ef41">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_b66ba5102d200bcc031761fe9613e49168e2298e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/24.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8dd49930e4f9dde1a42d37e362b9fea8b1b69c0d">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-24.0.0_500e5ba0ae2eebabaa3ad62e1f9f2ac7ac4e0806/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a0031e34dcfca6a3f256b304407d4fe8797ed716">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6fedb4a67b1247200094e218435f5247b0b43a1f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-24.0.0_36a2bfab1eb660d14720c05ba35acc744330340b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/24.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="894922f67adeaaef51f077a29e315da21a3382d3">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-24.0.0_98af6fc417f07be232b03be94a2f9b1f40653b28/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.volley/volley/1.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.volley-volley-1.0.0_ed5dbc989eeb0ee1738206ace712220275458f5f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0874286cc2fd88d54fdf130e9d5372730da6de97">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-24.0.0_204f0deefe2fb097fb7cfd68b30672b35a9f14b5/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/24.0.0/support-annotations-24.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.0.0_e6b5eb2a6e5ffd33c82a30f975d916bb1c15340a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-24.0.0_9a538f29f2fbeca1e077192d51038d62c3341398/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.0-beta4/constraint-layout-solver-1.0.0-beta4.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0a9cb567dc008f570c28531720168f19148da965">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.0-beta4_82ad0c04e2b31ee8184d19783b135344bdbc1a53/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.eftimoff/android-viewpager-transformers/1.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4e23b78a184d3262fded46f4799f3b529aaca5b1">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.eftimoff-android-viewpager-transformers-1.0.1_1f1fb8f6ce336d5acc64ca7cef12566bf6c4a40a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="fc29308a7a8f6d4407b34634eb48fb8b817f9b23">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-24.0.0_3b6b4b4513cac2a76bc6d7055cbc8a9111ba54bb/classes.dex" />
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-design-24.0.0_3b6b4b4513cac2a76bc6d7055cbc8a9111ba54bb.jar" />
     </item>
     <item
-        is-multidex="true"
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3bd97cfefd783e9de1dd1c30574a6adb44b4409b">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-24.0.0_921ceb05e7b2454922eaaa9e94322266cec138bf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/24.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8dd49930e4f9dde1a42d37e362b9fea8b1b69c0d">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-cardview-v7-24.0.0_500e5ba0ae2eebabaa3ad62e1f9f2ac7ac4e0806.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.github.castorflex.verticalviewpager/library/19.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cac65d41873c63e90b9406c9dbccc05b15113c45">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.github.castorflex.verticalviewpager-library-19.0.1_b775956d6d3468b90402545c74fb80e3273edd4a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.volley/volley/1.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.volley-volley-1.0.0_ed5dbc989eeb0ee1738206ace712220275458f5f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/jars/libs/internal_impl-24.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/internal_impl-24.0.0_8613c5b0df3e2eb3189b24bb3456bdf4fcea4fdd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-24.0.0_36a2bfab1eb660d14720c05ba35acc744330340b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fa032cb8bab5fcf557bfaa33babdbd57218cfbba">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/instant-run_b66ba5102d200bcc031761fe9613e49168e2298e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/24.0.0/support-annotations-24.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/support-annotations-24.0.0_e6b5eb2a6e5ffd33c82a30f975d916bb1c15340a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a8883b8b9207c177b7742731885721a0b21952c8">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_6fedb4a67b1247200094e218435f5247b0b43a1f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/24.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="894922f67adeaaef51f077a29e315da21a3382d3">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-24.0.0_98af6fc417f07be232b03be94a2f9b1f40653b28.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-24.0.0_9a538f29f2fbeca1e077192d51038d62c3341398.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0874286cc2fd88d54fdf130e9d5372730da6de97">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-24.0.0_204f0deefe2fb097fb7cfd68b30672b35a9f14b5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.eftimoff/android-viewpager-transformers/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4e23b78a184d3262fded46f4799f3b529aaca5b1">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.eftimoff-android-viewpager-transformers-1.0.1_1f1fb8f6ce336d5acc64ca7cef12566bf6c4a40a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.0-beta4/constraint-layout-solver-1.0.0-beta4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0a9cb567dc008f570c28531720168f19148da965">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.0-beta4_82ad0c04e2b31ee8184d19783b135344bdbc1a53.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/jamy/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="f1bc476cc167b18e66c297df599b2377131a8947">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/transforms/dex/debug/folders/1000/10/gson-2.6.2_0c3b87f03c2d96b5f536e55f9250013e60b3684a/classes.dex" />
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/gson-2.6.2_0c3b87f03c2d96b5f536e55f9250013e60b3684a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support.constraint/constraint-layout/1.0.0-beta4/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="662d7533b25a666c649c10a16b42edfb95f25a4f">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support.constraint-constraint-layout-1.0.0-beta4_66c75e0dea4de123228b9d14154d333b86f1b52c.jar" />
     </item>
 
 </items>

@@ -15,10 +15,17 @@
         android:background="#FFF"/>
     <EditText
         style="@style/TextBoxStyling"
-        android:id = "@+id/newUserScreenName"
+        android:id = "@+id/newUserFirstName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:hint="Screen Name"
+        android:hint="First Name"
+        android:background="#FFF"/>
+    <EditText
+        style="@style/TextBoxStyling"
+        android:id = "@+id/newUserLastName"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:hint="Last Name"
         android:background="#FFF"/>
     <Button
         android:id = "@+id/newUserSaveButton"

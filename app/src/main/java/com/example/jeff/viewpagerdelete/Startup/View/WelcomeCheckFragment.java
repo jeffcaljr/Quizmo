@@ -34,6 +34,8 @@ public class WelcomeCheckFragment extends Fragment {
         View view = inflater.inflate(R.layout.start_welcome_fragment, container, false);
 
         final TextView welcomeText = (TextView) view.findViewById(R.id.welcome_back);
+
+        welcomeText.setText(getArguments().getString("F_NAME") + " " + getArguments().getString("L_NAME"));
         isMeButton = (Button) view.findViewById(R.id.isMeButton);
         notMeButton = (Button) view.findViewById(R.id.notMeButton);
 

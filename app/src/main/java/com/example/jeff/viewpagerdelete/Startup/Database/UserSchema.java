@@ -5,9 +5,9 @@ package com.example.jeff.viewpagerdelete.Startup.Database;
  */
 
 public class UserSchema {
-
+    public static final String DATABASE_NAME = "user.db";
     public static final class Table{
-        public static final String NAME = "friends";
+        public static final String NAME = "quiz_user";
     }
     public static final class Cols{
         public static final String USER_ID = "user_id";
