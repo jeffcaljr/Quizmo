@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,13 +47,17 @@ public class NewUserFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 boolean handled = false;
-                if(actionId == KeyEvent.KEYCODE_ENTER){
+                if(actionId == EditorInfo.IME_NULL && keyEvent.getAction() == KeyEvent.ACTION_DOWN){
+                    newUid = uidField.getText().toString();
+                    newFirstName = firstNameField.getText().toString();
+                    newLastName = lastNameField.getText().toString();
                     if (newFirstName.isEmpty() || newLastName.isEmpty() || newUid.isEmpty()) {
                         Toast toast = Toast.makeText(getActivity(), "A valid user ID and Screen Name are required.", Toast.LENGTH_LONG);
                         toast.show();
                     }
                     else{
                         mSaveUserClickListener.onSaveUserClick(newUid, newFirstName, newLastName);
+                        handled = true;
                     }
                 }
                 return handled;
@@ -62,14 +67,14 @@ public class NewUserFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 boolean handled = false;
-                if(actionId == KeyEvent.KEYCODE_ENTER){
+                if(actionId == EditorInfo.IME_NULL && keyEvent.getAction() == KeyEvent.ACTION_DOWN){
                     int[] textFields = new int[] {R.id.newUserUID, R.id.newUserFirstName, R.id.newUserLastName};
                     for (int i = 0; i < textFields.length -1; i++){
                         if (textFields[i] == textView.getId()){
-                             view.findViewById(textFields[i + 1]).setSelected(true);
+                            view.findViewById(textFields[i + 1]).requestFocus();
+                            handled = true;
                         }
                     }
-
                 }
                 return handled;
             }
@@ -107,6 +112,8 @@ public class NewUserFragment extends Fragment {
             mSaveUserClickListener = (SaveUserClickListener) a;
         }
     }
+
+
 
 
 }

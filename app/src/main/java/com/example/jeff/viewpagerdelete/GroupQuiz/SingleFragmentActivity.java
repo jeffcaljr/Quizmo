@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by Joshua on 3/19/2017.
- */
+
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
@@ -28,3 +28,4 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
     }
 }
+ */
