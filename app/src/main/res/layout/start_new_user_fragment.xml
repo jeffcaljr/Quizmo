@@ -34,6 +34,7 @@
         android:layout_height = "wrap_content"
         android:text="@string/button_login"
         android:minWidth="@dimen/stdTextBoxMinWidth"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        style="@style/turboButton"/>
 
 </LinearLayout>
