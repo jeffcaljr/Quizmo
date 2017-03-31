@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal">
     <EditText
-        style="@style/TextBoxStyling"
+        style="@style/EditTextStyle"
         android:id = "@+id/loginUserName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
@@ -13,7 +13,7 @@
         android:maxLines="1"
         android:background="#FFF"/>
     <EditText
-        style="@style/TextBoxStyling"
+        style="@style/EditTextStyle"
         android:id = "@+id/loginPassword"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"

@@ -7,32 +7,29 @@
     android:background="@color/Background">
 
 
-<EditText
-        style="@style/TextBoxStyling"
+    <EditText
+        style="@style/EditTextStyle"
         android:id = "@+id/newUserUID"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:hint="@string/hint_user_name"
-        android:background="#FFF"/>
+        android:hint="@string/hint_user_name"/>
     <EditText
-        style="@style/TextBoxStyling"
+        style="@style/EditTextStyle"
         android:id = "@+id/newUserFirstName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:hint="First Name"
-        android:background="#FFF"/>
+        android:hint="First Name"/>
     <EditText
-        style="@style/TextBoxStyling"
+        style="@style/EditTextStyle"
         android:id = "@+id/newUserLastName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:hint="Last Name"
-        android:background="#FFF"/>
+        android:hint="Last Name"/>
     <Button
         android:id = "@+id/newUserSaveButton"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:text="@string/button_login"
+        android:text="REGISTER"
         android:minWidth="@dimen/stdTextBoxMinWidth"
         android:layout_margin="10dp"
         style="@style/turboButton"/>
