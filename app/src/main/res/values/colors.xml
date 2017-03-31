@@ -9,9 +9,15 @@
     <!--<color name="Background">#C62828</color>-->
     <!--<color name="BackgroundShadow">#9E2020</color>-->
     <!--<color name="BackgroundExtraShadow">#761818</color>-->
-    <color name="Background">#47648C</color>
-    <color name="BackgroundShadow">#385070</color>
-    <color name="BackgroundExtraShadow">#2A3C54</color>
+
+    <!--<color name="Background">#47648C</color>-->
+    <!--<color name="BackgroundShadow">#385070</color>-->
+    <!--<color name="BackgroundExtraShadow">#2A3C54</color>-->
+    <color name="Complement">#a7a3a0</color>
+    <color name="Contrast">#FFFFF4</color>
+    <color name="Background">#5973A7</color>
+    <color name="BackgroundShadow">#475C85</color>
+    <color name="BackgroundExtraShadow">#354564</color>
 
     <color name="colorCardBackground">#47648C</color>
     <color name="disableGrey">#D3D3D3</color>
