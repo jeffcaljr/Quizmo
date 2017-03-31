@@ -5,5 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="stdTextBoxMinWidth">250dp</dimen>
     <dimen name="stdTextBoxMinHeight">40dp</dimen>
+    <dimen name="stdButtonMinHeight">50dp</dimen>
+    <dimen name="buttonRadius">20dp</dimen>
+    <dimen name="stdTextSize">20sp</dimen>
     <dimen name="morphingSubmitButtonHeight_56">56dp</dimen>
 </resources>

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="8">
+    android:background="@color/Background"
+    android:weightSum="9">
 
     <ImageView
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         android:id="@+id/startup_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"></FrameLayout>
+        android:layout_weight="7"></FrameLayout>
 
 
 </LinearLayout>
