@@ -12,18 +12,27 @@
         android:id = "@+id/newUserUID"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionNext"
         android:hint="@string/hint_user_name"/>
     <EditText
         style="@style/EditTextStyle"
         android:id = "@+id/newUserFirstName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:imeOptions="actionNext"
         android:hint="First Name"/>
     <EditText
         style="@style/EditTextStyle"
         android:id = "@+id/newUserLastName"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        android:imeOptions="actionDone"
         android:hint="Last Name"/>
     <Button
         android:id = "@+id/newUserSaveButton"

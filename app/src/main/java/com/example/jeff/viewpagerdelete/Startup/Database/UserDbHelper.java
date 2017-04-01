@@ -14,7 +14,7 @@ import com.example.jeff.viewpagerdelete.Startup.Model.User;
  */
 
 public class UserDbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 3;
+    private static final int VERSION = 1;
 
     public UserDbHelper(Context context) {
 
@@ -44,7 +44,6 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        super.onDowngrade(db, oldVersion, newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + UserSchema.Table.NAME);
         onCreate(db);
     }

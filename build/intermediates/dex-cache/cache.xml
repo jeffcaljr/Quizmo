@@ -57,21 +57,21 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8f1f4f612fa96cc3392575dc2fdaad511ca665fe">
+        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/instant-run_b66ba5102d200bcc031761fe9613e49168e2298e.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.0.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
         <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-24.0.0_36a2bfab1eb660d14720c05ba35acc744330340b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ed53ae221d245ef26478502e2f5393ef3a04b75b">
-        <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/instant-run_b66ba5102d200bcc031761fe9613e49168e2298e.jar" />
     </item>
     <item
         is-multidex="false"
@@ -88,7 +88,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="dcdd5a1f377d45774d66bc3864e564f1db451f60">
+        sha1="984ec6fb8e7603cb075a7857bc549216ed4021e1">
         <dex dex="/home/jamy/workspace/Android_workspace/GroupProject/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_6fedb4a67b1247200094e218435f5247b0b43a1f.jar" />
     </item>
     <item
