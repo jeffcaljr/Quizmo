@@ -23,11 +23,12 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + UserSchema.Table.NAME +
-                " (_id  INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                UserSchema.Cols.USER_ID + " TEXT, " +
-                UserSchema.Cols.F_NAME + " TEXT, " +
-                UserSchema.Cols.L_NAME + " TEXT)";
+        String createTable = "CREATE TABLE " + UserSchema.Table.NAME + " (" +
+                UserSchema.Cols._ID + " INTEGER PRIMARY KEY," +
+                UserSchema.Cols.USER_ID + " TEXT)";
+//                UserSchema.Cols.USER_ID + " TEXT, " +
+//                UserSchema.Cols.F_NAME + " TEXT, " +
+//                UserSchema.Cols.L_NAME + " TEXT)";
         try{
             db.execSQL(createTable);
         }catch(Exception e){

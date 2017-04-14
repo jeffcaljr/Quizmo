@@ -28,6 +28,7 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
+import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Homepage.View.TokenCodeFragment;
@@ -52,13 +53,16 @@ public class HomeActivity extends AppCompatActivity
 
     private TextView courseNameTextView;
 
-    private IndividualQuizDbHelper dbHelper;
-    private SQLiteDatabase dbWriteable;
+    private IndividualQuizDbHelper quizDbHelper;
+    private SQLiteDatabase quizDB;
 
     private String sessionID;
 
 
     private QuizFetcher quizFetcher;
+
+    private UserDbHelper userDbHelper;
+    SQLiteDatabase userDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +85,13 @@ public class HomeActivity extends AppCompatActivity
 
         manager = getSupportFragmentManager();
 
-        SQLiteDatabase db = new UserDbHelper(this).getWritableDatabase();
+        userDbHelper = new UserDbHelper(this);
+        userDB = userDbHelper.getWritableDatabase();
 
-//        String userID = UserDBMethods.PullUserInfo(db).getUserID();
-        String userID = "jcd39";
+
+        quizDbHelper = new IndividualQuizDbHelper(this.getApplicationContext());
+        quizDB = quizDbHelper.getWritableDatabase();
+
 
         quizFetcher = new QuizFetcher(this);
 
@@ -136,6 +143,13 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        quizDB.close();
+        userDB.close();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -175,6 +189,8 @@ public class HomeActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_logout) {
+            //delete user from db to simulate revoking auth token
+            UserDBMethods.ClearUserDB(userDB);
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
@@ -216,9 +232,6 @@ public class HomeActivity extends AppCompatActivity
 
 
         //try to load quiz from SQLite, and if unsuccessful, try to load quiz from network
-
-        dbHelper = new IndividualQuizDbHelper(this.getApplicationContext());
-        dbWriteable = dbHelper.getWritableDatabase();
 
         //Attempt to load quiz from SQLite
         Quiz q = IndividualQuizPersistence.sharedInstance(this).readIndividualQuizFromDatabase(course.getQuiz().getId().trim());

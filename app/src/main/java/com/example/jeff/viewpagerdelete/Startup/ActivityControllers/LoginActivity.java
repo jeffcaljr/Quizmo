@@ -1,6 +1,7 @@
 package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,16 @@ import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
 import com.example.jeff.viewpagerdelete.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
+import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Networking.UserFetcher;
 import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
+import com.example.jeff.viewpagerdelete.Startup.View.NewUserFragment;
+import com.example.jeff.viewpagerdelete.Startup.View.WelcomeCheckFragment;
+
+import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PullUserInfo;
+import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PushUser;
+//import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.UpdateUser;
 
 public class LoginActivity extends AppCompatActivity implements UserFetcher.UserFetcherListener {
 
@@ -32,6 +40,10 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     private Button loginButton;
     private RelativeLayout rootLayout;
 
+    private UserDbHelper dbHelper;
+    private SQLiteDatabase db;
+
+    private LoadingFragment authenticatingFragment;
     private LoadingFragment loadingFragment;
 
     @Override
@@ -39,17 +51,12 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userFetcher = new UserFetcher(this);
-
-        final UserFetcher.UserFetcherListener listener = this;
-
         usernameField = (EditText) findViewById(R.id.user_id_field);
         passwordField = (EditText) findViewById(R.id.password_field);
         loginButton = (Button) findViewById(R.id.login_button);
-
         rootLayout = (RelativeLayout) findViewById(R.id.login_root_layout);
 
-        loadingFragment = new LoadingFragment(this, "Authenticating");
+        setTypefaces();
 
         if(savedInstanceState != null){
             if(savedInstanceState.containsKey(EXTRA_USERNAME_SAVED_INSTANCE_STATE)){
@@ -61,13 +68,33 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
             }
         }
 
+        userFetcher = new UserFetcher(this);
+        final UserFetcher.UserFetcherListener listener = this;
+
+        dbHelper = new UserDbHelper(this);
+        db = dbHelper.getWritableDatabase();
+
+        authenticatingFragment = new LoadingFragment(this, "Authenticating");
+        loadingFragment =  new LoadingFragment(this, "Loading");
+
+
+        //check if user is already saved to the database, and if so, redownload their info
+
+        loadingFragment.show();
+        user = PullUserInfo(db);
+        if (user != null) {
+            userFetcher.downloadUser(listener, user.getUserID());
+        } else {
+            loadingFragment.dismiss();
+        }
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(usernameField.getText().toString().trim() != ""){
                     String userID = usernameField.getText().toString();
 
-                    loadingFragment.show();
+                    authenticatingFragment.show();
 
                     loginButton.setEnabled(false);
                     userFetcher.downloadUser(listener, userID);
@@ -76,10 +103,9 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
             }
         });
 
-        setTypefaces();
 
-//        TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this);
-//        tokenCodeFragment.show();
+
+
 
     }
 
@@ -118,10 +144,22 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
         UserDataSource.getInstance(user);
 
+        //try to update the user in the database (in the case that they already logged in)
+        //if update affects 0 rows, then the user wasnt in the database, and needs to be added to it
+
+//        int updateResult = UpdateUser(user, db);
+
+//        if(updateResult < 1){
+            PushUser(user, db);
+//        }
+
+
+
         Intent i = new Intent(this, HomeActivity.class);
 //        i.putExtra(HomeActivity.EXTRA_USER, this.user);
         startActivity(i);
         loadingFragment.dismiss();
+        authenticatingFragment.dismiss();
         finish();
     }
 
@@ -129,7 +167,16 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     public void userDownloadFailure(VolleyError error) {
         loginButton.setEnabled(true);
         loadingFragment.dismiss();
+        authenticatingFragment.dismiss();
         Snackbar.make(rootLayout, "Error authenticating user", Snackbar.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(db != null){
+            db.close();
+        }
     }
 }
