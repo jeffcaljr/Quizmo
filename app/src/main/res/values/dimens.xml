@@ -9,4 +9,6 @@
     <dimen name="buttonRadius">20dp</dimen>
     <dimen name="stdTextSize">20sp</dimen>
     <dimen name="morphingSubmitButtonHeight_56">56dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
 </resources>

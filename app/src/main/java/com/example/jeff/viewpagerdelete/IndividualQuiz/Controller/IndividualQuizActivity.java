@@ -3,6 +3,7 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,16 +14,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import com.eftimoff.viewpagertransformers.DrawFromBackTransformer;
+import com.android.volley.VolleyError;
+import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.GroupQuizCodeActivity;
+import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuestionsUnfinishedFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,10 +42,13 @@ import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 public class IndividualQuizActivity extends AppCompatActivity
         implements IndividualQuizQuestionFragment.PageFragmentListener,
                     QuestionsUnfinishedFragment.UnfinishedQuestionsInterface,
-                    SubmissionAlertFragment.SubmissionAlertFragmentListener{
+                    SubmissionAlertFragment.SubmissionAlertFragmentListener,
+                    QuizFetcher.IndividualQuizPostListener{
 
     //Constants used for key/value
-    public static final String INTENT_EXTRA_QUIZ = "QUIZ";
+    public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
+    public static final String INTENT_EXTRA_SESSION_ID = "INTENT_EXTRA_SESSION_ID";
+    public static final String INTENT_EXTRA_COURSE_QUIZ = "INTENT_EXTRA_COURSE_QUIZ";
     public static final String EXTRA_FINISH_BUTTON_TEXT = "EXTRA_FINISH_BUTTON_TEXT";
     public static final String EXTRA_QUIZ_QUESTION = "EXTRA_QUIZ_QUESTION";
     public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
@@ -50,7 +60,13 @@ public class IndividualQuizActivity extends AppCompatActivity
     private Button nextQuestionButton;
     private Button submitButton;
 
+    private Course course;
     private Quiz quiz;
+    private String username = "jcd39";
+
+    private QuizFetcher quizFetcher;
+
+    private String sessionID;
 
 
 
@@ -60,14 +76,18 @@ public class IndividualQuizActivity extends AppCompatActivity
         setContentView(R.layout.activity_individual_quiz);
 
         Intent i = getIntent();
-        if(i.hasExtra(INTENT_EXTRA_QUIZ)){
+        if(i.hasExtra(INTENT_EXTRA_QUIZ) && i.hasExtra(INTENT_EXTRA_COURSE_QUIZ) && i.hasExtra(INTENT_EXTRA_SESSION_ID)){
             quiz = (Quiz) i.getSerializableExtra(INTENT_EXTRA_QUIZ);
+            course = (Course) i.getSerializableExtra(INTENT_EXTRA_COURSE_QUIZ);
+            sessionID = i.getStringExtra(INTENT_EXTRA_SESSION_ID);
 
         }
         else{
             Log.e("TAG", "No 'quizzes' extra found in IndividualQuizActivity.java");
             finish();
         }
+
+        quizFetcher = new QuizFetcher(this);
 
         final Context context = this;
 
@@ -145,10 +165,11 @@ public class IndividualQuizActivity extends AppCompatActivity
             }
         });
 
-        mPager.setPageTransformer(true, new DrawFromBackTransformer());
+        mPager.setPageTransformer(true, new StackTransformer());
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
+//        setTypefaces();
 
     }
 
@@ -181,6 +202,15 @@ public class IndividualQuizActivity extends AppCompatActivity
 
         exitDialog.create().show();
     }
+
+//    private void setTypefaces(){
+//        //set type face of views
+//        Typeface regularFace = Typeface.createFromAsset(getAssets(),"fonts/robotoRegular.ttf");
+//        Typeface boldFace = Typeface.createFromAsset(getAssets(),"fonts/robotoBold.ttf");
+//        Typeface boldItalicFace = Typeface.createFromAsset(getAssets(),"fonts/robotoBoldItalic.ttf");
+//
+//
+//    }
 
     //MARK: IndividualQuizQuestionFragmentListener Methods
 
@@ -278,8 +308,28 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     @Override
     public void userConfirmedSubmission() {
+
+        String quizJSON = this.quiz.toPostJSONFormat().toString();
+//        Log.e("TAG", quizJSON);
+
+        quizFetcher.uploadQuiz(this, course.getCourseID(), username, sessionID, quiz);
+
+    }
+
+    //MARK: IndividualQuizPostListener Methods
+
+
+    @Override
+    public void onQuizPostSuccess(JSONObject response) {
+//        Log.d("TAG", response.toString());
         Intent i = new Intent(this, GroupQuizCodeActivity.class);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void onQuizPostFailure(VolleyError error) {
+        Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
+        Log.e("TAG", error.toString());
     }
 }

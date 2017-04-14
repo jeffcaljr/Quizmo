@@ -6,15 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.ServerProperties;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserSchema;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import static android.database.sqlite.SQLiteDatabase.deleteDatabase;
 
@@ -29,22 +32,26 @@ public class User implements Serializable{
     private String email;
     private String firstName;
     private String lastName;
+    private ArrayList<Course> enrolledCourses;
 
     public User(JSONObject json){
         try{
-            for(String userField: ServerProperties.getUserFields()){
-                if(! json.has(userField)){
-                    throw new JSONException("User Json does not contain expected field '" + userField + "'");
-                }
-            }
 
             //Json has all expected fields for user, so build a user object
 
-            this._id = json.getString(ServerProperties.UserFields.ID);
-            this.userID = json.getString(ServerProperties.UserFields.USER_NAME);
-            this.email = json.getString(ServerProperties.UserFields.EMAIL);
-            this.firstName = json.getString(ServerProperties.UserFields.FIRST_NAME);
-            this.lastName = json.getString(ServerProperties.UserFields.LAST_NAME);
+            this._id = json.getString("_id");
+            this.userID = json.getString("userID");
+            this.email = json.getString("email");
+            this.firstName = json.getString("first");
+            this.lastName = json.getString("last");
+
+            this.enrolledCourses = new ArrayList<>();
+
+            JSONArray coursesArray = json.getJSONArray("enrolledCourses");
+
+            for(int i = 0; i < coursesArray.length(); i++){
+                this.enrolledCourses.add(new Course(coursesArray.getJSONObject(i)));
+            }
 
         }
         catch (JSONException e){
@@ -105,5 +112,13 @@ public class User implements Serializable{
 
     public String toJSON(){
         return new Gson().toJson(this);
+    }
+
+    public ArrayList<Course> getEnrolledCourses() {
+        return enrolledCourses;
+    }
+
+    public void setEnrolledCourses(ArrayList<Course> enrolledCourses) {
+        this.enrolledCourses = enrolledCourses;
     }
 }

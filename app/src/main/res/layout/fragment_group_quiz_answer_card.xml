@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/answer_card_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardUseCompatPadding="true"
+    android:padding="2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/answer_properties_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:id="@+id/answer_value"
+                android:text="A"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/answer_point_controls"
+                android:layout_width="wrap_content"
+                android:minWidth="64dp"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/answer_value"
+                android:layout_alignParentBottom="true">
+
+                <ImageButton
+                    android:background="@drawable/group_quiz_circle_image_button"
+                    android:src="@drawable/left_arrow_active"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_centerInParent="true"></ImageButton>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/answer_divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/jccolorPrimary"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_toRightOf="@id/answer_properties_container"></View>
+
+        <!--<ScrollView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_toRightOf="@id/answer_divider"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:padding="16dp">-->
+
+            <TextView
+                android:id="@+id/answer_textview"
+                android:text="anfjnsaf nlka nlkfnlas fnalkfnl asnlkanf klan kndflksnflk knlaknsnf nalkfnlaksf nlasknflasnkflfkn lask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/answer_divider"
+                android:padding="16dp"
+                android:layout_alignParentRight="true"/>
+        <!--</ScrollView>-->
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

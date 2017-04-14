@@ -24,12 +24,21 @@ public class QuizAnswer implements Serializable {
      */
     public QuizAnswer(JSONObject json){
         try {
-            String id = json.getString("id");
+
+            if(json.has("id")){
+                String id = json.getString("id");
+                this.id = id;
+            }
+            else if(json.has("_id")){
+                String id = json.getString("_id");
+                this.id = id;
+            }
+
             String value = json.getString("value");
             String text = json.getString("text");
             int sortOrder = json.getInt("sortOrder");
 
-            this.id = id;
+
             this.value = value;
             this.text = text;
             this.sortOrder = sortOrder;

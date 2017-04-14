@@ -1,7 +1,6 @@
 package com.example.jeff.viewpagerdelete.Startup.Database;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -45,15 +44,5 @@ public class UserDBMethods {
 
     public static void ClearUserDB(SQLiteDatabase db){
         db.execSQL("DELETE FROM " + UserSchema.Table.NAME + " WHERE _id < 1000");
-    }
-
-    public static String getUserID(Context context){
-        UserDbHelper mDbHelper = new UserDbHelper(context);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + UserSchema.Cols.USER_ID + " FROM " + UserSchema.Table.NAME, null);
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(UserSchema.Cols.USER_ID));
-        }
-        return null;
     }
 }

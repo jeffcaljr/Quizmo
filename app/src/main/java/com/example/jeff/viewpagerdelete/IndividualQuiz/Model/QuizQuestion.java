@@ -24,7 +24,7 @@ public class QuizQuestion implements Serializable{
     public QuizQuestion(JSONObject json){
 
         try {
-            String id = json.getString("id");
+            String id = json.getString("_id");
             String title = json.getString("title");
             String text = json.getString("text");
             int pointsPossible = json.getInt("pointsPossible");

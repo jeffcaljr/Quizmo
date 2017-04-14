@@ -1,13 +1,12 @@
 package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
+import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
@@ -53,7 +52,7 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
 
     @Override
     public void onLoginClick() {
-        Intent quizMe = new Intent(this, HomePageActivity.class);
+        Intent quizMe = new Intent(this, HomeActivity.class);
         startActivity(quizMe);
         finish();
     }
@@ -66,7 +65,7 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
         mStartModel.setFirstName(fName);
         mStartModel.setLastName(lName);
         PushUser(mStartModel, db);
-        Intent quizMe = new Intent(this, HomePageActivity.class);
+        Intent quizMe = new Intent(this, HomeActivity.class);
         startActivity(quizMe);
         finish();
     }
@@ -82,7 +81,7 @@ public class StartUpActivity extends AppCompatActivity implements LoginFragment.
 
     @Override
     public void onIsMeClick() {
-        Intent quizMe = new Intent(this, HomePageActivity.class);
+        Intent quizMe = new Intent(this, HomeActivity.class);
         startActivity(quizMe);
         finish();
     }

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/token_code_dialog_title"
+        android:text="Enter Token Code"
+        android:textSize="24dp"
+        android:textColor="@color/jccolorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+
+    <EditText
+        android:id="@+id/token_code_entry_field"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/ic_course"
+        android:hint="Token Code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/token_code_dialog_title"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <RelativeLayout
+        android:id="@+id/token_code_status_layout"
+        android:layout_below="@id/token_code_entry_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/token_code_progress_spinner"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateOnly="true"
+            android:layout_centerInParent="true"/>
+
+        <LinearLayout
+            android:id="@+id/token_code_error_layout"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageView
+                android:src="@drawable/ic_error"
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/token_code_error_textfield"
+                android:text="Invalid Token Code"
+                android:textSize="14dp"
+                android:textColor="@color/jccolorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/token_code_button_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/token_code_status_layout"
+        android:gravity="right">
+
+        <Button
+            android:id="@+id/token_code_cancel_button"
+            android:text="Cancel"
+            android:textColor="@color/jccolorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            style="@android:style/Widget.Holo.Button.Borderless"/>
+
+        <Button
+            android:id="@+id/token_code_submit_button"
+            android:text="Submit"
+            android:textColor="@color/jccolorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.Holo.Button.Borderless"/>
+    </LinearLayout>
+
+</RelativeLayout>

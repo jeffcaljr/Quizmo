@@ -28,37 +28,57 @@ public class Quiz implements Serializable {
     private Date availableDate;
     private Date expiryDate;
     private ArrayList<QuizQuestion> questions;
+    private boolean isTimed;
+    private int timedLength;
 
 
     public Quiz(JSONObject json){
 
+        SimpleDateFormat format = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss");
+
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
 
         try {
-            String id = json.getString("id");
+
+            String id = json.getString("_id");
             String description = json.getString("description");
             String text = json.getString("text");
             String  availableDate = json.getString("availableDate");
             String expiryDate = json.getString("expiryDate");
-            JSONArray questionsJSONArray = (JSONArray) json.get("questions");
-            ArrayList<QuizQuestion> questions = new ArrayList<>();
-
-            for (int i = 0; i < questionsJSONArray.length(); i++) {
-                questions.add(new QuizQuestion(((JSONObject) questionsJSONArray.get(i))));
-            }
-
-            Collections.shuffle(questions);
-
-            SimpleDateFormat format = new SimpleDateFormat(
-                    "yyyy-MM-dd'T'HH:mm:ss");
-
-            format.setTimeZone(TimeZone.getTimeZone("UTC"));
 
             this.id = id;
             this.description = description;
             this.text = text;
-            this.questions = questions;
-             this.availableDate = format.parse(availableDate);
+            this.availableDate = format.parse(availableDate);
             this.expiryDate = format.parse(expiryDate);
+
+            if(json.has("questions")){
+
+
+                JSONArray questionsJSONArray = (JSONArray) json.get("questions");
+                ArrayList<QuizQuestion> questions = new ArrayList<>();
+
+                for (int i = 0; i < questionsJSONArray.length(); i++) {
+                    questions.add(new QuizQuestion(((JSONObject) questionsJSONArray.get(i))));
+                }
+
+                Collections.shuffle(questions);
+
+
+                this.questions = questions;
+
+            }
+            else{
+
+                boolean isTimed = json.getBoolean("timed");
+                int timedLength = json.getInt("timedLength");
+
+                this.isTimed = isTimed;
+                this.timedLength = timedLength;
+            }
+
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -67,6 +87,17 @@ public class Quiz implements Serializable {
             e.printStackTrace();
         }
 
+    }
+
+    public Quiz(String id, String description, String text, Date availableDate, Date expiryDate, boolean isTimed, int timedLength) {
+        this.id = id;
+        this.description = description;
+        this.text = text;
+        this.availableDate = availableDate;
+        this.expiryDate = expiryDate;
+        this.isTimed = isTimed;
+        this.timedLength = timedLength;
+        this.questions = null;
     }
 
     public Quiz() {
@@ -114,6 +145,21 @@ public class Quiz implements Serializable {
         this.questions = questions;
     }
 
+    public boolean isTimed() {
+        return isTimed;
+    }
+
+    public void setTimed(boolean timed) {
+        isTimed = timed;
+    }
+
+    public int getTimedLength() {
+        return timedLength;
+    }
+
+    public void setTimedLength(int timeLength) {
+        this.timedLength = timeLength;
+    }
 
     //Convenience Methods
 
@@ -138,6 +184,42 @@ public class Quiz implements Serializable {
     public String toJSON(){
         return new Gson().toJson(this);
 
+    }
+
+    public JSONObject toPostJSONFormat(){
+        JSONObject thisQuiz = new JSONObject();
+        try {
+            thisQuiz.put("id", this.id);
+
+            JSONArray questions = new JSONArray();
+
+
+            for(QuizQuestion q: this.questions){
+                JSONObject newQuestion = new JSONObject();
+                newQuestion.put("id", q.getId());
+
+                JSONArray submittedAnswers = new JSONArray();
+
+
+                for(QuizAnswer a: q.getAvailableAnswers()){
+                    JSONObject answer = new JSONObject();
+                    answer.put("value", a.getValue());
+                    answer.put("allocatedPoints", a.getPointsAllocated());
+                    submittedAnswers.put(answer);
+                }
+
+                newQuestion.put("submittedAnswers", submittedAnswers);
+                questions.put(newQuestion);
+            }
+
+            thisQuiz.put("questions", questions);
+
+            return thisQuiz;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Quiz buildQuizFromJsonString(String quizJsonString) throws JsonSyntaxException{
