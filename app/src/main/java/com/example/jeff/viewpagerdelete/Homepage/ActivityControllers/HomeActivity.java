@@ -229,6 +229,7 @@ public class HomeActivity extends AppCompatActivity
             Intent i = new Intent(this, IndividualQuizActivity.class);
             i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, q);
             i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
+            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
             startActivity(i);
 
         }
