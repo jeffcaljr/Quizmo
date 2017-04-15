@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     public void userDownloadSuccess(User user) {
         this.user = user;
 
-        UserDataSource.getInstance(user);
+        UserDataSource.getInstance().setUser(user);
 
         //try to update the user in the database (in the case that they already logged in)
         //if update affects 0 rows, then the user wasnt in the database, and needs to be added to it

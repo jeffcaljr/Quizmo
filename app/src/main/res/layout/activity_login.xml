@@ -52,6 +52,7 @@
         android:drawableTint="#FFFFFF"
         android:maxLines="1"
         android:hint="password"
+        android:inputType="textPassword"
         android:textColorHint="#FFFFFF"
         android:textColor="#FFFFFF"
         android:backgroundTint="#FFFFFF"

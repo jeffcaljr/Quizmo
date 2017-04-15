@@ -97,7 +97,7 @@ public class TokenCodeFragment extends Dialog implements QuizFetcher.IndividualQ
                 String tokenCode = tokenCodeField.getText().toString().trim();
                 errorLayout.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
-                quizFetcher.downloadUserQuiz(self, UserDataSource.getInstance(null).getUser().getUserID(), course.getCourseID(), course.getQuiz().getId(), tokenCode);
+                quizFetcher.downloadUserQuiz(self, UserDataSource.getInstance().getUser().getUserID(), course.getCourseID(), course.getQuiz().getId(), tokenCode);
             }
         });
 

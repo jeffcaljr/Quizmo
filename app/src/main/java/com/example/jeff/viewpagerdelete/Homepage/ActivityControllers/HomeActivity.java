@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity
 //            finish();
 //        }
 
-        this.user = UserDataSource.getInstance(null).getUser();
+        this.user = UserDataSource.getInstance().getUser();
 
         manager = getSupportFragmentManager();
 

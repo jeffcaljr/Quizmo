@@ -12,13 +12,10 @@ public class UserDataSource {
 
     private static UserDataSource mInstance;
 
-    private UserDataSource(User user){
-        this.user = user;
-    }
 
-    public static UserDataSource getInstance(User user){
+    public static UserDataSource getInstance(){
         if(mInstance == null){
-            mInstance = new UserDataSource(user);
+            mInstance = new UserDataSource();
         }
 
         return mInstance;
@@ -26,5 +23,10 @@ public class UserDataSource {
 
     public User getUser(){
         return user;
+    }
+
+    //TODO: This may be considered bad practice! Using singleton as global
+    public void setUser(User user){
+        this.user = user;
     }
 }
