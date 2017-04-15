@@ -3,6 +3,8 @@ package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
     private UserFetcher userFetcher;
 
+    private VideoView videoView;
     private EditText usernameField;
     private EditText passwordField;
     private Button loginButton;
@@ -78,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         loadingFragment =  new LoadingFragment(this, "Loading");
 
 
-        //check if user is already saved to the database, and if so, redownload their info
+        //check if user is already saved to the database, and if so, re-download their info
 
         loadingFragment.show();
         user = PullUserInfo(db);
@@ -102,6 +106,18 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
                 }
             }
         });
+
+        videoView = (VideoView) findViewById(R.id.login_background_video_view);
+        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.sample);
+        videoView.setVideoURI(uri);
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+        videoView.start();
 
 
 

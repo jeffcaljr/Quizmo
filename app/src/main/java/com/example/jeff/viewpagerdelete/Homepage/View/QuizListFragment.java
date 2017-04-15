@@ -1,8 +1,10 @@
 package com.example.jeff.viewpagerdelete.Homepage.View;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +16,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jeff on 4/4/17.
@@ -90,6 +97,11 @@ public class QuizListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     public interface QuizListListener{
         void itemClicked(Course course);
     }
@@ -103,6 +115,7 @@ public class QuizListFragment extends Fragment {
 
             return new QuizHolder(view);
         }
+
 
         @Override
         public void onBindViewHolder(QuizHolder holder, int position) {
@@ -120,18 +133,58 @@ public class QuizListFragment extends Fragment {
     private class QuizHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView quizNameTextView;
+        private TextView timeRemainingTextView;
+        String timeRemaining;
 
-        public QuizHolder(View itemView) {
+
+        public QuizHolder(final View itemView) {
             super(itemView);
+
+            timeRemainingTextView = (TextView) itemView.findViewById(R.id.quiz_time_remaining);
             quizNameTextView = (TextView) itemView.findViewById(R.id.quiz_name_textview);
 
             quizNameTextView.setTypeface(regularFace);
+            timeRemainingTextView.setTypeface(boldItalicFace);
 
             itemView.setOnClickListener(this);
+
+
         }
 
         public void bindQuiz(Course course){
             quizNameTextView.setText(course.getQuiz().getDescription());
+
+            Quiz q =  course.getQuiz();
+
+            Calendar availableDate = new GregorianCalendar();
+
+            //TODO: should be set to the quizzes available date, not todays date
+            availableDate.setTime(new Date());
+
+            availableDate.add(Calendar.MINUTE, q.getTimedLength());
+
+            long expiryTime = availableDate.getTimeInMillis() - new Date().getTime();
+
+
+            new CountDownTimer(expiryTime, 1000){
+                @Override
+                public void onTick(long millisecondsUntilFinished) {
+                    timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
+                            TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished)));
+                    timeRemainingTextView.setText(timeRemaining);
+
+                    if(millisecondsUntilFinished < 5 * 60 * 1000){
+                        itemView.setBackgroundColor(Color.YELLOW);
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    timeRemainingTextView.setText("Expired!");
+                    itemView.setBackgroundColor(Color.RED);
+                    itemView.setEnabled(false);
+                }
+            }.start();
         }
 
         @Override

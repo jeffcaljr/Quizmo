@@ -7,6 +7,7 @@
     android:elevation="16dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
+    app:contentPadding="8dp"
     app:cardCornerRadius="8dp">
 
     <RelativeLayout
@@ -19,9 +20,20 @@
         android:id="@+id/quiz_name_textview"
         android:text="Quiz Name"
         android:textSize="18sp"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quiz_time_remaining"/>
+
+        <TextView
+            android:id="@+id/quiz_time_remaining"
+            android:text="20:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"/>
 
     </RelativeLayout>
 
