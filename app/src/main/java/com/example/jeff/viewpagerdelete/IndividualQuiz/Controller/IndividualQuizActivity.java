@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -63,11 +64,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
     public static final String EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS = "EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS ";
 
-    public VerticalViewPager mPager;
+    public ViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
-
-    private Button previousQuestionButton;
-    private Button nextQuestionButton;
 
     private Snackbar snackbar;
 
@@ -116,32 +114,7 @@ public class IndividualQuizActivity extends AppCompatActivity
         });
 
 
-        previousQuestionButton = (Button) findViewById(R.id.previous_question_available_indicator);
-        nextQuestionButton = (Button) findViewById(R.id.next_question_available_indicator);
-
-        previousQuestionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentItem = mPager.getCurrentItem();
-                if(currentItem - 1 >= 0){ //there is a previous page to go to
-                    mPager.setCurrentItem(currentItem - 1);
-                }
-            }
-        });
-
-        nextQuestionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentItem = mPager.getCurrentItem();
-                if(currentItem < mPager.getChildCount() - 1){ //there is a next page to go to
-                    mPager.setCurrentItem(currentItem + 1);
-                }
-            }
-        });
-
-
-
-        mPager = (VerticalViewPager) findViewById(R.id.question_pager);
+        mPager = (ViewPager) findViewById(R.id.question_pager);
         mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
 
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -155,19 +128,11 @@ public class IndividualQuizActivity extends AppCompatActivity
                 //Page was changed; save quiz
                 IndividualQuizPersistence.sharedInstance(context).updateQuizInDatabase(quiz);
 
-                if(position == 0){
-                    previousQuestionButton.setEnabled(false);
-                }
-                else {
-                    previousQuestionButton.setEnabled(true);
-                }
 
                 if(position == mPager.getChildCount() - 1){
-                    nextQuestionButton.setVisibility(View.INVISIBLE);
                     submitSnackBar.show();
                 }
                 else{
-                    nextQuestionButton.setVisibility(View.VISIBLE);
                     submitSnackBar.dismiss();
                 }
 
@@ -183,6 +148,9 @@ public class IndividualQuizActivity extends AppCompatActivity
         mPager.setPageTransformer(true, new StackTransformer());
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mPager, true);
 
 //        setTypefaces();
 

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/previous_question_available_indicator"
-        android:background="@drawable/previous_question_indicator_selector"
-        android:enabled="false"
-        android:layout_marginBottom="4dp"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabDots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:tabBackground="@drawable/tab_selector_question"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
 
-    <fr.castorflex.android.verticalviewpager.VerticalViewPager
+    <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/question_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/previous_question_available_indicator"
-        android:layout_above="@+id/submit_button">
-        ></fr.castorflex.android.verticalviewpager.VerticalViewPager>
+        android:layout_below="@id/tabDots"
+        android:layout_alignParentBottom="true">
+        >
+    </android.support.v4.view.ViewPager>
 
     <!--<FrameLayout-->
         <!--android:id="@+id/question_fragment_container"-->
@@ -33,16 +37,6 @@
 
         <!--</include>-->
     <!--</FrameLayout>-->
-
-    <Button
-        android:id="@+id/next_question_available_indicator"
-        android:background="@drawable/next_question_indicator_selector"
-        android:layout_marginBottom="4dp"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        />
 
 
 
