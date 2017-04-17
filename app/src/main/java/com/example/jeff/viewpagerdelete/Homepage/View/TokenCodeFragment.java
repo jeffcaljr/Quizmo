@@ -133,14 +133,14 @@ public class TokenCodeFragment extends Dialog implements QuizFetcher.IndividualQ
 
 
     public interface TokenCodeEntryListener{
-        void quizDownloaded(String sessionID, Quiz quiz, Course course);
+        void quizDownloaded(Quiz quiz, Course course);
     }
 
     @Override
     public void onQuizDownloadSuccess(String sessionID, Quiz q) {
 
         spinner.setVisibility(View.GONE);
-        mListener.quizDownloaded(sessionID, q, course);
+        mListener.quizDownloaded(q, course);
         dismiss();
     }
 

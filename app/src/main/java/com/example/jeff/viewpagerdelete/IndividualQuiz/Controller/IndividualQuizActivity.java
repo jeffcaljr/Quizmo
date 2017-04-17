@@ -338,10 +338,7 @@ public class IndividualQuizActivity extends AppCompatActivity
     @Override
     public void userConfirmedSubmission() {
 
-        String quizJSON = this.quiz.toPostJSONFormat().toString();
-//        Log.e("TAG", quizJSON);
-
-        quizFetcher.uploadQuiz(this, course.getCourseID(), username, sessionID, quiz);
+        quizFetcher.uploadQuiz(this, course.getCourseID(), username, quiz.getAssociatedSessionID(), quiz);
 
     }
 
@@ -363,7 +360,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     @Override
     public void onQuizPostFailure(VolleyError error) {
-        Log.e("TAG", error.toString());
+        String err = error.toString();
         Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
         Log.e("TAG", error.toString());
     }

@@ -1,6 +1,7 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Networking;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -88,6 +89,7 @@ public class QuizFetcher {
                 try {
                     String sessionID = response.getString("sessionId");
                     Quiz downloadedQuiz = new Quiz(response.getJSONObject("quiz"));
+                    downloadedQuiz.setAssociatedSessionID(sessionID);
                     listener.onQuizDownloadSuccess(sessionID, downloadedQuiz);
 
                 } catch (JSONException e) {
@@ -117,7 +119,9 @@ public class QuizFetcher {
 
         String urlString = ServerProperties.quizURL + "?" + "quiz_id=" + quiz.getId() + "&course_id=" + courseID + "&user_id=" + userID + "&session_id=" + sessionID;
 
-        JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, urlString, quiz.toPostJSONFormat(), new Response.Listener<JSONObject>() {
+        JSONObject quizJSONPost = quiz.toPostJSONFormat();
+        Log.d("TAG",quizJSONPost.toString());
+        JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, urlString, quizJSONPost, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 listener.onQuizPostSuccess(response);

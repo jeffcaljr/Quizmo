@@ -274,10 +274,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void quizDownloaded(String sessionID, Quiz quiz, Course course) {
-
-        Toast.makeText(this, "Session id: " + sessionID, Toast.LENGTH_LONG).show();
-        this.sessionID = sessionID;
+    public void quizDownloaded( Quiz quiz, Course course) {
 
         boolean writeSuccess = IndividualQuizPersistence.sharedInstance(this).writeIndividualQuizToDatabase(quiz);
 

@@ -30,6 +30,7 @@ public class Quiz implements Serializable {
     private ArrayList<QuizQuestion> questions;
     private boolean isTimed;
     private int timedLength;
+    private String associatedSessionID;
 
 
     public Quiz(JSONObject json){
@@ -79,6 +80,10 @@ public class Quiz implements Serializable {
                 this.timedLength = timedLength;
             }
 
+            if(json.has("associatedSessionID")){
+                this.associatedSessionID = json.getString("associatedSessionID");
+            }
+
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -89,7 +94,7 @@ public class Quiz implements Serializable {
 
     }
 
-    public Quiz(String id, String description, String text, Date availableDate, Date expiryDate, boolean isTimed, int timedLength) {
+    public Quiz(String id, String description, String text, Date availableDate, Date expiryDate, boolean isTimed, int timedLength, String associatedSessionID) {
         this.id = id;
         this.description = description;
         this.text = text;
@@ -98,6 +103,7 @@ public class Quiz implements Serializable {
         this.isTimed = isTimed;
         this.timedLength = timedLength;
         this.questions = null;
+        this.associatedSessionID = associatedSessionID;
     }
 
     public Quiz() {
@@ -159,6 +165,14 @@ public class Quiz implements Serializable {
 
     public void setTimedLength(int timeLength) {
         this.timedLength = timeLength;
+    }
+
+    public String getAssociatedSessionID() {
+        return associatedSessionID;
+    }
+
+    public void setAssociatedSessionID(String associatedSessionID) {
+        this.associatedSessionID = associatedSessionID;
     }
 
     //Convenience Methods
