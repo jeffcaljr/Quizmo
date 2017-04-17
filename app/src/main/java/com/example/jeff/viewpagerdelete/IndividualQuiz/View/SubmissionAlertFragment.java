@@ -48,6 +48,7 @@ public class SubmissionAlertFragment extends android.support.v4.app.DialogFragme
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        mListener.userCanceledSubmission();
 
     }
 
@@ -59,5 +60,6 @@ public class SubmissionAlertFragment extends android.support.v4.app.DialogFragme
 
     public interface SubmissionAlertFragmentListener{
         void userConfirmedSubmission();
+        void userCanceledSubmission();
     }
 }

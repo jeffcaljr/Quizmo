@@ -68,7 +68,6 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     private Button previousQuestionButton;
     private Button nextQuestionButton;
-    private Button submitButton;
 
     private Snackbar snackbar;
 
@@ -79,6 +78,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     private QuizFetcher quizFetcher;
 
     private String sessionID;
+
+    private Snackbar submitSnackBar;
 
 
 
@@ -105,10 +106,18 @@ public class IndividualQuizActivity extends AppCompatActivity
 
         getSupportActionBar().setTitle(quiz.getDescription());
 
+        submitSnackBar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Ready to submit?", Snackbar.LENGTH_INDEFINITE);
+        submitSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryBright));
+        submitSnackBar.setAction("Submit", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                advanceButtonClicked();
+            }
+        });
+
 
         previousQuestionButton = (Button) findViewById(R.id.previous_question_available_indicator);
         nextQuestionButton = (Button) findViewById(R.id.next_question_available_indicator);
-        submitButton = (Button) findViewById(R.id.submit_button);
 
         previousQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,12 +139,6 @@ public class IndividualQuizActivity extends AppCompatActivity
             }
         });
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                advanceButtonClicked();
-            }
-        });
 
 
         mPager = (VerticalViewPager) findViewById(R.id.question_pager);
@@ -161,11 +164,11 @@ public class IndividualQuizActivity extends AppCompatActivity
 
                 if(position == mPager.getChildCount() - 1){
                     nextQuestionButton.setVisibility(View.INVISIBLE);
-                    submitButton.setVisibility(View.VISIBLE);
+                    submitSnackBar.show();
                 }
                 else{
                     nextQuestionButton.setVisibility(View.VISIBLE);
-                    submitButton.setVisibility(View.INVISIBLE);
+                    submitSnackBar.dismiss();
                 }
 
 
@@ -265,12 +268,8 @@ public class IndividualQuizActivity extends AppCompatActivity
             }
             else{
 //                //show unanswered questions alert
-//                QuestionsUnfinishedFragment unfinishedFragment = new QuestionsUnfinishedFragment();
-//                Bundle args = new Bundle();
-//                args.putSerializable("unansweredQuestions", unansweredQuestions);
-//                unfinishedFragment.setArguments(args);
-//                unfinishedFragment.show(getSupportFragmentManager(), "SHOW_UNANSWERED_QUESTIONS");
 
+                submitSnackBar.dismiss();
                 int unanswered = unansweredQuestions.size();
                 snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), unanswered + " questions unanswered.", Snackbar.LENGTH_LONG);
                 snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryBright));
@@ -346,6 +345,11 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void userCanceledSubmission() {
+        submitSnackBar.show();
+    }
+
     //MARK: IndividualQuizPostListener Methods
 
 
@@ -359,6 +363,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     @Override
     public void onQuizPostFailure(VolleyError error) {
+        Log.e("TAG", error.toString());
         Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
         Log.e("TAG", error.toString());
     }
