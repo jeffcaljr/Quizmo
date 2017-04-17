@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
+import com.example.jeff.viewpagerdelete.Homepage.QuizLoadTask;
 import com.example.jeff.viewpagerdelete.Homepage.View.CourseListFragment;
 import com.example.jeff.viewpagerdelete.Homepage.View.QuizListFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
@@ -26,6 +27,7 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDb
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
+import com.example.jeff.viewpagerdelete.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
@@ -37,7 +39,9 @@ import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener, QuizFetcher.UserQuizzesFetcherListener, CourseListFragment.CourseListListener, TokenCodeFragment.TokenCodeEntryListener {
+        implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener,
+            QuizFetcher.UserQuizzesFetcherListener, CourseListFragment.CourseListListener, TokenCodeFragment.TokenCodeEntryListener,
+        QuizLoadTask.QuizLoadTaskListener{
 
 //    public static final String EXTRA_USER = "EXTRA_USER";
     public static final String FRAG_TAG_QUIZ_LIST = "FRAG_TAG_QUIZ_LIST";
@@ -50,6 +54,7 @@ public class HomeActivity extends AppCompatActivity
     private FragmentManager manager;
     private QuizListFragment quizListFragment;
     private CourseListFragment courseListFragment;
+    private LoadingFragment loadingFragment;
 
     private TextView courseNameTextView;
 
@@ -62,7 +67,7 @@ public class HomeActivity extends AppCompatActivity
     private QuizFetcher quizFetcher;
 
     private UserDbHelper userDbHelper;
-    SQLiteDatabase userDB;
+    private SQLiteDatabase userDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +75,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Bundle extras = getIntent().getExtras();
-
-//        if(extras != null && extras.containsKey(EXTRA_USER)){
-//            this.user = (User) extras.getSerializable(EXTRA_USER);
-//        }
-//        else{
-//            Log.e("TAG", "Expected user extra to be passed to HomeActivity");
-//            finish();
-//        }
 
         this.user = UserDataSource.getInstance().getUser();
 
@@ -137,6 +132,8 @@ public class HomeActivity extends AppCompatActivity
 
         emailTextView.setText(user.getEmail());
         emailTextView.setTypeface(regularFace);
+
+        loadingFragment = new LoadingFragment(this, "Loading");
 
 
 
@@ -214,6 +211,7 @@ public class HomeActivity extends AppCompatActivity
     private void showCoursesFragment(){
         manager.beginTransaction()
                 .replace(R.id.list_container, courseListFragment, FRAG_TAG_COURSE_LIST)
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .commit();
     }
 
@@ -233,24 +231,12 @@ public class HomeActivity extends AppCompatActivity
 
         //try to load quiz from SQLite, and if unsuccessful, try to load quiz from network
 
+        loadingFragment.show();
+
         //Attempt to load quiz from SQLite
-        Quiz q = IndividualQuizPersistence.sharedInstance(this).readIndividualQuizFromDatabase(course.getQuiz().getId().trim());
-        if(q != null){
-            //Loaded Quiz From SQLite Successfully
-
-
-            Intent i = new Intent(this, IndividualQuizActivity.class);
-            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, q);
-            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
-            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
-            startActivity(i);
-
-        }
-        else{
-
-            TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
-            tokenCodeFragment.show();
-        }
+        QuizLoadTask quizLoadTask = new QuizLoadTask(this, course);
+        quizLoadTask.listener = this;
+        quizLoadTask.execute();
 
     }
 
@@ -300,6 +286,33 @@ public class HomeActivity extends AppCompatActivity
         }
         else{
             Toast.makeText(this, "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //QuizLoadTaskListener Methods
+
+
+    @Override
+    public void onQuizLoadResponse(Course course, Quiz quiz) {
+        if(quiz != null){
+            //Loaded Quiz From SQLite Successfully
+
+
+            Intent i = new Intent(this, IndividualQuizActivity.class);
+            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, quiz);
+            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
+            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
+            startActivity(i);
+            loadingFragment.dismiss();
+
+        }
+        else{
+
+            TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
+
+            loadingFragment.dismiss();
+
+            tokenCodeFragment.show();
         }
     }
 }

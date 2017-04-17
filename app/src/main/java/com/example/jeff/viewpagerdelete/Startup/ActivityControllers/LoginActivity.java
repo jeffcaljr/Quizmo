@@ -8,13 +8,18 @@ import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
+import com.example.jeff.viewpagerdelete.EditTextFocusChangeListener;
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
 import com.example.jeff.viewpagerdelete.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
@@ -50,6 +55,8 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     private LoadingFragment authenticatingFragment;
     private LoadingFragment loadingFragment;
 
+    private boolean isAutoAuthenticating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
         //check if user is already saved to the database, and if so, re-download their info
 
+        isAutoAuthenticating = true;
         loadingFragment.show();
         user = PullUserInfo(db);
         if (user != null) {
@@ -119,11 +127,24 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         });
         videoView.start();
 
-
-
+        usernameField.setOnFocusChangeListener(new EditTextFocusChangeListener(rootLayout));
 
 
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        videoView.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        videoView.stopPlayback();
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -184,7 +205,11 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         loginButton.setEnabled(true);
         loadingFragment.dismiss();
         authenticatingFragment.dismiss();
-        Snackbar.make(rootLayout, "Error authenticating user", Snackbar.LENGTH_SHORT).show();
+
+        if(isAutoAuthenticating == false){
+            Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Error authenticating user", Snackbar.LENGTH_SHORT).show();
+        }
+        isAutoAuthenticating = false;
 
     }
 

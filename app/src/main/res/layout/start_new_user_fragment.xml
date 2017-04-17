@@ -34,13 +34,13 @@
         android:inputType="textCapWords"
         android:imeOptions="actionDone"
         android:hint="Last Name"/>
-    <Button
-        android:id = "@+id/newUserSaveButton"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text="REGISTER"
-        android:minWidth="@dimen/stdTextBoxMinWidth"
-        android:layout_margin="10dp"
-        style="@style/turboButton"/>
+    <!--<Button-->
+        <!--android:id = "@+id/newUserSaveButton"-->
+        <!--android:layout_width = "wrap_content"-->
+        <!--android:layout_height = "wrap_content"-->
+        <!--android:text="REGISTER"-->
+        <!--android:minWidth="@dimen/stdTextBoxMinWidth"-->
+        <!--android:layout_margin="10dp"-->
+        <!--style="@style/turboButton"/>-->
 
 </LinearLayout>

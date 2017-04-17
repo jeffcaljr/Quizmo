@@ -25,22 +25,22 @@
         android:layout_weight="2"
         android:gravity="center_horizontal">
 
-        <Button
-            android:id = "@+id/notMeButton"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:text="@string/not_me"
-            android:minWidth="@dimen/stdTextBoxMinWidth"
-            android:layout_margin="10dp"
-            style="@style/turboButton"/>
-        <Button
-            android:id = "@+id/isMeButton"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:text="@string/is_me"
-            android:minWidth="@dimen/stdTextBoxMinWidth"
-            android:layout_margin="10dp"
-            style="@style/turboButton"/>
+        <!--<Button-->
+            <!--android:id = "@+id/notMeButton"-->
+            <!--android:layout_width = "wrap_content"-->
+            <!--android:layout_height = "wrap_content"-->
+            <!--android:text="@string/not_me"-->
+            <!--android:minWidth="@dimen/stdTextBoxMinWidth"-->
+            <!--android:layout_margin="10dp"-->
+            <!--style="@style/turboButton"/>-->
+        <!--<Button-->
+            <!--android:id = "@+id/isMeButton"-->
+            <!--android:layout_width = "wrap_content"-->
+            <!--android:layout_height = "wrap_content"-->
+            <!--android:text="@string/is_me"-->
+            <!--android:minWidth="@dimen/stdTextBoxMinWidth"-->
+            <!--android:layout_margin="10dp"-->
+            <!--style="@style/turboButton"/>-->
 
     </LinearLayout>
 </LinearLayout>

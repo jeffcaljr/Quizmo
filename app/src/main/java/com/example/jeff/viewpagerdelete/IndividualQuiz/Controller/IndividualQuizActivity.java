@@ -3,17 +3,26 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -52,6 +61,7 @@ public class IndividualQuizActivity extends AppCompatActivity
     public static final String EXTRA_FINISH_BUTTON_TEXT = "EXTRA_FINISH_BUTTON_TEXT";
     public static final String EXTRA_QUIZ_QUESTION = "EXTRA_QUIZ_QUESTION";
     public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
+    public static final String EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS = "EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS ";
 
     public VerticalViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
@@ -59,6 +69,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     private Button previousQuestionButton;
     private Button nextQuestionButton;
     private Button submitButton;
+
+    private Snackbar snackbar;
 
     private Course course;
     private Quiz quiz;
@@ -178,6 +190,14 @@ public class IndividualQuizActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main, menu);
+//
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
     @Override
     public void onBackPressed() {
 
@@ -244,12 +264,24 @@ public class IndividualQuizActivity extends AppCompatActivity
 
             }
             else{
-                //show unanswered questions alert
-                QuestionsUnfinishedFragment unfinishedFragment = new QuestionsUnfinishedFragment();
-                Bundle args = new Bundle();
-                args.putSerializable("unansweredQuestions", unansweredQuestions);
-                unfinishedFragment.setArguments(args);
-                unfinishedFragment.show(getSupportFragmentManager(), "SHOW_UNANSWERED_QUESTIONS");
+//                //show unanswered questions alert
+//                QuestionsUnfinishedFragment unfinishedFragment = new QuestionsUnfinishedFragment();
+//                Bundle args = new Bundle();
+//                args.putSerializable("unansweredQuestions", unansweredQuestions);
+//                unfinishedFragment.setArguments(args);
+//                unfinishedFragment.show(getSupportFragmentManager(), "SHOW_UNANSWERED_QUESTIONS");
+
+                int unanswered = unansweredQuestions.size();
+                snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), unanswered + " questions unanswered.", Snackbar.LENGTH_LONG);
+                snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryBright));
+                snackbar.setAction("GO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        userAcknowledgedUnfinishedQuestions();
+                    }
+                });
+
+                snackbar.show();
 
             }
 
@@ -287,11 +319,9 @@ public class IndividualQuizActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
             Bundle extras = new Bundle();
-            if(position == getCount() - 1){
-                extras.putString(EXTRA_FINISH_BUTTON_TEXT, "Finish");
-            }
             extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
             extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
+            extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
             newFrag.setArguments(extras);
             return newFrag;
         }

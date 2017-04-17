@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/login_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <VideoView
             android:id="@+id/login_background_video_view"
             android:layout_width="match_parent"
@@ -14,10 +16,10 @@
             android:layout_gravity="center"/>
     </FrameLayout>
 
-    <View
-        android:background="#22000000"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></View>
+    <!--<View-->
+        <!--android:background="#22000000"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></View>-->
 
     <!--<ImageView-->
         <!--android:id="@+id/logo"-->
@@ -29,51 +31,111 @@
         <!--android:adjustViewBounds="true"-->
         <!--android:src="@mipmap/ic_launcher" />-->
 
-    <EditText
-        android:id="@+id/user_id_field"
-        android:drawableLeft="@drawable/ic_user"
-        android:maxLines="1"
-        android:hint="username"
-        android:textColorHint="#FFFFFF"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FFFFFF"
-        android:drawablePadding="8dp"
+
+    <android.support.v7.widget.CardView
+        app:cardBackgroundColor="#93000000"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_marginTop="16dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        />
+        app:contentPadding="8dp"
+        app:cardElevation="4dp">
 
-    <EditText
-        android:id="@+id/password_field"
-        android:drawableLeft="@drawable/ic_password"
-        android:drawableTint="#FFFFFF"
-        android:maxLines="1"
-        android:hint="password"
-        android:inputType="textPassword"
-        android:textColorHint="#FFFFFF"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FFFFFF"
-        android:drawablePadding="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/user_id_field"
-        android:layout_marginTop="16dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/login_button"
-        android:text="Login"
-        android:padding="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/password_field"
-        android:layout_marginTop="16dp"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:src="@drawable/quizmo_logo"
+                    android:scaleType="fitCenter"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="42dp">
+                <EditText
+                    android:id="@+id/user_id_field"
+                    android:drawableLeft="@drawable/ic_user"
+                    android:maxLines="1"
+                    android:hint="Username"
+                    android:textColorHint="#FFFFFF"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#FFFFFF"
+                    android:drawablePadding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingLeft="16dp"
+                    android:imeOptions="actionDone"
+                    />
+
+                <EditText
+                    android:id="@+id/password_field"
+                    android:drawableLeft="@drawable/ic_password"
+                    android:drawableTint="#FFFFFF"
+                    android:maxLines="1"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColorHint="#FFFFFF"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#FFFFFF"
+                    android:enabled="false"
+                    android:drawablePadding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/user_id_field"
+                    android:layout_marginTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingLeft="16dp"
+                    />
+
+                <Button
+                    android:id="@+id/login_button"
+                    android:text="Login"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/button_rounded_edges"
+                    android:elevation="10dp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/password_field"
+                    android:layout_marginTop="16dp"
+                    style="@android:style/Widget.DeviceDefault.Button.Inset"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
 
 </RelativeLayout>

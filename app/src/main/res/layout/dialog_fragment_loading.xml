@@ -11,7 +11,8 @@
         android:indeterminate="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateOnly="true" />
+        android:indeterminateOnly="true"
+        android:indeterminateTint="@color/jccolorPrimaryDark"/>
 
     <TextView
         android:id="@+id/loading_text"

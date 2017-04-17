@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -37,14 +38,15 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
     private TextView mQuestionTextView;
     private TextView mPointsRemainingTextView;
 
-    private Button mPreviousAnswerButton;
-    private Button mNextAnswerButton;
+    private TextView mQuestionLabelTextView;
+    private TextView mQuestionTotalQuestions;
 
     private ViewPager mPager;
     private PagerAdapter mAdapter;
 
-    private String buttonText = "Next";
     private int questionNumber;
+    private int totalQuestions;
+
 
 
     @Nullable
@@ -55,48 +57,22 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
         //Get QuizQuestion extra arg
         Bundle args = getArguments();
         question = (QuizQuestion) args.getSerializable("EXTRA_QUIZ_QUESTION");
-
-        String advanceButtonText = args.getString(IndividualQuizActivity.EXTRA_FINISH_BUTTON_TEXT);
-
-        if(advanceButtonText != null && advanceButtonText != ""){
-            this.buttonText = advanceButtonText;
-        }
+        totalQuestions = args.getInt(IndividualQuizActivity.EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS);
+        questionNumber = args.getInt(EXTRA_QUIZ_QUESTION_NUMBER);
 
         //Bind Views
 
 
         mQuestionTextView = (TextView) view.findViewById(R.id.question_text_tv);
         mPointsRemainingTextView = (TextView) view.findViewById(R.id.points_remaining_tv);
-        mPreviousAnswerButton = (Button) view.findViewById(R.id.previous_answer_available_indicator);
-        mNextAnswerButton = (Button) view.findViewById(R.id.next_answer_available_indicator);
+        mQuestionLabelTextView = (TextView) view.findViewById(R.id.quiz_question_value);
 
-        mPointsRemainingTextView.setText("Points Remaining: " + question.getPointsRemaining());
-
-
-        String questionLabel = "Q" + args.getInt(EXTRA_QUIZ_QUESTION_NUMBER) + ".) ";
-        mQuestionTextView.setText(questionLabel + " " + question.getText());
+        mPointsRemainingTextView.setText(question.getPointsRemaining() + "");
+        mQuestionLabelTextView.setText(questionNumber + "/" + totalQuestions);
 
 
 
-        mPreviousAnswerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentItem = mPager.getCurrentItem();
-                if(currentItem - 1 >= 0){ //there is a previous page
-                    mPager.setCurrentItem(currentItem - 1);
-                }
-            }
-        });
-
-        mNextAnswerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentItem = mPager.getCurrentItem();
-                if(currentItem < mPager.getChildCount() - 1){ //there is a previous page
-                    mPager.setCurrentItem(currentItem + 1);
-                }
-            }
-        });
+        mQuestionTextView.setText(question.getText());
 
 
 
@@ -105,38 +81,11 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
         mPager.setOffscreenPageLimit(question.getAvailableAnswers().size() - 1);
         mAdapter = new IndividualQuizQuestionFragment.ScreenSlidePagerAdapter(getChildFragmentManager());
 
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                //page changed
-
-                if(position == 0){
-                    mPreviousAnswerButton.setEnabled(false);
-                }
-                else{
-                    mPreviousAnswerButton.setEnabled(true);
-                }
-
-                if(position == mPager.getChildCount() - 1){
-                    mNextAnswerButton.setEnabled(false);
-                }
-                else{
-                    mNextAnswerButton.setEnabled(true);
-                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         mPager.setAdapter(mAdapter);
+
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mPager, true);
 
 
         return view;
@@ -175,13 +124,13 @@ public class IndividualQuizQuestionFragment extends Fragment implements Individu
 
     @Override
     public void incrementButtonClicked() {
-        mPointsRemainingTextView.setText("Points Remaining: " + question.decrementPointsRemaining());
+        mPointsRemainingTextView.setText("" + question.decrementPointsRemaining());
 //        mListener.quizStateUpdated();
     }
 
     @Override
     public void decrementButtonClicked() {
-        mPointsRemainingTextView.setText("Points Remaining: " + question.incrementPointsRemaining());
+        mPointsRemainingTextView.setText("" + question.incrementPointsRemaining());
 //        mListener.quizStateUpdated();
     }
 

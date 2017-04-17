@@ -7,6 +7,8 @@
     android:elevation="16dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     app:contentPadding="8dp"
     app:cardCornerRadius="8dp">
 
@@ -20,6 +22,8 @@
         android:id="@+id/quiz_name_textview"
         android:text="Quiz Name"
         android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/jccolorPrimaryDark"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +32,7 @@
         <TextView
             android:id="@+id/quiz_time_remaining"
             android:text="20:00"
+            android:textColor="@color/jccolorPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

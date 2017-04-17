@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
@@ -40,9 +44,13 @@ public class QuizListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private QuizAdapter mAdapter;
 
+    private Animation shake;
+
     Typeface regularFace;
     Typeface boldFace;
     Typeface boldItalicFace;
+
+    boolean tempDeleteThis = false; //only used to prevent countdowntimer from constantly re-coloring views
 
 
     @Nullable
@@ -74,6 +82,8 @@ public class QuizListFragment extends Fragment {
         catch (ClassCastException e){
             e.printStackTrace();
         }
+
+        shake = AnimationUtils.loadAnimation(getContext(), R.anim.shakeanim);
 
         return view;
     }
@@ -119,14 +129,24 @@ public class QuizListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(QuizHolder holder, int position) {
-            holder.bindQuiz(courses.get(position));
+            //TODO: The following line shows the same quiz for every itemview in the recycler view
+            //this is only for test purposes
+            holder.bindQuiz(courses.get(0));
+//            holder.bindQuiz(courses.get(position));
 
         }
 
         @Override
         public int getItemCount() {
-            return courses.size();
+
+            //TODO: The following line is for test purposes
+                //because there is currently one quiz in the network, and I want to show a list, I
+                //am showing the same quiz multiple times
+            return 3;
+//            return courses.size();
         }
+
+
     }
 
 
@@ -151,19 +171,35 @@ public class QuizListFragment extends Fragment {
 
         }
 
+
+
         public void bindQuiz(Course course){
             quizNameTextView.setText(course.getQuiz().getDescription());
 
             Quiz q =  course.getQuiz();
 
             Calendar availableDate = new GregorianCalendar();
-
-            //TODO: should be set to the quizzes available date, not todays date
             availableDate.setTime(new Date());
 
-            availableDate.add(Calendar.MINUTE, q.getTimedLength());
+            if(this.getAdapterPosition() == 0){
+
+                //TODO: should be set to the quizzes available date, not todays date
+
+                availableDate.add(Calendar.MINUTE, q.getTimedLength());
+
+            }
+            else if(this.getAdapterPosition() == 1){
+                //make quiz expire in 5 mintes and 20 seconds
+                itemView.setEnabled(false);
+                availableDate.add(Calendar.MINUTE, 5);
+                availableDate.add(Calendar.SECOND, 20);
+            }
+            else{
+                availableDate.setTime(q.getAvailableDate());
+            }
 
             long expiryTime = availableDate.getTimeInMillis() - new Date().getTime();
+
 
 
             new CountDownTimer(expiryTime, 1000){
@@ -174,14 +210,24 @@ public class QuizListFragment extends Fragment {
                     timeRemainingTextView.setText(timeRemaining);
 
                     if(millisecondsUntilFinished < 5 * 60 * 1000){
-                        itemView.setBackgroundColor(Color.YELLOW);
+
+                        if(!tempDeleteThis){
+                            itemView.startAnimation(shake);
+                            ((CardView) itemView).setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow));
+                            tempDeleteThis = true;
+                        }
+
+
                     }
                 }
 
                 @Override
                 public void onFinish() {
+                    itemView.clearAnimation();
                     timeRemainingTextView.setText("Expired!");
-                    itemView.setBackgroundColor(Color.RED);
+                    ((CardView) itemView).setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryBright));
+                    quizNameTextView.setTextColor(Color.WHITE);
+                    timeRemainingTextView.setTextColor(Color.WHITE);
                     itemView.setEnabled(false);
                 }
             }.start();
@@ -189,7 +235,11 @@ public class QuizListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            mListener.itemClicked(courses.get(this.getAdapterPosition()));
+
+            //TODO: The following line sets the click listener for a cell to pass the firs quiz in the list to the listener
+                //no matter what; this is only for testing purposes
+            mListener.itemClicked((courses.get(0)));
+//            mListener.itemClicked(courses.get(this.getAdapterPosition()));
         }
     }
 }
