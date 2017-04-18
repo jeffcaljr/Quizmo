@@ -26,11 +26,6 @@
             android:name=".Startup.ActivityControllers.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".IndividualQuiz.Controller.IndividualQuizActivity" />
         <activity android:name=".GroupQuiz.GroupQuizCodeActivity" />
@@ -38,7 +33,14 @@
         <activity
             android:name=".Homepage.ActivityControllers.HomeActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Startup.ActivityControllers.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
