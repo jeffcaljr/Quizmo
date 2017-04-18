@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -14,6 +15,8 @@ import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +54,10 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     private EditText passwordField;
     private Button loginButton;
     private RelativeLayout rootLayout;
+    private RelativeLayout loginTopLayout;
+
+    private Animation slideFromRight;
+
 
     private UserDbHelper dbHelper;
     private SQLiteDatabase db;
@@ -67,6 +74,13 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         passwordField = (EditText) findViewById(R.id.password_field);
         loginButton = (Button) findViewById(R.id.login_button);
         rootLayout = (RelativeLayout) findViewById(R.id.login_root_layout);
+        loginTopLayout = (RelativeLayout) findViewById(R.id.login_top_layout);
+
+        slideFromRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right);
+
+
+        loginTopLayout.startAnimation(slideFromRight);
+
 
         setTypefaces();
 
@@ -81,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
                 passwordField.setText(EXTRA_PASSWORD_SAVED_INSTANCE_STATE);
             }
         }
+
 
         userFetcher = new UserFetcher(this);
         final UserFetcher.UserFetcherListener listener = this;
@@ -123,11 +138,20 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        videoView.start();
+
+        if (!videoView.isPlaying()) {
+            videoView.start();
+        }
     }
 
     @Override
