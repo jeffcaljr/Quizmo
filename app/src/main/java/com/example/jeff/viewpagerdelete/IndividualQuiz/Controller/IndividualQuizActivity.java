@@ -258,7 +258,9 @@ public class IndividualQuizActivity extends AppCompatActivity
         for(QuizQuestion question: quiz.getQuestions()){
             if(question.getPointsRemaining() != 0){
                 mPager.setCurrentItem(firstUnansweredIndex);
-                submitSnackBar.show();
+                if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
+                    submitSnackBar.show();
+                }
                 break;
             }
             else{
