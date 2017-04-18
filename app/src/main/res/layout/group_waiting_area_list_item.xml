@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/group_waiting_area_list_item_leader_icon"
+        android:src="@drawable/ic_star"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/group_waiting_area_list_item_user_name"
+        android:text="User Name"
+        android:layout_width="0dp"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="3" />
+
+    <ImageView
+        android:id="@+id/group_waiting_area_list_item_status_indicator"
+        android:src="@drawable/group_waiting_area_indicator_icon_not_started"
+        android:layout_width="0dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>
