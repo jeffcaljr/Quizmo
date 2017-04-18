@@ -28,13 +28,16 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".IndividualQuiz.Controller.IndividualQuizActivity" />
-        <activity android:name=".GroupQuiz.GroupQuizCodeActivity" />
+        <activity android:name=".GroupQuiz.ActivityControllers.GroupQuizCodeActivity" />
         <!-- <activity android:name=".Startup.ActivityControllers.LoginActivity"></activity> -->
         <activity
             android:name=".Homepage.ActivityControllers.HomeActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".Startup.ActivityControllers.Splash">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

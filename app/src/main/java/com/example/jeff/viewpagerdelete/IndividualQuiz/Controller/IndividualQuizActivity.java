@@ -3,32 +3,24 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.eftimoff.viewpagertransformers.StackTransformer;
-import com.example.jeff.viewpagerdelete.GroupQuiz.GroupQuizCodeActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
@@ -42,8 +34,6 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragm
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
 /**
  * Author: Jeffery Calhoun
@@ -268,6 +258,7 @@ public class IndividualQuizActivity extends AppCompatActivity
         for(QuizQuestion question: quiz.getQuestions()){
             if(question.getPointsRemaining() != 0){
                 mPager.setCurrentItem(firstUnansweredIndex);
+                submitSnackBar.show();
                 break;
             }
             else{
@@ -322,6 +313,7 @@ public class IndividualQuizActivity extends AppCompatActivity
     public void onQuizPostSuccess(JSONObject response) {
 //        Log.d("TAG", response.toString());
         Intent i = new Intent(this, GroupQuizCodeActivity.class);
+        i.putExtra(GroupQuizCodeActivity.EXTRA_COURSE, course);
         startActivity(i);
         finish();
     }

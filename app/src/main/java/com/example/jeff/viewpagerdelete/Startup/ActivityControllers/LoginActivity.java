@@ -2,12 +2,15 @@ package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +56,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     private SQLiteDatabase db;
 
     private LoadingFragment authenticatingFragment;
-    private LoadingFragment loadingFragment;
 
-    private boolean isAutoAuthenticating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
         setTypefaces();
 
+
+        //handle case where user rotated device after entering data into text fields
         if(savedInstanceState != null){
             if(savedInstanceState.containsKey(EXTRA_USERNAME_SAVED_INSTANCE_STATE)){
                 usernameField.setText(savedInstanceState.getString(EXTRA_USERNAME_SAVED_INSTANCE_STATE));
@@ -86,25 +89,13 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         db = dbHelper.getWritableDatabase();
 
         authenticatingFragment = new LoadingFragment(this, "Authenticating");
-        loadingFragment =  new LoadingFragment(this, "Loading");
 
-
-        //check if user is already saved to the database, and if so, re-download their info
-
-        isAutoAuthenticating = true;
-        loadingFragment.show();
-        user = PullUserInfo(db);
-        if (user != null) {
-            userFetcher.downloadUser(listener, user.getUserID());
-        } else {
-            loadingFragment.dismiss();
-        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(usernameField.getText().toString().trim() != ""){
-                    String userID = usernameField.getText().toString();
+                    String userID = usernameField.getText().toString().trim();
 
                     authenticatingFragment.show();
 
@@ -145,6 +136,15 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
         videoView.stopPlayback();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (db != null) {
+            db.close();
+        }
+        videoView.suspend();
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -165,9 +165,6 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     private void setTypefaces(){
         //set type face of views
         Typeface regularFace = Typeface.createFromAsset(getAssets(),"fonts/robotoRegular.ttf");
-        Typeface boldFace = Typeface.createFromAsset(getAssets(),"fonts/robotoBold.ttf");
-        Typeface italicFace = Typeface.createFromAsset(getAssets(),"fonts/robotoItalic.ttf");
-
 
         usernameField.setTypeface(regularFace);
         passwordField.setTypeface(regularFace);
@@ -181,21 +178,11 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
         UserDataSource.getInstance().setUser(user);
 
-        //try to update the user in the database (in the case that they already logged in)
-        //if update affects 0 rows, then the user wasnt in the database, and needs to be added to it
 
-//        int updateResult = UpdateUser(user, db);
-
-//        if(updateResult < 1){
-            PushUser(user, db);
-//        }
-
-
+        PushUser(user, db);
 
         Intent i = new Intent(this, HomeActivity.class);
-//        i.putExtra(HomeActivity.EXTRA_USER, this.user);
         startActivity(i);
-        loadingFragment.dismiss();
         authenticatingFragment.dismiss();
         finish();
     }
@@ -203,21 +190,11 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
     @Override
     public void userDownloadFailure(VolleyError error) {
         loginButton.setEnabled(true);
-        loadingFragment.dismiss();
         authenticatingFragment.dismiss();
+//        Snackbar snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), Html.fromHtml("<strong color=\"#ffffff\">Error authenticating user</strong>"), Snackbar.LENGTH_SHORT);
+//        snackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.jccolorPrimary));
+        Snackbar snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Error authenticating user.", Snackbar.LENGTH_SHORT);
 
-        if(isAutoAuthenticating == false){
-            Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Error authenticating user", Snackbar.LENGTH_SHORT).show();
-        }
-        isAutoAuthenticating = false;
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(db != null){
-            db.close();
-        }
+        snackbar.show();
     }
 }

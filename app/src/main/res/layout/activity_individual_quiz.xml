@@ -11,8 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         app:tabBackground="@drawable/tab_selector_question"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp" />

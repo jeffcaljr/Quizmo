@@ -117,7 +117,7 @@ public class QuizFetcher {
             return;
         }
 
-        String urlString = ServerProperties.quizURL + "?" + "quiz_id=" + quiz.getId() + "&course_id=" + courseID + "&user_id=" + userID + "&session_id=" + sessionID;
+        String urlString = ServerProperties.quizURL + "?course_id=" + courseID + "&user_id=" + userID + "&session_id=" + sessionID;
 
         JSONObject quizJSONPost = quiz.toPostJSONFormat();
         Log.d("TAG",quizJSONPost.toString());
