@@ -9,14 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity2;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupUser;
@@ -50,8 +47,8 @@ public class GroupQuizCodeFragment extends Fragment {
 
         Bundle args = getArguments();
 
-        if (args != null && args.containsKey(GroupQuizCodeActivity.ARG_GROUP)) {
-            group = (Group) args.getSerializable(GroupQuizCodeActivity.ARG_GROUP);
+        if (args != null && args.containsKey(GroupQuizCodeActivity2.ARG_GROUP)) {
+            group = (Group) args.getSerializable(GroupQuizCodeActivity2.ARG_GROUP);
 
             startGroupQuizButton = (Button) view.findViewById(R.id.qroup_waiting_area_start_quiz_button);
             groupNameTextView = (TextView) view.findViewById(R.id.group_name_textview);

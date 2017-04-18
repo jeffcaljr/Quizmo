@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity2;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
@@ -315,7 +316,7 @@ public class IndividualQuizActivity extends AppCompatActivity
     public void onQuizPostSuccess(JSONObject response) {
 //        Log.d("TAG", response.toString());
         Intent i = new Intent(this, GroupQuizCodeActivity.class);
-        i.putExtra(GroupQuizCodeActivity.EXTRA_COURSE, course);
+        i.putExtra(GroupQuizCodeActivity2.EXTRA_COURSE, course);
         startActivity(i);
         finish();
     }
