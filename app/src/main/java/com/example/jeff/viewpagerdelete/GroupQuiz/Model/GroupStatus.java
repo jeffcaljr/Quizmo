@@ -1,5 +1,7 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.Model;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,9 +15,34 @@ import java.util.TimeZone;
  * Created by Jeff on 4/18/17.
  */
 
-public class GroupStatus implements Serializable {
+public class GroupStatus implements Serializable, Comparable<GroupStatus> {
 
-    private String status;
+    public enum Status {
+        COMPLETE("complete"),
+        IN_PROGRESS("inProgress");
+
+        private final String statusString;
+
+        Status(String statusString) {
+            this.statusString = statusString;
+        }
+
+        String getStatusString() {
+            return this.statusString;
+        }
+
+        public static Status fromString(String text) {
+            for (Status s : Status.values()) {
+                if (s.statusString.equalsIgnoreCase(text)) {
+                    return s;
+                }
+            }
+            return null;
+        }
+
+    }
+
+    private Status status;
     private String userID;
     private String firstName;
     private String lastName;
@@ -25,8 +52,9 @@ public class GroupStatus implements Serializable {
 
     public GroupStatus(JSONObject json) {
 
+
         try {
-            this.status = json.getString("status");
+            this.status = Status.fromString(json.getString("status"));
             this.userID = json.getString("userId");
             this.firstName = json.getString("firstName");
             this.lastName = json.getString("lastName");
@@ -52,7 +80,7 @@ public class GroupStatus implements Serializable {
     public GroupStatus() {
     }
 
-    public GroupStatus(String status, String userID, String firstName, String lastName, String groupName, Date timeStarted, int timeLimit) {
+    public GroupStatus(Status status, String userID, String firstName, String lastName, String groupName, Date timeStarted, int timeLimit) {
         this.status = status;
         this.userID = userID;
         this.firstName = firstName;
@@ -62,11 +90,11 @@ public class GroupStatus implements Serializable {
         this.timeLimit = timeLimit;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -117,4 +145,11 @@ public class GroupStatus implements Serializable {
     public void setTimeLimit(int timeLimit) {
         this.timeLimit = timeLimit;
     }
+
+    @Override
+    public int compareTo(@NonNull GroupStatus status) {
+        return (this.userID.compareTo(status.getUserID()));
+    }
 }
+
+

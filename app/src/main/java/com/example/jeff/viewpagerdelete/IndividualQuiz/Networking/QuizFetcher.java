@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.RequestService;
 import com.example.jeff.viewpagerdelete.ServerProperties;
@@ -124,7 +125,7 @@ public class QuizFetcher {
         JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, urlString, quizJSONPost, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                listener.onQuizPostSuccess(response);
+                listener.onQuizPostSuccess(new GradedQuiz(response));
             }
         }, new Response.ErrorListener() {
             @Override
@@ -144,7 +145,7 @@ public class QuizFetcher {
     }
 
     public interface IndividualQuizPostListener{
-        void onQuizPostSuccess(JSONObject response);
+        void onQuizPostSuccess(GradedQuiz quiz);
         void onQuizPostFailure(VolleyError error);
     }
 

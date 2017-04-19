@@ -20,10 +20,11 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.eftimoff.viewpagertransformers.StackTransformer;
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity2;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
@@ -313,10 +314,15 @@ public class IndividualQuizActivity extends AppCompatActivity
 
 
     @Override
-    public void onQuizPostSuccess(JSONObject response) {
+    public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
 //        Log.d("TAG", response.toString());
-        Intent i = new Intent(this, GroupQuizCodeActivity.class);
+
+
+        Log.d("", "");
+
+        Intent i = new Intent(this, GroupWaitingArea.class);
         i.putExtra(GroupQuizCodeActivity2.EXTRA_COURSE, course);
+        i.putExtra(GroupWaitingArea.EXTRA_GRADED_QUIZ, gradedQuiz);
         startActivity(i);
         finish();
     }

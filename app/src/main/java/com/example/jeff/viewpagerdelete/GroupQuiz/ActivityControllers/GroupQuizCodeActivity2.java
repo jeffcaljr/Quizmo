@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
-import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupQuizCodeFragment;
+import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
-
-import java.util.ArrayList;
 
 public class GroupQuizCodeActivity2 extends AppCompatActivity implements GroupFetcher.SingleGroupFetcherListener {
 
@@ -24,7 +22,7 @@ public class GroupQuizCodeActivity2 extends AppCompatActivity implements GroupFe
     public static final String FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT = "FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT";
 
     private FragmentManager manager;
-    private GroupQuizCodeFragment groupQuizCodeFragment;
+    private GroupWaitingAreaFragment groupQuizCodeFragment;
     private Course course;
 
     private GroupFetcher groupFetcher;
@@ -55,10 +53,10 @@ public class GroupQuizCodeActivity2 extends AppCompatActivity implements GroupFe
     @Override
     public void onDownloadSingleGroupSuccess(Group group) {
 
-        groupQuizCodeFragment = (GroupQuizCodeFragment) manager.findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
+        groupQuizCodeFragment = (GroupWaitingAreaFragment) manager.findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
 
         if (groupQuizCodeFragment == null) {
-            groupQuizCodeFragment = new GroupQuizCodeFragment();
+            groupQuizCodeFragment = new GroupWaitingAreaFragment();
             Bundle args = new Bundle();
             args.putSerializable(ARG_GROUP, group);
 

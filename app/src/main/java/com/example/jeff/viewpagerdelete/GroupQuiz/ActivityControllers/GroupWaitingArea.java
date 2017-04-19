@@ -3,7 +3,6 @@ package com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -14,33 +13,38 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
-import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupQuizCodeFragment;
-import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
 
-public class GroupQuizCodeActivity extends AppCompatActivity
+import java.util.ArrayList;
+
+public class GroupWaitingArea extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GroupFetcher.SingleGroupFetcherListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
-    public static final String ARG_GROUP = "ARG_GROUP";
+    public static final String EXTRA_GRADED_QUIZ = "EXTRA_GRADED_QUIZ";
     public static final String FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT = "FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT";
 
     private FragmentManager manager;
-    private GroupQuizCodeFragment groupQuizCodeFragment;
+    private GroupWaitingAreaFragment groupQuizCodeFragment;
+
     private Course course;
+    private GradedQuiz quiz;
 
     private TextView courseNameTextView;
 
@@ -59,8 +63,9 @@ public class GroupQuizCodeActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
 
-        if (extras != null && extras.containsKey(EXTRA_COURSE)) {
+        if (extras != null && extras.containsKey(EXTRA_COURSE) && extras.containsKey(EXTRA_GRADED_QUIZ)) {
             course = (Course) extras.getSerializable(EXTRA_COURSE);
+            quiz = (GradedQuiz) extras.getSerializable(EXTRA_GRADED_QUIZ);
         } else {
             Log.e("TAG", "expected required extra \"EXTRA_COURSE\" in GroupWaitingAreaActivity");
             finish();
@@ -90,6 +95,12 @@ public class GroupQuizCodeActivity extends AppCompatActivity
         TextView fullNameTextView = (TextView) headerView.findViewById(R.id.header_fullname);
         TextView emailTextView = (TextView) headerView.findViewById(R.id.header_email);
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        userDB.close();
     }
 
     @Override
@@ -145,12 +156,14 @@ public class GroupQuizCodeActivity extends AppCompatActivity
     @Override
     public void onDownloadSingleGroupSuccess(Group group) {
 
-        groupQuizCodeFragment = (GroupQuizCodeFragment) manager.findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
+        groupQuizCodeFragment = (GroupWaitingAreaFragment) manager.findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
 
         if (groupQuizCodeFragment == null) {
-            groupQuizCodeFragment = new GroupQuizCodeFragment();
+            groupQuizCodeFragment = new GroupWaitingAreaFragment();
             Bundle args = new Bundle();
-            args.putSerializable(ARG_GROUP, group);
+            args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
+            args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
+            args.putSerializable(GroupWaitingAreaFragment.ARG_GRADED_QUIZ, quiz);
 
             groupQuizCodeFragment.setArguments(args);
 
@@ -168,9 +181,4 @@ public class GroupQuizCodeActivity extends AppCompatActivity
         Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Failed to load group", Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        userDB.close();
-    }
 }

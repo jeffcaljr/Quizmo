@@ -9,6 +9,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupStatus;
+import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.RequestService;
 import com.example.jeff.viewpagerdelete.ServerProperties;
 
@@ -116,6 +120,51 @@ public class GroupFetcher {
         RequestService.getInstance(context).addRequest(request);
     }
 
+    public void getGroupStatus(final GroupStatusFetcher listener, Group group, Course course, GradedQuiz quiz) {
+
+        if (listener == null) {
+            return;
+        }
+
+        String groupID = group.getId();
+        String courseID = course.getCourseID();
+        String quizID = quiz.getQuizID();
+        String sessionID = quiz.getSessionID();
+
+        String urlString = ServerProperties.groupStatusURL + "?group_id=" + groupID + "&course_id=" + courseID + "&quiz_id=" + quizID + "&session_id=" + sessionID;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONArray status = response.getJSONArray("status");
+                    ArrayList<GroupStatus> statuses = new ArrayList<>();
+
+                    for (int i = 0; i < status.length(); i++) {
+                        GroupStatus groupStatus = new GroupStatus(status.getJSONObject(i));
+                        statuses.add(groupStatus);
+
+                    }
+
+                    listener.onGroupStatusSuccess(statuses);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    listener.onGroupStatusFailure(new VolleyError("Error parsing JSON response"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onGroupStatusFailure(error);
+            }
+        });
+
+        RequestService.getInstance(context).addRequest(request);
+    }
+
     public interface AllGroupFetcherListener {
         void onDownloadAllGroupsSuccess(ArrayList<Group> groups);
 
@@ -127,5 +176,13 @@ public class GroupFetcher {
         void onDownloadSingleGroupSuccess(Group group);
 
         void onDownloadSingleGroupFailure(VolleyError error);
+    }
+
+    public interface GroupStatusFetcher {
+
+        void onGroupStatusSuccess(ArrayList<GroupStatus> statuses);
+
+        void onGroupStatusFailure(VolleyError error);
+
     }
 }

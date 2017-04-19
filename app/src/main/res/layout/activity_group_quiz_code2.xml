@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_group_quiz_code"
+        layout="@layout/app_bar_group_waiting_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

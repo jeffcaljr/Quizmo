@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GroupQuiz.ActivityControllers.GroupQuizCodeActivity"
+            android:name=".GroupQuiz.ActivityControllers.GroupWaitingArea"
             android:label="@string/title_activity_group_quiz_code"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

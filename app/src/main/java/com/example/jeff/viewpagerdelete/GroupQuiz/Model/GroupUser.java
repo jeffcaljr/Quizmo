@@ -1,5 +1,7 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.Model;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * Created by Jeff on 4/18/17.
  */
 
-public class GroupUser implements Serializable {
+public class GroupUser implements Serializable, Comparable<GroupUser> {
     private String userID;
     private String email;
     private String firstName;
@@ -72,5 +74,10 @@ public class GroupUser implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public int compareTo(@NonNull GroupUser user) {
+        return (userID.compareTo(user.getUserID()));
     }
 }

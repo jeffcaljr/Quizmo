@@ -13,6 +13,7 @@ public class ServerProperties {
     public static final String quizURL = baseURL + "/quiz/";
     public static final String groupURL = baseURL + "/groups/";
     public static final String userGroupURL = baseURL + "/groupForUser/";
+    public static final String groupStatusURL = baseURL + "/groupStatus/";
     public static final String usersURL = baseURL + "/users/";
 
 }

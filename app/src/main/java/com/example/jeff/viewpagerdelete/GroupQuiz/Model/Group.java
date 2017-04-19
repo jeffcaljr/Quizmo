@@ -79,12 +79,7 @@ public class Group implements Serializable{
     }
 
     public ArrayList<GroupUser> getMembers() {
-        Collections.sort(members, new Comparator<GroupUser>() {
-            @Override
-            public int compare(GroupUser user1, GroupUser user2) {
-                return user1.getFirstName().toLowerCase().compareTo(user2.getFirstName().toLowerCase());
-            }
-        });
+        Collections.sort(members);
         return members;
     }
 
