@@ -111,6 +111,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
             startGroupQuizButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    statusChecker.stopSequence();
                     Toast.makeText(getContext(), "Should start group quiz", Toast.LENGTH_LONG).show();
                 }
             });
@@ -144,7 +145,9 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
     }
 
     /**
-     * Checks if all members in the group - who have started the individual quiz - have finished it.
+     * Checks if ALL members in the group  have finished the individual quiz, ands stops checking for status updates if so.
+     * NOTE: The group will have the option to proceed if everyone who has started the quiz is finished; even if some members have not started
+     * NOTE-continued: If the group of finished members wishes to proceed without members who haven't started; the "Start Group Quiz" button will stop the status update checks
      */
     private void checkStatusFinished() {
 
@@ -157,11 +160,15 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
             }
         }
 
-        //if all members of the group who started the individual quiz are finished,
-        // stop checking the status and let the finished members continue
+        //if all members of the group are finished,
+        // stop checking the status and let the group continue
+
         if (groupFinished) {
-            statusChecker.stopSequence();
             startGroupQuizButton.setEnabled(true);
+        }
+        if (statuses.size() == group.getMembers().size()) {
+            statusChecker.stopSequence();
+
         }
     }
 
@@ -170,6 +177,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
     @Override
     public void updateStatus() {
         //send network request to check group status
+        Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
         groupFetcher.getGroupStatus(this, group, course, quiz);
     }
 
@@ -201,6 +209,18 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
                 }
             }
         }
+
+        //TODO: Remove the proceeding code later
+        //Because Ryan and Josh's quizzes are stuck in limbo; this hack will trick the app into thinking they are finished
+
+        for (int i = 0; i < this.statuses.size(); i++) {
+            if (statuses.get(i).getUserID().toLowerCase().equals("rpd4g5") || statuses.get(i).getUserID().toLowerCase().equals("jkv2c9")) {
+                this.statuses.get(i).setStatus(GroupStatus.Status.COMPLETE);
+            }
+        }
+
+
+        //TODO: Remove the preceeding code later
 
         //determine if all the members who have started the individual quiz have finisher
         //at this point, the finished members will have the ability to start the group quiz
