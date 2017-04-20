@@ -255,7 +255,7 @@ public class IndividualQuizActivity extends AppCompatActivity
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                   super.onDismissed(snackbar, event);
-                  submitSnackBar.show();
+                  mAdapter.notifyDataSetChanged();
                 }
               });
 
