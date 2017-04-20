@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +40,11 @@ public class QuizListFragment extends Fragment {
     public static final String ARG_COURSES_QUIZ_LIST_FRAGMENT = "ARG_COURSES_QUIZ_LIST_FRAGMENT";
 
     private ArrayList<Course> courses;
+  private ArrayList<Course> coursesCopy;
 
     private QuizListListener mListener;
 
+  private SearchView searchView;
     private RecyclerView mRecyclerView;
     private QuizAdapter mAdapter;
 
@@ -65,12 +69,28 @@ public class QuizListFragment extends Fragment {
 
         if(args != null && args.containsKey(ARG_COURSES_QUIZ_LIST_FRAGMENT)){
             courses = (ArrayList<Course>) args.get(ARG_COURSES_QUIZ_LIST_FRAGMENT);
+          coursesCopy = new ArrayList<>();
         }
 
         regularFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoRegular.ttf");
         boldFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBold.ttf");
         boldItalicFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBoldItalic.ttf");
 
+      searchView = (SearchView) view.findViewById(R.id.quiz_search_view);
+
+      searchView.setOnQueryTextListener(new OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+          mAdapter.filter(query);
+          return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+          mAdapter.filter(newText);
+          return true;
+        }
+      });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.quizzes_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -123,7 +143,12 @@ public class QuizListFragment extends Fragment {
 
 
     private class QuizAdapter extends RecyclerView.Adapter<QuizHolder>{
-        @Override
+
+      public QuizAdapter() {
+        coursesCopy.addAll(courses);
+      }
+
+      @Override
         public QuizHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
           View view = inflater.inflate(R.layout.list_item_quiz, parent, false);
@@ -147,8 +172,26 @@ public class QuizListFragment extends Fragment {
             //TODO: The following line is for test purposes
                 //because there is currently one quiz in the network, and I want to show a list, I
                 //am showing the same quiz multiple times
-            return 3;
-//            return courses.size();
+//            return 3;
+          return courses.size();
+
+
+        }
+
+      public void filter(String text) {
+        courses.clear();
+        if (text.isEmpty()) {
+          courses.addAll(coursesCopy);
+        } else {
+          text = text.toLowerCase().trim();
+          for (Course course : coursesCopy) {
+            String quizName = course.getQuiz().getDescription().toLowerCase().trim();
+            if (quizName.contains(text)) {
+              courses.add(course);
+            }
+          }
+        }
+        notifyDataSetChanged();
         }
 
 
