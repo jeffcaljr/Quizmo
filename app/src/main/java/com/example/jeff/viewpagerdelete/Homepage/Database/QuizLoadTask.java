@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 /**
  * Created by Jeff on 4/16/17.
@@ -25,7 +26,9 @@ public class QuizLoadTask extends AsyncTask<Void, Void, Quiz> {
 
     @Override
     protected Quiz doInBackground(Void... voids) {
-        return IndividualQuizPersistence.sharedInstance(context).readIndividualQuizFromDatabase(course.getQuiz().getId().trim());
+        return IndividualQuizPersistence.sharedInstance(context)
+            .readIndividualQuizFromDatabase(course.getQuiz().getId().trim(),
+                UserDataSource.getInstance().getUser().getUserID());
     }
 
     //    @Override

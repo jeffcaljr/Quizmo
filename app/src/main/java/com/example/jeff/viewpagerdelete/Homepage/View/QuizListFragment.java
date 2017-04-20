@@ -50,6 +50,9 @@ public class QuizListFragment extends Fragment {
     Typeface boldFace;
     Typeface boldItalicFace;
 
+  private int colorPrimaryBright;
+  private int colorWarningYellow;
+
     boolean tempDeleteThis = false; //only used to prevent countdowntimer from constantly re-coloring views
 
 
@@ -84,6 +87,8 @@ public class QuizListFragment extends Fragment {
         }
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shakeanim);
+      colorPrimaryBright = ContextCompat.getColor(getContext(), R.color.colorPrimaryBright);
+      colorWarningYellow = ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow);
 
         return view;
     }
@@ -213,7 +218,7 @@ public class QuizListFragment extends Fragment {
 
                         if(!tempDeleteThis){
                             itemView.startAnimation(shake);
-                            ((CardView) itemView).setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow));
+                          ((CardView) itemView).setCardBackgroundColor(colorWarningYellow);
                             tempDeleteThis = true;
                         }
 
@@ -225,7 +230,7 @@ public class QuizListFragment extends Fragment {
                 public void onFinish() {
                     itemView.clearAnimation();
                     timeRemainingTextView.setText("Expired!");
-                    ((CardView) itemView).setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryBright));
+                  ((CardView) itemView).setCardBackgroundColor(colorPrimaryBright);
                     quizNameTextView.setTextColor(Color.WHITE);
                     timeRemainingTextView.setTextColor(Color.WHITE);
                     itemView.setEnabled(false);

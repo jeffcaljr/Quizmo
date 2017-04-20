@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizSchema.QuizEntry;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import com.google.gson.JsonSyntaxException;
 
 /**
@@ -30,16 +32,17 @@ public class IndividualQuizPersistence {
     }
 
 
-    public Quiz readIndividualQuizFromDatabase(String quizID){
+  public Quiz readIndividualQuizFromDatabase(String quizID, String userID) {
         Quiz quiz;
 
         String[] projection = {
-                IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID,
-                IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON
+            QuizEntry.COLUMN_NAME_QUIZ_ID,
+            QuizEntry.COLUMN_NAME_QUIZ_JSON
         };
 
-        String selection = IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " = ?";
-        String[] selectionArgs = {quizID};
+    String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " = ? AND "
+        + QuizEntry.COLUMN_NAME_USER_ID + " = ?";
+    String[] selectionArgs = {quizID, userID};
 
         Cursor cursor = db.query(
                 IndividualQuizSchema.TABLE_NAME,
@@ -93,8 +96,9 @@ public class IndividualQuizPersistence {
 
         ContentValues values = getContentValues(quiz);
 
-        String selection = IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ?";
-        String[] selectionArgs = {quiz.getId()};
+      String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ? AND "
+          + QuizEntry.COLUMN_NAME_USER_ID + " = ?";
+      String[] selectionArgs = {quiz.getId(), quiz.getUserID()};
 
         db.update(
                 IndividualQuizSchema.TABLE_NAME,
@@ -107,9 +111,10 @@ public class IndividualQuizPersistence {
     }
 
     private ContentValues getContentValues(Quiz quiz){
-        ContentValues values = new ContentValues();
-        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
-        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
+      ContentValues values = new ContentValues();
+      values.put(QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
+      values.put(QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
+      values.put(QuizEntry.COLUMN_NAME_USER_ID, quiz.getUserID());
 
         return values;
     }

@@ -32,6 +32,8 @@ public class Quiz implements Serializable {
     private int timedLength;
     private String associatedSessionID;
 
+  private String userID; //used to idenfity same quiz for different users
+
 
     public Quiz(JSONObject json){
 
@@ -94,7 +96,8 @@ public class Quiz implements Serializable {
 
     }
 
-    public Quiz(String id, String description, String text, Date availableDate, Date expiryDate, boolean isTimed, int timedLength, String associatedSessionID) {
+  public Quiz(String id, String description, String text, Date availableDate, Date expiryDate,
+      boolean isTimed, int timedLength, String associatedSessionID, String userID) {
         this.id = id;
         this.description = description;
         this.text = text;
@@ -104,6 +107,7 @@ public class Quiz implements Serializable {
         this.timedLength = timedLength;
         this.questions = null;
         this.associatedSessionID = associatedSessionID;
+    this.userID = userID;
     }
 
     public Quiz() {
@@ -173,6 +177,14 @@ public class Quiz implements Serializable {
 
     public void setAssociatedSessionID(String associatedSessionID) {
         this.associatedSessionID = associatedSessionID;
+    }
+
+  public String getUserID() {
+    return userID;
+  }
+
+  public void setUserID(String userID) {
+    this.userID = userID;
     }
 
     //Convenience Methods

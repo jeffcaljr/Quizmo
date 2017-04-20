@@ -15,7 +15,6 @@
 
         <activity
             android:name=".Startup.ActivityControllers.LoginActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".IndividualQuiz.Controller.IndividualQuizActivity" />
         <activity

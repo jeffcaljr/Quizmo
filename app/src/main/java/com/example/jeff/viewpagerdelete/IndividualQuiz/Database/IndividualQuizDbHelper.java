@@ -19,6 +19,7 @@ public class IndividualQuizDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + IndividualQuizSchema.TABLE_NAME + " (" +
                     IndividualQuizSchema.QuizEntry._ID + " INTEGER PRIMARY KEY," +
                     IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " TEXT," +
+                IndividualQuizSchema.QuizEntry.COLUMN_NAME_USER_ID + " TEXT," +
                     IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON + " TEXT)";
 
     private static final String SQL_DELETE_QUIZZES =

@@ -91,7 +91,7 @@ public class TokenCodeFragment extends Dialog implements
             public void onClick(View view) {
                 hideKeyboard();
                 setCanceledOnTouchOutside(false);
-                String tokenCode = tokenCodeField.getText().toString().trim();
+              String tokenCode = tokenCodeField.getText().toString().trim().toUpperCase();
                 errorLayout.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
               quizNetworkingService

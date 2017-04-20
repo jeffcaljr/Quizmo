@@ -261,6 +261,8 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     public void quizDownloaded( Quiz quiz, Course course) {
 
+      quiz.setUserID(UserDataSource.getInstance().getUser().getUserID());
+
         boolean writeSuccess = IndividualQuizPersistence.sharedInstance(this).writeIndividualQuizToDatabase(quiz);
 
         if(writeSuccess){
