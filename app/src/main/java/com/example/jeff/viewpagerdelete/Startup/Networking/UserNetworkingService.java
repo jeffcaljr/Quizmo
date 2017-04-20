@@ -7,7 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jeff.viewpagerdelete.Miscellaneous.RequestService;
-import com.example.jeff.viewpagerdelete.Miscellaneous.ServerProperties;
+import com.example.jeff.viewpagerdelete.Miscellaneous.ApiURLs;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ public class UserNetworkingService {
             return;
         }
 
-        String urlString = ServerProperties.usersURL + userID;
+      String urlString = ApiURLs.usersURL + userID;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override

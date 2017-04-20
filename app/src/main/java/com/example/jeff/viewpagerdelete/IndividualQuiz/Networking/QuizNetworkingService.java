@@ -12,7 +12,7 @@ import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.Miscellaneous.RequestService;
-import com.example.jeff.viewpagerdelete.Miscellaneous.ServerProperties;
+import com.example.jeff.viewpagerdelete.Miscellaneous.ApiURLs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +40,7 @@ public class QuizNetworkingService {
             return;
         }
 
-        String urlString = ServerProperties.quizzesURL + userID;
+      String urlString = ApiURLs.quizzesURL + userID;
 
         JsonArrayRequest quizzesRequest = new JsonArrayRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONArray>() {
             @Override
@@ -80,7 +80,9 @@ public class QuizNetworkingService {
             return;
         }
 
-        String urlString = ServerProperties.quizURL + "?user_id=" + userID + "&" + "course_id=" + courseID + "&quiz_id=" +quizCode + "&token=" + token;
+      String urlString =
+          ApiURLs.quizURL + "?user_id=" + userID + "&" + "course_id=" + courseID + "&quiz_id="
+              + quizCode + "&token=" + token;
 
         JsonObjectRequest request = new  JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override
@@ -117,7 +119,9 @@ public class QuizNetworkingService {
             return;
         }
 
-        String urlString = ServerProperties.quizURL + "?course_id=" + courseID + "&user_id=" + userID + "&session_id=" + sessionID;
+      String urlString =
+          ApiURLs.quizURL + "?course_id=" + courseID + "&user_id=" + userID + "&session_id="
+              + sessionID;
 
         JSONObject quizJSONPost = quiz.toPostJSONFormat();
         Log.d("TAG",quizJSONPost.toString());

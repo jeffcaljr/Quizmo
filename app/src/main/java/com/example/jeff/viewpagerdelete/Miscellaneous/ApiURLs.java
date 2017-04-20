@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by Jeff on 3/23/17.
  */
 
-public class ServerProperties {
+public class ApiURLs {
 
     public static final String baseURL = "http://tblearn-api.vigilantestudio.com/v1";
     public static final String quizzesURL = baseURL + "/quizzes/";
@@ -15,5 +15,7 @@ public class ServerProperties {
     public static final String userGroupURL = baseURL + "/groupForUser/";
     public static final String groupStatusURL = baseURL + "/groupStatus/";
     public static final String usersURL = baseURL + "/users/";
+  public static final String groupQuizURL = baseURL + "/groupQuiz/";
+  public static final String groupQuizProgressURL = baseURL + "/groupQuizProgress/";
 
 }
