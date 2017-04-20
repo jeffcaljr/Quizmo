@@ -13,6 +13,7 @@ import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
@@ -34,7 +35,7 @@ public class CourseListFragment extends Fragment {
     private CourseListListener mListener;
 
   private SearchView searchView;
-    private TextView coursesEmptyTextView;
+  private RelativeLayout coursesEmptyView;
     private RecyclerView recyclerView;
     private CourseAdapter adapter;
 
@@ -84,7 +85,7 @@ public class CourseListFragment extends Fragment {
         adapter = new CourseAdapter();
         recyclerView.setAdapter(adapter);
 
-        coursesEmptyTextView = (TextView) view.findViewById(R.id.courses_list_empty_tv);
+      coursesEmptyView = (RelativeLayout) view.findViewById(R.id.courses_list_empty_tv);
 
         try{
             AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -95,7 +96,6 @@ public class CourseListFragment extends Fragment {
         }
 
 
-        coursesEmptyTextView.setTypeface(boldFace);
 
 
         return view;
@@ -150,10 +150,10 @@ public class CourseListFragment extends Fragment {
             int size = courses.size();
 
             if(size == 0){
-                coursesEmptyTextView.setVisibility(View.VISIBLE);
+              coursesEmptyView.setVisibility(View.VISIBLE);
             }
             else{
-                coursesEmptyTextView.setVisibility(View.GONE);
+              coursesEmptyView.setVisibility(View.GONE);
             }
             return size;
         }

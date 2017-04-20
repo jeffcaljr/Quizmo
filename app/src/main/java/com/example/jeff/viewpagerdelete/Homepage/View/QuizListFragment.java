@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
@@ -45,6 +46,7 @@ public class QuizListFragment extends Fragment {
     private QuizListListener mListener;
 
   private SearchView searchView;
+  private RelativeLayout quizzesEmptyView;
     private RecyclerView mRecyclerView;
     private QuizAdapter mAdapter;
 
@@ -69,6 +71,16 @@ public class QuizListFragment extends Fragment {
 
         if(args != null && args.containsKey(ARG_COURSES_QUIZ_LIST_FRAGMENT)){
             courses = (ArrayList<Course>) args.get(ARG_COURSES_QUIZ_LIST_FRAGMENT);
+
+          //TODO: Test code proceeding; delete later
+
+          //add two dummy quizzes to the list
+
+          courses.add(courses.get(0));
+          courses.add(courses.get(0));
+          //TODO: Test code preceeding; delete later
+
+
           coursesCopy = new ArrayList<>();
         }
 
@@ -76,6 +88,7 @@ public class QuizListFragment extends Fragment {
         boldFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBold.ttf");
         boldItalicFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBoldItalic.ttf");
 
+      quizzesEmptyView = (RelativeLayout) view.findViewById(R.id.quizzes_list_empty_tv);
       searchView = (SearchView) view.findViewById(R.id.quiz_search_view);
 
       searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -173,7 +186,15 @@ public class QuizListFragment extends Fragment {
                 //because there is currently one quiz in the network, and I want to show a list, I
                 //am showing the same quiz multiple times
 //            return 3;
-          return courses.size();
+
+          int size = courses.size();
+
+          if (size == 0) {
+            quizzesEmptyView.setVisibility(View.VISIBLE);
+          } else {
+            quizzesEmptyView.setVisibility(View.GONE);
+          }
+          return size;
 
 
         }
