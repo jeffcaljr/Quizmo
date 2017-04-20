@@ -6,11 +6,6 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.android.volley.VolleyError;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupStatus;
-
-import java.util.ArrayList;
-
 /**
  * Created by Jeff on 4/19/17.
  */
@@ -19,7 +14,7 @@ public class GroupWaitingQueueService extends Fragment {
 
     private StatusCheckListener listener;
     private Handler handler;
-    private GroupFetcher groupFetcher;
+  private GroupNetworkingService groupNetworkingService;
 
     public interface StatusCheckListener {
         void updateStatus();
@@ -33,7 +28,7 @@ public class GroupWaitingQueueService extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        groupFetcher = new GroupFetcher(getContext());
+      groupNetworkingService = new GroupNetworkingService(getContext());
     }
 
     public void startSequence() {

@@ -1,15 +1,6 @@
 package com.example.jeff.viewpagerdelete.Startup.Model;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
-import com.example.jeff.viewpagerdelete.ServerProperties;
-import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
-import com.example.jeff.viewpagerdelete.Startup.Database.UserSchema;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -18,8 +9,6 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import static android.database.sqlite.SQLiteDatabase.deleteDatabase;
 
 /**
  * Created by Jeff on 3/23/17.

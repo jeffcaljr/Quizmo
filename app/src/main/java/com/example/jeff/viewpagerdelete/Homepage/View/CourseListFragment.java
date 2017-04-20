@@ -105,7 +105,8 @@ public class CourseListFragment extends Fragment {
     private class CourseAdapter extends RecyclerView.Adapter<CourseHolder>{
         @Override
         public CourseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_list_listitem, parent, false);
+          View view = LayoutInflater.from(parent.getContext())
+              .inflate(R.layout.list_item_course_list, parent, false);
 
             return new CourseHolder(view);
         }

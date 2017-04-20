@@ -21,19 +21,16 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea;
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity2;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuestionsUnfinishedFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -43,9 +40,8 @@ import java.util.ArrayList;
  */
 public class IndividualQuizActivity extends AppCompatActivity
         implements IndividualQuizQuestionFragment.PageFragmentListener,
-                    QuestionsUnfinishedFragment.UnfinishedQuestionsInterface,
                     SubmissionAlertFragment.SubmissionAlertFragmentListener,
-                    QuizFetcher.IndividualQuizPostListener{
+    QuizNetworkingService.IndividualQuizPostListener {
 
     //Constants used for key/value
     public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
@@ -65,7 +61,7 @@ public class IndividualQuizActivity extends AppCompatActivity
     private Quiz quiz;
     private String username = "jcd39";
 
-    private QuizFetcher quizFetcher;
+    private QuizNetworkingService quizNetworkingService;
 
     private String sessionID;
 
@@ -90,7 +86,7 @@ public class IndividualQuizActivity extends AppCompatActivity
             finish();
         }
 
-        quizFetcher = new QuizFetcher(this);
+        quizNetworkingService = new QuizNetworkingService(this);
 
         final Context context = this;
 
@@ -186,16 +182,29 @@ public class IndividualQuizActivity extends AppCompatActivity
         exitDialog.create().show();
     }
 
-//    private void setTypefaces(){
-//        //set type face of views
-//        Typeface regularFace = Typeface.createFromAsset(getAssets(),"fonts/robotoRegular.ttf");
-//        Typeface boldFace = Typeface.createFromAsset(getAssets(),"fonts/robotoBold.ttf");
-//        Typeface boldItalicFace = Typeface.createFromAsset(getAssets(),"fonts/robotoBoldItalic.ttf");
-//
-//
-//    }
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    //MARK: IndividualQuizQuestionFragmentListener Methods
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
+            Bundle extras = new Bundle();
+            extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
+            extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
+            extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
+            newFrag.setArguments(extras);
+            return newFrag;
+        }
+
+        @Override
+        public int getCount() {
+            return quiz.getQuestions().size();
+        }
+
+    }
 
     @Override
     public void advanceButtonClicked() {
@@ -248,10 +257,6 @@ public class IndividualQuizActivity extends AppCompatActivity
     }
 
 
-    //UnfinishedQuestionsInterface Methods
-
-
-    @Override
     public void userAcknowledgedUnfinishedQuestions() {
 
         //Transition to first unanswered question
@@ -271,29 +276,6 @@ public class IndividualQuizActivity extends AppCompatActivity
         }
     }
 
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
-
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
-            Bundle extras = new Bundle();
-            extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
-            extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
-            extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
-            newFrag.setArguments(extras);
-            return newFrag;
-        }
-
-        @Override
-        public int getCount() {
-            return quiz.getQuestions().size();
-        }
-
-    }
 
     //MARK: SubmissionAlertFragmentListener Methods
 
@@ -301,7 +283,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     @Override
     public void userConfirmedSubmission() {
 
-        quizFetcher.uploadQuiz(this, course.getCourseID(), username, quiz.getAssociatedSessionID(), quiz);
+        quizNetworkingService
+            .uploadQuiz(this, course.getCourseID(), username, quiz.getAssociatedSessionID(), quiz);
 
     }
 
@@ -310,18 +293,13 @@ public class IndividualQuizActivity extends AppCompatActivity
         submitSnackBar.show();
     }
 
-    //MARK: IndividualQuizPostListener Methods
 
+    //MARK: IndividualQuizPostListener Methods
 
     @Override
     public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
-//        Log.d("TAG", response.toString());
-
-
-        Log.d("", "");
-
         Intent i = new Intent(this, GroupWaitingArea.class);
-        i.putExtra(GroupQuizCodeActivity2.EXTRA_COURSE, course);
+        i.putExtra(GroupWaitingArea.EXTRA_COURSE, course);
         i.putExtra(GroupWaitingArea.EXTRA_GRADED_QUIZ, gradedQuiz);
         startActivity(i);
         finish();
@@ -329,8 +307,6 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     @Override
     public void onQuizPostFailure(VolleyError error) {
-        String err = error.toString();
         Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
-        Log.e("TAG", error.toString());
     }
 }

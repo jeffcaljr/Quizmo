@@ -3,31 +3,29 @@ package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
+import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
-import com.example.jeff.viewpagerdelete.Startup.Networking.UserFetcher;
-import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PushUser;
 
-public class Splash extends AppCompatActivity implements UserFetcher.UserFetcherListener {
+public class Splash extends AppCompatActivity implements UserNetworkingService.UserFetcherListener {
 
     private static final int SPLASH_MINIMUM_DISPLAY_LENGTH = 3000;
     private User user;
     private UserDbHelper dbHelper;
     private SQLiteDatabase db;
-    private UserFetcher userFetcher;
-    private UserFetcher.UserFetcherListener listener;
+  private UserNetworkingService userNetworkingService;
+  private UserNetworkingService.UserFetcherListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class Splash extends AppCompatActivity implements UserFetcher.UserFetcher
 
         dbHelper = new UserDbHelper(this);
         db = dbHelper.getWritableDatabase();
-        userFetcher = new UserFetcher(this);
+      userNetworkingService = new UserNetworkingService(this);
 
         listener = this;
 
@@ -49,7 +47,7 @@ public class Splash extends AppCompatActivity implements UserFetcher.UserFetcher
 //
 //               //if the user is signed in, fetch their current data
 //               if (user != null) {
-//                   userFetcher.downloadUser(listener, user.getUserID());
+//                   userNetworkingService.downloadUser(listener, user.getUserID());
 //               }
 //               else{
 //                   //no user saved in database; go to login
@@ -72,7 +70,7 @@ public class Splash extends AppCompatActivity implements UserFetcher.UserFetcher
 
                 //if the user is signed in, fetch their current data
                 if (user != null) {
-                    userFetcher.downloadUser(listener, user.getUserID());
+                  userNetworkingService.downloadUser(listener, user.getUserID());
                 } else {
                     //no user saved in database; go to login
                     Intent intent = new Intent(Splash.this, LoginActivity.class);
@@ -105,7 +103,7 @@ public class Splash extends AppCompatActivity implements UserFetcher.UserFetcher
         PushUser(user, db);
 
         //Go to home screen
-        Intent i = new Intent(this, HomeActivity.class);
+      Intent i = new Intent(this, HomePageActivity.class);
         startActivity(i);
         finish();
     }

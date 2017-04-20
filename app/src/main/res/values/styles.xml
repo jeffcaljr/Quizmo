@@ -23,16 +23,6 @@
     <!--</style>-->
 
 
-    <style name="EditTextStyle">
-        <item name="android:background">@drawable/edit_text_background</item>
-        <item name="android:textColor">#FFF</item>
-        <item name="android:textSize">@dimen/stdTextSize</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:minWidth">@dimen/stdTextBoxMinWidth</item>
-        <item name="android:minHeight">@dimen/stdTextBoxMinHeight</item>
-    </style>
-
     <!--<style name="redTextSnackbar" parent="Widget.Design.Snackbar" tools:override="true">-->
     <!--<item name="background">@color/jccolorPrimaryDark</item>-->
     <!--</style>-->

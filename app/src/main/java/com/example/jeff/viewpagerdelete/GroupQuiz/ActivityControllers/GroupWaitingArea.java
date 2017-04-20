@@ -16,12 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupStatus;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
@@ -29,12 +27,11 @@ import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
-import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
-
-import java.util.ArrayList;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 public class GroupWaitingArea extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GroupFetcher.SingleGroupFetcherListener {
+    implements NavigationView.OnNavigationItemSelectedListener,
+    GroupNetworkingService.SingleGroupFetcherListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
     public static final String EXTRA_GRADED_QUIZ = "EXTRA_GRADED_QUIZ";
@@ -49,7 +46,7 @@ public class GroupWaitingArea extends AppCompatActivity
     private TextView courseNameTextView;
 
 
-    private GroupFetcher groupFetcher;
+  private GroupNetworkingService groupNetworkingService;
 
     private UserDbHelper userDbHelper;
     private SQLiteDatabase userDB;
@@ -57,7 +54,7 @@ public class GroupWaitingArea extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_quiz_code2);
+      setContentView(R.layout.activity_group_waiting_area);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -72,12 +69,14 @@ public class GroupWaitingArea extends AppCompatActivity
         }
 
         manager = getSupportFragmentManager();
-        groupFetcher = new GroupFetcher(this);
+      groupNetworkingService = new GroupNetworkingService(this);
 
         userDbHelper = new UserDbHelper(this);
         userDB = userDbHelper.getWritableDatabase();
 
-        groupFetcher.downloadGroupForUser(this, UserDataSource.getInstance().getUser().getUserID(), course.getCourseID());
+      groupNetworkingService
+          .downloadGroupForUser(this, UserDataSource.getInstance().getUser().getUserID(),
+              course.getCourseID());
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -113,21 +112,6 @@ public class GroupWaitingArea extends AppCompatActivity
         }
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

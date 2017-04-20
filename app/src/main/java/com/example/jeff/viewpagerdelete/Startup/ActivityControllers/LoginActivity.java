@@ -1,53 +1,43 @@
 package com.example.jeff.viewpagerdelete.Startup.ActivityControllers;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
-import com.example.jeff.viewpagerdelete.EditTextFocusChangeListener;
-import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomeActivity;
-import com.example.jeff.viewpagerdelete.LoadingFragment;
+import com.example.jeff.viewpagerdelete.Miscellaneous.EditTextFocusChangeListener;
+import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
+import com.example.jeff.viewpagerdelete.Miscellaneous.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
-import com.example.jeff.viewpagerdelete.Startup.Networking.UserFetcher;
-import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
-import com.example.jeff.viewpagerdelete.Startup.View.NewUserFragment;
-import com.example.jeff.viewpagerdelete.Startup.View.WelcomeCheckFragment;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
-import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PullUserInfo;
 import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PushUser;
-//import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.UpdateUser;
 
-public class LoginActivity extends AppCompatActivity implements UserFetcher.UserFetcherListener {
+public class LoginActivity extends AppCompatActivity implements
+    UserNetworkingService.UserFetcherListener {
 
     private static final String EXTRA_USERNAME_SAVED_INSTANCE_STATE = "EXTRA_USERNAME_SAVED_INSTANCE_STATE";
     private static final String EXTRA_PASSWORD_SAVED_INSTANCE_STATE = "EXTRA_PASSWORD_SAVED_INSTANCE_STATE";
 
     private User user;
 
-    private UserFetcher userFetcher;
+  private UserNetworkingService userNetworkingService;
 
     private VideoView videoView;
     private EditText usernameField;
@@ -96,9 +86,8 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
             }
         }
 
-
-        userFetcher = new UserFetcher(this);
-        final UserFetcher.UserFetcherListener listener = this;
+      userNetworkingService = new UserNetworkingService(this);
+      final UserNetworkingService.UserFetcherListener listener = this;
 
         dbHelper = new UserDbHelper(this);
         db = dbHelper.getWritableDatabase();
@@ -115,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
                     authenticatingFragment.show();
 
                     loginButton.setEnabled(false);
-                    userFetcher.downloadUser(listener, userID);
+                  userNetworkingService.downloadUser(listener, userID);
 
                 }
             }
@@ -205,7 +194,7 @@ public class LoginActivity extends AppCompatActivity implements UserFetcher.User
 
         PushUser(user, db);
 
-        Intent i = new Intent(this, HomeActivity.class);
+      Intent i = new Intent(this, HomePageActivity.class);
         startActivity(i);
         authenticatingFragment.dismiss();
         finish();

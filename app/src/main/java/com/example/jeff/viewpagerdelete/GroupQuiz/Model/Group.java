@@ -1,7 +1,5 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.Model;
 
-import com.example.jeff.viewpagerdelete.ServerProperties;
-import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -11,7 +9,6 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by Jeff on 3/23/17.

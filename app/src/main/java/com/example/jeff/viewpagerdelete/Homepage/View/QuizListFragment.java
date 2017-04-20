@@ -56,7 +56,7 @@ public class QuizListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.quizzes_list_fragment_layout, container, false);
+      View view = inflater.inflate(R.layout.fragment_quizzes_list, container, false);
 
         Bundle args = getArguments();
 
@@ -121,7 +121,7 @@ public class QuizListFragment extends Fragment {
         @Override
         public QuizHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.quiz_list_item, parent, false);
+          View view = inflater.inflate(R.layout.list_item_quiz, parent, false);
 
             return new QuizHolder(view);
         }

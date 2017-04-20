@@ -12,25 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- <activity -->
-        <!-- android:name=".Startup.ActivityControllers.StartUpActivity" -->
-        <!-- android:screenOrientation="portrait" -->
-        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
         <activity
             android:name=".Startup.ActivityControllers.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".IndividualQuiz.Controller.IndividualQuizActivity" />
-        <activity android:name=".GroupQuiz.ActivityControllers.GroupQuizCodeActivity2" />
-        <!-- <activity android:name=".Startup.ActivityControllers.LoginActivity"></activity> -->
         <activity
-            android:name=".Homepage.ActivityControllers.HomeActivity"
+          android:name=".Homepage.ActivityControllers.HomePageActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Startup.ActivityControllers.Splash">

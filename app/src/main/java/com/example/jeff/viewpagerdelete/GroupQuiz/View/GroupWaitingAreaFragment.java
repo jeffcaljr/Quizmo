@@ -16,12 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizCodeActivity2;
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupStatus;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupUser;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupFetcher;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupWaitingQueueService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
@@ -29,13 +27,13 @@ import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by Jeff on 3/24/17.
  */
 
-public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.GroupStatusFetcher, GroupWaitingQueueService.StatusCheckListener {
+public class GroupWaitingAreaFragment extends Fragment implements
+    GroupNetworkingService.GroupStatusFetcher, GroupWaitingQueueService.StatusCheckListener {
 
     public static final String ARG_GROUP = "ARG_GROUP";
     public static final String ARG_COURSE = "ARG_COURSE";
@@ -46,10 +44,10 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
     private ArrayList<String> memberNames;
     private Course course;
     private GradedQuiz quiz;
-    private ArrayList<GroupStatus> statuses;
-    private GroupStatus firstFinished;
+  private ArrayList<UserGroupStatus> statuses;
+  private UserGroupStatus firstFinished;
 
-    private GroupFetcher groupFetcher;
+  private GroupNetworkingService groupNetworkingService;
 
     private TextView groupNameTextView;
     private Button startGroupQuizButton;
@@ -71,7 +69,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.group_waiting_area_fragment, container, false);
+      View view = inflater.inflate(R.layout.fragment_group_waiting_area, container, false);
 
         Bundle args = getArguments();
 
@@ -116,7 +114,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
                 }
             });
 
-            groupFetcher = new GroupFetcher(getContext());
+          groupNetworkingService = new GroupNetworkingService(getContext());
 
             statusChecker = new GroupWaitingQueueService();
             statusChecker.setStatusCheckListener(this);
@@ -154,8 +152,8 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
         //loop through current users who have started the individual quiz to determine if they are all finished
         boolean groupFinished = true;
 
-        for (GroupStatus status : statuses) {
-            if (status.getStatus() != GroupStatus.Status.COMPLETE) {
+      for (UserGroupStatus status : statuses) {
+        if (status.getStatus() != UserGroupStatus.Status.COMPLETE) {
                 groupFinished = false;
             }
         }
@@ -178,7 +176,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
     public void updateStatus() {
         //send network request to check group status
         Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
-        groupFetcher.getGroupStatus(this, group, course, quiz);
+      groupNetworkingService.getGroupStatus(this, group, course, quiz);
     }
 
 
@@ -186,7 +184,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
 
 
     @Override
-    public void onGroupStatusSuccess(ArrayList<GroupStatus> statuses) {
+    public void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses) {
 
         //get an updated list of the statuses of each member
         statusLoaded = true;
@@ -203,7 +201,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
             //they will be the leader
 
             firstFinished = statuses.get(0);
-            for (GroupStatus status : this.statuses) {
+          for (UserGroupStatus status : this.statuses) {
                 if (status.getTimeStarted().compareTo(firstFinished.getTimeStarted()) < 0) {
                     firstFinished = status;
                 }
@@ -215,7 +213,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
 
         for (int i = 0; i < this.statuses.size(); i++) {
             if (statuses.get(i).getUserID().toLowerCase().equals("rpd4g5") || statuses.get(i).getUserID().toLowerCase().equals("jkv2c9")) {
-                this.statuses.get(i).setStatus(GroupStatus.Status.COMPLETE);
+              this.statuses.get(i).setStatus(UserGroupStatus.Status.COMPLETE);
             }
         }
 
@@ -239,7 +237,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
         @Override
         public GroupMemberHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.group_waiting_area_list_item, parent, false);
+          View view = inflater.inflate(R.layout.list_item_group_waiting_area, parent, false);
 
             return new GroupMemberHolder(view);
         }
@@ -249,12 +247,12 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
             //since the number of users in the group may not match the number of users who started the individual quiz,
             //need to tell viewholder if each member has started (has a status) or not
 
-            GroupStatus status = null;
+          UserGroupStatus status = null;
             GroupUser user = group.getMembers().get(position);
 
             //determine if the user at this position has started the individual quiz (has a status) or not
 
-            for (GroupStatus s : statuses) {
+          for (UserGroupStatus s : statuses) {
                 if (s.getUserID().toLowerCase().equals(user.getUserID().toLowerCase())) {
                     status = s;
                     break;
@@ -284,7 +282,7 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
             statusIcon = (ImageView) itemView.findViewById(R.id.group_waiting_area_list_item_status_indicator);
         }
 
-        public void bindMember(GroupUser member, GroupStatus status) {
+      public void bindMember(GroupUser member, UserGroupStatus status) {
 
             memberName.setText(member.getFirstName() + " " + member.getLastName());
 
@@ -303,7 +301,8 @@ public class GroupWaitingAreaFragment extends Fragment implements GroupFetcher.G
                     //check if user has completed the quiz; and if so; were they the first to start it
                     //if they were the first to start it, denote them as the leader
 
-                    if (status.getStatus() == GroupStatus.Status.COMPLETE) { //if the user is done, show the green indicators
+                  if (status.getStatus()
+                      == UserGroupStatus.Status.COMPLETE) { //if the user is done, show the green indicators
 
                         statusIcon.setImageDrawable(doneDrawable);
 

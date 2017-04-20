@@ -2,7 +2,6 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
 
     <!-- Centralized Theme Colors -->
 
@@ -13,32 +12,15 @@
     <!--<color name="Background">#47648C</color>-->
     <!--<color name="BackgroundShadow">#385070</color>-->
     <!--<color name="BackgroundExtraShadow">#2A3C54</color>-->
-    <color name="Complement">#a7a3a0</color>
-    <color name="Contrast">#FFFFF4</color>
-    <color name="Background">#5973A7</color>
-    <color name="BackgroundShadow">#475C85</color>
-    <color name="BackgroundExtraShadow">#354564</color>
-
-    <color name="colorCardBackground">#47648C</color>
-    <color name="disableGrey">#D3D3D3</color>
-    <color name="disableShadow">#BDBDBD</color>
-
-
 
 
     <!--<color name="colorCardBackground">#03A9F4</color>-->
     <!--<color name="colorCardBackground">#4DB6AC</color>-->
-    <color name="colorIndividualQuizQuestionText">#FFFFFF</color>
-    <color name="colorAnswerFragmentQuestionValue">#FF0000</color>
 
     <color name="jccolorWarningYellow">#FFCA28</color>
     <color name="jccolorPrimary">#C62828</color>
     <color name="jccolorPrimaryDark">#8E1717</color>
     <color name="colorPrimaryBright">#F44336</color>
     <color name="jccolorAccent">#50E3C2</color>
-    <color name="colorAccentTranslucent">#78F0BE</color>
-    <color name="colorNullDark">#897878</color>
-    <color name="colorNullLight">#A99393</color>
-    <color name="colorNullDarkTranslucent">#897878</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>

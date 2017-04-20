@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -17,20 +14,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizFetcher;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
 import com.example.jeff.viewpagerdelete.R;
-import com.example.jeff.viewpagerdelete.Startup.UserDataSource;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 /**
  * Created by Jeff on 4/12/17.
  */
 
-public class TokenCodeFragment extends Dialog implements QuizFetcher.IndividualQuizFetcherListener {
+public class TokenCodeFragment extends Dialog implements
+    QuizNetworkingService.IndividualQuizFetcherListener {
 
     private Context context;
     private Course course;
@@ -46,14 +43,14 @@ public class TokenCodeFragment extends Dialog implements QuizFetcher.IndividualQ
 
     private ProgressBar spinner;
 
-    private QuizFetcher quizFetcher;
+  private QuizNetworkingService quizNetworkingService;
 
     public TokenCodeFragment(@NonNull Context context, Course course) {
         super(context);
         this.context = context;
         this.course = course;
 
-        quizFetcher = new QuizFetcher(context);
+      quizNetworkingService = new QuizNetworkingService(context);
 
         try{
             mListener = (TokenCodeEntryListener) context;
@@ -68,7 +65,7 @@ public class TokenCodeFragment extends Dialog implements QuizFetcher.IndividualQ
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_fragment_token_code);
 
-        final QuizFetcher.IndividualQuizFetcherListener self = this;
+      final QuizNetworkingService.IndividualQuizFetcherListener self = this;
 
 
         tokenCodeField = (EditText) findViewById(R.id.token_code_entry_field);
@@ -97,7 +94,9 @@ public class TokenCodeFragment extends Dialog implements QuizFetcher.IndividualQ
                 String tokenCode = tokenCodeField.getText().toString().trim();
                 errorLayout.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
-                quizFetcher.downloadUserQuiz(self, UserDataSource.getInstance().getUser().getUserID(), course.getCourseID(), course.getQuiz().getId(), tokenCode);
+              quizNetworkingService
+                  .downloadUserQuiz(self, UserDataSource.getInstance().getUser().getUserID(),
+                      course.getCourseID(), course.getQuiz().getId(), tokenCode);
             }
         });
 
