@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <ProgressBar
+    android:id="@+id/quiz_timer_progress_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="?android:attr/progressBarStyleHorizontal"
+    android:layout_alignParentTop="true"
+    android:max="100"
+    android:progress="35"
+    android:progressDrawable="@drawable/progress_bar_timer"
+    android:layout_marginTop="-8dp" />
+
+  <android.support.design.widget.TabLayout
+    android:id="@+id/tabDots"
+    android:layout_below="@id/quiz_timer_progress_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:tabBackground="@drawable/tab_selector_question"
+    app:tabGravity="center"
+    app:tabIndicatorHeight="0dp" />
+
+  <android.support.v4.view.ViewPager
+    android:id="@+id/quiz_question_viewpager"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/tabDots"></android.support.v4.view.ViewPager>
+
+
+</RelativeLayout>

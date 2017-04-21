@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.jeff.viewpagerdelete.Miscellaneous.CollapsibleCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_marginLeft="@dimen/quiz_card_side_margin"
+  android:layout_marginRight="@dimen/quiz_card_side_margin"
+  android:layout_marginTop="20dp"
+  android:layout_height="wrap_content"
+  app:contentPadding="@dimen/quiz_card_content_padding"
+  app:cardElevation="@dimen/quiz_card_elevation">
+
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <RelativeLayout
+      android:id="@+id/quiz_answer_card_header"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:padding="4dp">
+
+      <TextView
+        android:id="@+id/quiz_answer_label"
+        android:text="A."
+        android:textSize="32sp"
+        android:textColor="@color/jccolorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        style="@style/nonInteractiveText" />
+
+      <TextView
+        android:id="@+id/quiz_answer_text_preview"
+        android:visibility="invisible"
+        android:text="@string/lorem"
+        android:textSize="14sp"
+        android:textColor="@color/jccolorPrimaryDark"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="8dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/quiz_points_allocated"
+        android:layout_toRightOf="@id/quiz_answer_label"
+        style="@style/nonInteractiveText" />
+
+      <TextView
+        android:id="@+id/quiz_points_allocated"
+        android:text="4"
+        android:textSize="32sp"
+        android:textColor="@color/jccolorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        style="@style/nonInteractiveText" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+      android:id="@+id/quiz_answer_card_content"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/quiz_answer_card_header"
+      android:layout_alignParentBottom="true">
+
+      <TextView
+        android:id="@+id/quiz_answer_text"
+        android:text="@string/lorem_long"
+        android:textSize="22sp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/jccolorPrimaryDark"
+        android:lineSpacingMultiplier="1.1"
+        android:scrollbars="vertical"
+        android:padding="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minLines="2"
+        android:maxLines="7"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/quiz_increase_points_allocated"
+        android:layout_toRightOf="@+id/quiz_reduce_points_allocated" />
+      <ImageButton
+        android:id="@+id/quiz_increase_points_allocated"
+        android:src="@drawable/ic_increment"
+        android:background="#00000000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quiz_answer_text"
+        android:layout_alignParentRight="true" />
+
+      <ImageButton
+        android:id="@+id/quiz_reduce_points_allocated"
+        android:src="@drawable/ic_decremenet"
+        android:background="#00000000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quiz_answer_text"
+        android:layout_alignParentLeft="true" />
+
+    </RelativeLayout>
+
+
+  </RelativeLayout>
+
+</com.example.jeff.viewpagerdelete.Miscellaneous.CollapsibleCardView>

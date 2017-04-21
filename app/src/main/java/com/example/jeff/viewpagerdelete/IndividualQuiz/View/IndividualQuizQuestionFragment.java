@@ -14,6 +14,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener;
+import android.support.v7.widget.RecyclerView.RecyclerListener;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.method.ScrollingMovementMethod;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -34,6 +37,7 @@ import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
+import com.example.jeff.viewpagerdelete.Miscellaneous.CollapsibleCardView;
 import com.example.jeff.viewpagerdelete.R;
 import java.util.Collections;
 
@@ -110,6 +114,24 @@ public class IndividualQuizQuestionFragment extends Fragment {
         adapter = new AnswerAdapter();
         recyclerView.setAdapter(adapter);
 
+        recyclerView.addOnChildAttachStateChangeListener(new OnChildAttachStateChangeListener() {
+            @Override
+            public void onChildViewAttachedToWindow(View view) {
+                if (allAnswersCollapsed) {
+                    ((CollapsibleCardView) view).setCollapsed(true);
+
+                } else if (allAnswersExpanded) {
+                    ((CollapsibleCardView) view).setCollapsed(false);
+                }
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(View view) {
+
+            }
+        });
+
+
         collapsedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_collapse);
         expandedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand);
 
@@ -126,11 +148,9 @@ public class IndividualQuizQuestionFragment extends Fragment {
                     toggleAnswersCollapsedButton.startAnimation(rotateUp);
 
                     for (int i = 0; i < recyclerView.getLayoutManager().getChildCount(); i++) {
-                        AnswerHolder answerHolder = ((AnswerHolder) recyclerView
-                            .findViewHolderForAdapterPosition(i));
-                        if (answerHolder.isCollapsed) {
-                            answerHolder.expandCard();
-                        }
+                        CollapsibleCardView cardView = (CollapsibleCardView) recyclerView
+                            .getLayoutManager().getChildAt(i);
+                        cardView.expandContent();
                     }
 
                 } else {
@@ -139,11 +159,9 @@ public class IndividualQuizQuestionFragment extends Fragment {
                     toggleAnswersCollapsedButton.startAnimation(rotateDown);
 
                     for (int i = 0; i < recyclerView.getLayoutManager().getChildCount(); i++) {
-                        AnswerHolder answerHolder = ((AnswerHolder) recyclerView
-                            .findViewHolderForAdapterPosition(i));
-                        if (!answerHolder.isCollapsed) {
-                            answerHolder.collapseCard();
-                        }
+                        CollapsibleCardView cardView = (CollapsibleCardView) recyclerView
+                            .getLayoutManager().getChildAt(i);
+                        cardView.collapseContent();
                     }
                 }
 
@@ -224,7 +242,8 @@ public class IndividualQuizQuestionFragment extends Fragment {
         @Override
         public AnswerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.item_quiz_answer, parent, false);
+            CollapsibleCardView view = (CollapsibleCardView) inflater
+                .inflate(R.layout.item_quiz_answer, parent, false);
             return new AnswerHolder(view);
         }
 
@@ -254,9 +273,8 @@ public class IndividualQuizQuestionFragment extends Fragment {
         private RelativeLayout answerCardHeader;
         private RelativeLayout answerCardContent;
 
-        boolean isCollapsed = false;
 
-        public AnswerHolder(final View itemView) {
+        public AnswerHolder(final CollapsibleCardView itemView) {
             super(itemView);
 
             mAnswerValue = (TextView) itemView.findViewById(R.id.quiz_answer_label);
@@ -271,6 +289,10 @@ public class IndividualQuizQuestionFragment extends Fragment {
             answerCardContent = (RelativeLayout) itemView
                 .findViewById(R.id.quiz_answer_card_content);
 
+            itemView.setCardHeader(answerCardHeader);
+            itemView.setCardContent(answerCardContent);
+            itemView.setAnswerTextPreview(answerTextPreview);
+
         }
 
 
@@ -281,12 +303,13 @@ public class IndividualQuizQuestionFragment extends Fragment {
             mPointsAllocated.setText(answer.getPointsAllocated() + "");
             answerTextPreview.setText(answer.getText());
 
+            CollapsibleCardView view = ((CollapsibleCardView) itemView);
+
             if (allAnswersCollapsed) {
-                isCollapsed = true;
-                answerCardContent.setVisibility(View.GONE);
+                view.setCollapsed(true);
+
             } else if (allAnswersExpanded) {
-                isCollapsed = false;
-                answerCardContent.setVisibility(View.VISIBLE);
+                view.setCollapsed(false);
             }
 
             mIncrementPointsAllocatedBtn.setOnClickListener(new OnClickListener() {
@@ -296,8 +319,6 @@ public class IndividualQuizQuestionFragment extends Fragment {
                         mPointsAllocated.setText(answer.incrementPointsAllocated() + "");
                         incrementButtonClicked();
                     }
-
-
                 }
             });
 
@@ -311,43 +332,9 @@ public class IndividualQuizQuestionFragment extends Fragment {
                 }
             });
 
-            answerCardHeader.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    view.setEnabled(false);
-                    toggleCollapsed(view);
-                }
-            });
-
 
         }
 
-
-        public void toggleCollapsed(View view) {
-            //Toggling while view is already animating causes app to crash; So if app is already animating, dont try to start again
-            //Problem is TransitionManager#endTransitions only works on API level 23+, and we are targeting 19
-            if (!isCollapsed) {
-                collapseCard();
-            } else {
-                expandCard();
-            }
-        }
-
-        public void collapseCard() {
-            TransitionManager.beginDelayedTransition((ViewGroup) itemView.getParent());
-            answerCardContent.setVisibility(View.GONE);
-            answerTextPreview.setVisibility(View.VISIBLE);
-            isCollapsed = true;
-            itemView.setEnabled(true);
-        }
-
-        public void expandCard() {
-            TransitionManager.beginDelayedTransition((ViewGroup) itemView.getParent());
-            answerTextPreview.setVisibility(View.INVISIBLE);
-            answerCardContent.setVisibility(View.VISIBLE);
-            isCollapsed = false;
-            itemView.setEnabled(true);
-        }
 
         public void incrementButtonClicked() {
             mPointsRemainingTextView.setText("" + question.decrementPointsRemaining());
