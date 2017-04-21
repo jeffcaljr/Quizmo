@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="16dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    app:contentPadding="8dp"
-    app:cardCornerRadius="8dp">
+  app:contentPadding="8dp"
+  android:layout_marginLeft="4dp"
+  android:layout_marginRight="4dp"
+  android:layout_marginBottom="8dp"
+  app:cardElevation="8dp"
+  app:cardBackgroundColor="@color/colorWhite">
 
     <RelativeLayout
     android:layout_width="match_parent"
@@ -27,7 +26,9 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/quiz_time_remaining"/>
+      android:layout_below="@+id/quiz_time_remaining"
+
+      android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/quiz_time_remaining"
@@ -36,9 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+          android:layout_centerHorizontal="true"
             android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"/>
+          android:layout_marginBottom="12dp"
+          android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
     </RelativeLayout>
 

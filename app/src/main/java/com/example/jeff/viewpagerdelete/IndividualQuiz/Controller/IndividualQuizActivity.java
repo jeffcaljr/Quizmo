@@ -29,7 +29,6 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworking
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.View.QuestionsUnfinishedFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
 
@@ -55,6 +54,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     public ViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
+  private TabLayout tabLayout;
 
     private Snackbar snackbar;
 
@@ -94,7 +94,7 @@ public class IndividualQuizActivity extends AppCompatActivity
         getSupportActionBar().setTitle(quiz.getDescription());
 
         submitSnackBar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Ready to submit?", Snackbar.LENGTH_INDEFINITE);
-        submitSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryBright));
+      submitSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.jccolorPrimaryBright));
         submitSnackBar.setAction("Submit", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,8 +138,9 @@ public class IndividualQuizActivity extends AppCompatActivity
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
+      tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
+
 
 //        setTypefaces();
 
@@ -242,7 +243,8 @@ public class IndividualQuizActivity extends AppCompatActivity
                 submitSnackBar.dismiss();
                 int unanswered = unansweredQuestions.size();
                 snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), unanswered + " questions unanswered.", Snackbar.LENGTH_LONG);
-                snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryBright));
+              snackbar
+                  .setActionTextColor(ContextCompat.getColor(this, R.color.jccolorPrimaryBright));
                 snackbar.setAction("GO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

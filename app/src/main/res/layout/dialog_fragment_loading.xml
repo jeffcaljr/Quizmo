@@ -12,12 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateOnly="true"
-        android:indeterminateTint="@color/jccolorPrimaryDark"/>
+      android:indeterminateTint="@color/jccolorPrimary" />
 
     <TextView
         android:id="@+id/loading_text"
         android:text="Loading"
-        android:textColor="@color/jccolorPrimaryDark"
+      android:textColor="@color/jccolorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"/>

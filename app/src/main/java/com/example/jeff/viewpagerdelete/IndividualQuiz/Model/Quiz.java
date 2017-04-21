@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
+import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +21,7 @@ import java.util.TimeZone;
  * Created by Jeff on 2/11/17.
  */
 
-public class Quiz implements Serializable {
+public class Quiz implements Serializable, Comparable<Quiz> {
 
     private String id;
     private String description;
@@ -256,9 +257,8 @@ public class Quiz implements Serializable {
         }
     }
 
-
-
-
-
-
+  @Override
+  public int compareTo(@NonNull Quiz quiz) {
+    return (quiz.getAvailableDate().compareTo(this.availableDate));
+  }
 }

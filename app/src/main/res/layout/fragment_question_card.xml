@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/question_cardView"
-        app:cardBackgroundColor="@color/jccolorPrimaryDark"
+      app:cardBackgroundColor="@color/jccolorPrimary"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:cardUseCompatPadding="true"

@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,16 +18,18 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Jeff on 4/11/17.
  */
 
-public class CourseListFragment extends Fragment {
+public class CourseListFragment extends Fragment implements OnRefreshListener {
 
     public static final String ARG_COURSES_COURSE_LIST_FRAGMENT = "ARG_COURSES_COURSE_LIST_FRAGMENT";
 
@@ -34,6 +38,7 @@ public class CourseListFragment extends Fragment {
 
     private CourseListListener mListener;
 
+  private SwipeRefreshLayout swipeRefreshLayout;
   private SearchView searchView;
   private RelativeLayout coursesEmptyView;
     private RecyclerView recyclerView;
@@ -51,7 +56,20 @@ public class CourseListFragment extends Fragment {
         Bundle args = getArguments();
 
         if(args != null && args.containsKey(ARG_COURSES_COURSE_LIST_FRAGMENT)){
+
             courses = (ArrayList<Course>) args.getSerializable(ARG_COURSES_COURSE_LIST_FRAGMENT);
+
+          //TODO: Test code; delete proceeding later
+          Course firstCourse = courses.get(0);
+          courses.add(new Course(firstCourse.getId(), firstCourse.getCourseID(),
+              firstCourse.getExtendedID(), null, firstCourse.getSemester(),
+              firstCourse.getInstructor(), firstCourse.getQuiz()));
+          courses.get(1).setName("Ada Programming");
+          //TODO: Test code; delete preceeding later
+
+          Collections.sort(courses);
+
+
           coursesCopy = new ArrayList<>();
         }
         else{
@@ -78,6 +96,10 @@ public class CourseListFragment extends Fragment {
           return true;
         }
       });
+
+      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.course_list_swipe_refresher);
+
+      swipeRefreshLayout.setOnRefreshListener(this);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.course_list_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -153,7 +175,7 @@ public class CourseListFragment extends Fragment {
               coursesEmptyView.setVisibility(View.VISIBLE);
             }
             else{
-              coursesEmptyView.setVisibility(View.GONE);
+              coursesEmptyView.setVisibility(View.INVISIBLE);
             }
             return size;
         }
@@ -206,4 +228,15 @@ public class CourseListFragment extends Fragment {
             mListener.courseItemClicked(courses.get(this.getAdapterPosition()));
         }
     }
+
+  //MARK: OnRefreshListener Methods
+
+
+  @Override
+  public void onRefresh() {
+    Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_LONG).show();
+
+//    adapter.notifyDataSetChanged();
+    swipeRefreshLayout.setRefreshing(false);
+  }
 }

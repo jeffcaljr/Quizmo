@@ -2,15 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <item name="colorPrimary">@color/jccolorPrimaryDark</item>
+      <item name="colorPrimary">@color/jccolorPrimary</item>
         <item name="colorPrimaryDark">@color/jccolorPrimaryDark</item>
         <item name="colorAccent">@color/jccolorAccent</item>
         <!--<item name="android:buttonStyle">@style/turboButton</item>-->
-        <!--<item name="android:background">@color/colorBackground</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -19,7 +14,7 @@
     </style>
 
     <!--<style name="TextAppearance.Design.Snackbar.Message." parent="android:TextAppearance" tools:override="true">-->
-    <!--<item name="android:textColor">@color/colorPrimaryBright</item>-->
+  <!--<item name="android:textColor">@color/jccolorPrimaryBright</item>-->
     <!--</style>-->
 
 
@@ -43,7 +38,7 @@
     <!--</style>-->
 
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

@@ -8,10 +8,14 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.AdapterDataObserver;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
@@ -19,15 +23,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.Miscellaneous.DrawableScaler;
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Jeff on 4/4/17.
  */
 
-public class QuizListFragment extends Fragment {
+public class QuizListFragment extends Fragment implements OnRefreshListener {
 
     public static final String ARG_COURSES_QUIZ_LIST_FRAGMENT = "ARG_COURSES_QUIZ_LIST_FRAGMENT";
 
@@ -45,12 +54,16 @@ public class QuizListFragment extends Fragment {
 
     private QuizListListener mListener;
 
+  private SwipeRefreshLayout swipeRefreshLayout;
   private SearchView searchView;
   private RelativeLayout quizzesEmptyView;
+  private ImageView emptyListImageView;
     private RecyclerView mRecyclerView;
     private QuizAdapter mAdapter;
 
     private Animation shake;
+
+  private DrawableScaler drawableScaler;
 
     Typeface regularFace;
     Typeface boldFace;
@@ -72,13 +85,15 @@ public class QuizListFragment extends Fragment {
         if(args != null && args.containsKey(ARG_COURSES_QUIZ_LIST_FRAGMENT)){
             courses = (ArrayList<Course>) args.get(ARG_COURSES_QUIZ_LIST_FRAGMENT);
 
-          //TODO: Test code proceeding; delete later
-
-          //add two dummy quizzes to the list
-
-          courses.add(courses.get(0));
-          courses.add(courses.get(0));
-          //TODO: Test code preceeding; delete later
+          //Does this work?
+          //try to sort the quizzes by available date (most recent first)
+          Collections.sort(courses, new Comparator<Course>() {
+            @Override
+            public int compare(Course course, Course t1) {
+              return (t1.getQuiz().getAvailableDate()
+                  .compareTo(course.getQuiz().getAvailableDate()));
+            }
+          });
 
 
           coursesCopy = new ArrayList<>();
@@ -87,6 +102,10 @@ public class QuizListFragment extends Fragment {
         regularFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoRegular.ttf");
         boldFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBold.ttf");
         boldItalicFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBoldItalic.ttf");
+
+      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.quiz_list_swipe_refresher);
+
+      swipeRefreshLayout.setOnRefreshListener(this);
 
       quizzesEmptyView = (RelativeLayout) view.findViewById(R.id.quizzes_list_empty_tv);
       searchView = (SearchView) view.findViewById(R.id.quiz_search_view);
@@ -119,9 +138,32 @@ public class QuizListFragment extends Fragment {
             e.printStackTrace();
         }
 
+      AdapterDataObserver emptyObserver = new AdapterDataObserver() {
+
+
+        @Override
+        public void onChanged() {
+          Adapter<?> adapter = mAdapter;
+          if (adapter != null && quizzesEmptyView != null) {
+            if (adapter.getItemCount() == 0) {
+              quizzesEmptyView.setVisibility(View.VISIBLE);
+            } else {
+              quizzesEmptyView.setVisibility(View.GONE);
+            }
+          }
+
+        }
+      };
+
+      mAdapter.registerAdapterDataObserver(emptyObserver);
+
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shakeanim);
-      colorPrimaryBright = ContextCompat.getColor(getContext(), R.color.colorPrimaryBright);
+      colorPrimaryBright = ContextCompat.getColor(getContext(), R.color.jccolorPrimaryBright);
       colorWarningYellow = ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow);
+
+      drawableScaler = new DrawableScaler(getContext());
+
+
 
         return view;
     }
@@ -154,8 +196,16 @@ public class QuizListFragment extends Fragment {
         void itemClicked(Course course);
     }
 
+  //MARK: OnRefreshListener Methods
 
-    private class QuizAdapter extends RecyclerView.Adapter<QuizHolder>{
+
+  @Override
+  public void onRefresh() {
+    Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_LONG).show();
+    swipeRefreshLayout.setRefreshing(false);
+  }
+
+  private class QuizAdapter extends RecyclerView.Adapter<QuizHolder> {
 
       public QuizAdapter() {
         coursesCopy.addAll(courses);
@@ -185,16 +235,9 @@ public class QuizListFragment extends Fragment {
             //TODO: The following line is for test purposes
                 //because there is currently one quiz in the network, and I want to show a list, I
                 //am showing the same quiz multiple times
-//            return 3;
+          return 3;
 
-          int size = courses.size();
-
-          if (size == 0) {
-            quizzesEmptyView.setVisibility(View.VISIBLE);
-          } else {
-            quizzesEmptyView.setVisibility(View.GONE);
-          }
-          return size;
+//          return courses.size();
 
 
         }
@@ -213,7 +256,7 @@ public class QuizListFragment extends Fragment {
           }
         }
         notifyDataSetChanged();
-        }
+      }
 
 
     }
@@ -243,63 +286,64 @@ public class QuizListFragment extends Fragment {
 
 
         public void bindQuiz(Course course){
-            quizNameTextView.setText(course.getQuiz().getDescription());
 
-            Quiz q =  course.getQuiz();
+          Quiz q = course.getQuiz();
 
-            Calendar availableDate = new GregorianCalendar();
-            availableDate.setTime(new Date());
+          quizNameTextView.setText(q.getDescription());
 
-            if(this.getAdapterPosition() == 0){
+//            Calendar availableDate = new GregorianCalendar();
+//            availableDate.setTime(new Date());
+//
+//            if(this.getAdapterPosition() == 0){
+//
+//                //TODO: should be set to the quizzes available date, not todays date
+//
+//                availableDate.add(Calendar.MINUTE, q.getTimedLength());
+//
+//            }
+//            else if(this.getAdapterPosition() == 1){
+//                //make quiz expire in 5 mintes and 20 seconds
+//                itemView.setEnabled(false);
+//                availableDate.add(Calendar.MINUTE, 5);
+//                availableDate.add(Calendar.SECOND, 20);
+//            }
+//            else{
+//                availableDate.setTime(q.getAvailableDate());
+//            }
+//
+//            long expiryTime = availableDate.getTimeInMillis() - new Date().getTime();
+//
+//
+//
+//            new CountDownTimer(expiryTime, 1000){
+//                @Override
+//                public void onTick(long millisecondsUntilFinished) {
+//                    timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
+//                            TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished)));
+//                    timeRemainingTextView.setText(timeRemaining);
+//
+//                    if(millisecondsUntilFinished < 5 * 60 * 1000){
+//
+//                        if(!tempDeleteThis){
+//                            itemView.startAnimation(shake);
+//                          ((CardView) itemView).setCardBackgroundColor(colorWarningYellow);
+//                            tempDeleteThis = true;
+//                        }
+//
+//
+//                    }
+//                }
 
-                //TODO: should be set to the quizzes available date, not todays date
-
-                availableDate.add(Calendar.MINUTE, q.getTimedLength());
-
-            }
-            else if(this.getAdapterPosition() == 1){
-                //make quiz expire in 5 mintes and 20 seconds
-                itemView.setEnabled(false);
-                availableDate.add(Calendar.MINUTE, 5);
-                availableDate.add(Calendar.SECOND, 20);
-            }
-            else{
-                availableDate.setTime(q.getAvailableDate());
-            }
-
-            long expiryTime = availableDate.getTimeInMillis() - new Date().getTime();
-
-
-
-            new CountDownTimer(expiryTime, 1000){
-                @Override
-                public void onTick(long millisecondsUntilFinished) {
-                    timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
-                            TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished)));
-                    timeRemainingTextView.setText(timeRemaining);
-
-                    if(millisecondsUntilFinished < 5 * 60 * 1000){
-
-                        if(!tempDeleteThis){
-                            itemView.startAnimation(shake);
-                          ((CardView) itemView).setCardBackgroundColor(colorWarningYellow);
-                            tempDeleteThis = true;
-                        }
-
-
-                    }
-                }
-
-                @Override
-                public void onFinish() {
-                    itemView.clearAnimation();
-                    timeRemainingTextView.setText("Expired!");
-                  ((CardView) itemView).setCardBackgroundColor(colorPrimaryBright);
-                    quizNameTextView.setTextColor(Color.WHITE);
-                    timeRemainingTextView.setTextColor(Color.WHITE);
-                    itemView.setEnabled(false);
-                }
-            }.start();
+//                @Override
+//                public void onFinish() {
+//                    itemView.clearAnimation();
+//                    timeRemainingTextView.setText("Expired!");
+//                  ((CardView) itemView).setCardBackgroundColor(Color.WHITE);
+//                    quizNameTextView.setTextColor(colorPrimaryBright);
+//                    timeRemainingTextView.setTextColor(Color.WHITE);
+//                    itemView.setEnabled(false);
+//                }
+//            }.start();
         }
 
         @Override
@@ -307,8 +351,10 @@ public class QuizListFragment extends Fragment {
 
             //TODO: The following line sets the click listener for a cell to pass the firs quiz in the list to the listener
                 //no matter what; this is only for testing purposes
-            mListener.itemClicked((courses.get(0)));
-//            mListener.itemClicked(courses.get(this.getAdapterPosition()));
+//            mListener.itemClicked((courses.get(0)));
+          mListener.itemClicked(courses.get(this.getAdapterPosition()));
         }
     }
+
+
 }

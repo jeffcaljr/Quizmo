@@ -18,9 +18,10 @@
     <!--<color name="colorCardBackground">#4DB6AC</color>-->
 
     <color name="jccolorWarningYellow">#FFCA28</color>
-    <color name="jccolorPrimary">#C62828</color>
-    <color name="jccolorPrimaryDark">#8E1717</color>
-    <color name="colorPrimaryBright">#F44336</color>
-    <color name="jccolorAccent">#50E3C2</color>
+  <color name="jccolorPrimary">#8E1717</color>
+  <color name="jccolorPrimaryDark">#5b0000</color>
+  <color name="jccolorPrimaryBright">#c44b3e</color>
+  <color name="jccolorPrimaryMuted">#F1E3E3</color>
+  <color name="jccolorAccent">#8BC34A</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.Homepage.Model;
 
+import android.support.annotation.NonNull;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 
 import org.json.JSONException;
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * Created by Jeff on 4/11/17.
  */
 
-public class Course implements Serializable {
+public class Course implements Serializable, Comparable<Course> {
 
     private String id;
     private String courseID;
@@ -42,6 +43,16 @@ public class Course implements Serializable {
 
     }
 
+  public Course(String id, String courseID, String extendedID, String name, String semester,
+      String instructor, Quiz quiz) {
+    this.id = id;
+    this.courseID = courseID;
+    this.extendedID = extendedID;
+    this.name = name;
+    this.semester = semester;
+    this.instructor = instructor;
+    this.quiz = quiz;
+  }
 
     public Course() {
     }
@@ -100,5 +111,10 @@ public class Course implements Serializable {
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
+    }
+
+  @Override
+  public int compareTo(@NonNull Course course) {
+    return (this.getName().compareTo(course.getName()));
     }
 }

@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/group_waiting_area_list_item_user_name"
             android:text="User Name"
-            android:textColor="@color/colorPrimaryBright"
+          android:textColor="@color/jccolorPrimaryBright"
             android:layout_width="0dp"
             android:textSize="16dp"
             android:gravity="center"

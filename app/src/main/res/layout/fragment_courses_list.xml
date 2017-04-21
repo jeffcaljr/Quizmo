@@ -11,39 +11,45 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:iconifiedByDefault="true"
-    android:layout_centerHorizontal="true"
-    android:elevation="4dp"
-    android:background="@drawable/search_view_background"></android.support.v7.widget.SearchView>
+    android:layout_centerHorizontal="true"></android.support.v7.widget.SearchView>
 
-  <android.support.v7.widget.RecyclerView
-        android:id="@+id/course_list_recyclerview"
-        android:layout_width="match_parent"
+  <android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/course_list_swipe_refresher"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/course_search_view"
     android:layout_alignParentBottom="true">
 
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/course_list_recyclerview"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
     </android.support.v7.widget.RecyclerView>
+
+  </android.support.v4.widget.SwipeRefreshLayout>
+
 
   <RelativeLayout
         android:id="@+id/courses_list_empty_tv"
     android:background="@color/colorWhite"
         android:gravity="center"
         android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+    android:layout_height="match_parent"
       android:visibility="invisible"
       android:layout_below="@id/course_search_view"
     android:layout_alignParentBottom="true">
 
-    <ImageView
-      android:id="@+id/empty_list_image"
-      android:src="@drawable/empty_list"
-      android:scaleType="centerInside"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      android:layout_above="@+id/empty_list_text"
-      android:paddingRight="64dp"
-      android:paddingLeft="64dp" />
+    <!--<ImageView-->
+    <!--android:id="@+id/empty_list_image"-->
+    <!--android:src="@drawable/empty_list"-->
+    <!--android:scaleType="centerInside"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_above="@+id/empty_list_text"-->
+    <!--android:paddingRight="64dp"-->
+    <!--android:paddingLeft="64dp" />-->
 
     <TextView
       android:id="@+id/empty_list_text"
@@ -54,7 +60,7 @@
       android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
       android:textStyle="bold"
       android:textSize="24sp"
-      android:textColor="@color/jccolorPrimaryDark" />
+      android:textColor="@color/jccolorPrimary" />
   </RelativeLayout>
 
 </RelativeLayout>

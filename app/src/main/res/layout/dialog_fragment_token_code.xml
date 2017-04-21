@@ -8,7 +8,7 @@
         android:id="@+id/token_code_dialog_title"
         android:text="Enter Token Code"
         android:textSize="24dp"
-        android:textColor="@color/jccolorPrimaryDark"
+      android:textColor="@color/jccolorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:indeterminateOnly="true"
             android:layout_centerInParent="true"
-            android:indeterminateTint="@color/jccolorPrimaryDark"/>
+          android:indeterminateTint="@color/jccolorPrimary" />
 
         <LinearLayout
             android:id="@+id/token_code_error_layout"
@@ -74,7 +74,7 @@
         <Button
             android:id="@+id/token_code_cancel_button"
             android:text="Cancel"
-            android:textColor="@color/jccolorPrimaryDark"
+          android:textColor="@color/jccolorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -83,7 +83,7 @@
         <Button
             android:id="@+id/token_code_submit_button"
             android:text="Submit"
-            android:textColor="@color/jccolorPrimaryDark"
+          android:textColor="@color/jccolorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/Widget.Holo.Button.Borderless"/>

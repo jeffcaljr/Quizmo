@@ -128,13 +128,6 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
 

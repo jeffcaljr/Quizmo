@@ -7,7 +7,7 @@
         android:gravity="center"
         android:id="@+id/group_name_textview"
         android:textSize="24sp"
-        android:textColor="@color/colorPrimaryBright"
+      android:textColor="@color/jccolorPrimaryBright"
         android:text="@string/group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
