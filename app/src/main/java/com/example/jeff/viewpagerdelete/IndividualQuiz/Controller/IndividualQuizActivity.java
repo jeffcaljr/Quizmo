@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -32,6 +33,8 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
 
+import com.example.jeff.viewpagerdelete.Startup.Model.User;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +46,7 @@ public class IndividualQuizActivity extends AppCompatActivity
                     SubmissionAlertFragment.SubmissionAlertFragmentListener,
     QuizNetworkingService.IndividualQuizPostListener {
 
-    //Constants used for key/value
+  //Constants used for keys/values
     public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
     public static final String INTENT_EXTRA_SESSION_ID = "INTENT_EXTRA_SESSION_ID";
     public static final String INTENT_EXTRA_COURSE_QUIZ = "INTENT_EXTRA_COURSE_QUIZ";
@@ -52,15 +55,16 @@ public class IndividualQuizActivity extends AppCompatActivity
     public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
     public static final String EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS = "EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS ";
 
+
     public ViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
   private TabLayout tabLayout;
+  private ProgressBar quizTimerProgressBar;
 
     private Snackbar snackbar;
 
     private Course course;
     private Quiz quiz;
-    private String username = "jcd39";
 
     private QuizNetworkingService quizNetworkingService;
 
@@ -73,7 +77,7 @@ public class IndividualQuizActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_individual_quiz);
+      setContentView(R.layout.activity_quiz_individual);
 
         Intent i = getIntent();
         if(i.hasExtra(INTENT_EXTRA_QUIZ) && i.hasExtra(INTENT_EXTRA_COURSE_QUIZ) && i.hasExtra(INTENT_EXTRA_SESSION_ID)){
@@ -102,8 +106,9 @@ public class IndividualQuizActivity extends AppCompatActivity
             }
         });
 
+      quizTimerProgressBar = (ProgressBar) findViewById(R.id.quiz_timer_progress_bar);
 
-        mPager = (ViewPager) findViewById(R.id.question_pager);
+      mPager = (ViewPager) findViewById(R.id.quiz_question_viewpager);
         mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
 
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -141,8 +146,6 @@ public class IndividualQuizActivity extends AppCompatActivity
       tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 
-
-//        setTypefaces();
 
     }
 
@@ -294,7 +297,9 @@ public class IndividualQuizActivity extends AppCompatActivity
     public void userConfirmedSubmission() {
 
         quizNetworkingService
-            .uploadQuiz(this, course.getCourseID(), username, quiz.getAssociatedSessionID(), quiz);
+            .uploadQuiz(this, course.getCourseID(),
+                UserDataSource.getInstance().getUser().getUserID(), quiz.getAssociatedSessionID(),
+                quiz);
 
     }
 
