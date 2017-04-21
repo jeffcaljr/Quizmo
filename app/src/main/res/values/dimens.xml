@@ -5,4 +5,9 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="waiting_indicator_circle_icon_width">16dp</dimen>
+  <dimen name="quiz_card_content_padding">8dp</dimen>
+  <dimen name="quiz_card_side_margin">8dp</dimen>
+  <dimen name="quiz_card_elevation">12dp</dimen>
+  <dimen name="quiz_question_card_elevation">32dp</dimen>
+  <dimen name="quiz_question_card_height">400dp</dimen>
 </resources>
