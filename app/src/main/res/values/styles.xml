@@ -5,7 +5,8 @@
       <item name="colorPrimary">@color/jccolorPrimary</item>
         <item name="colorPrimaryDark">@color/jccolorPrimaryDark</item>
         <item name="colorAccent">@color/jccolorAccent</item>
-        <!--<item name="android:buttonStyle">@style/turboButton</item>-->
+      <!--<item name="android:textViewStyle">@style/nonInteractiveText</item>-->
+      <item name="actionBarTabStyle">@style/trimmedTabviews</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,10 +14,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!--<style name="TextAppearance.Design.Snackbar.Message." parent="android:TextAppearance" tools:override="true">-->
-  <!--<item name="android:textColor">@color/jccolorPrimaryBright</item>-->
-    <!--</style>-->
+  <style name="nonInteractiveText" parent="android:style/Widget.TextView">
+    <item name="android:enabled">false</item>
+    <item name="android:selectable">false</item>
+  </style>
 
+
+  <!--Removes padding from tab images-->
+  <style name="trimmedTabviews" parent="@style/Widget.AppCompat.ActionBar.TabView" override="true">
+    <item name="android:padding">0dp</item>
+    <item name="android:background">#0000FF</item>
+
+  </style>
 
     <!--<style name="redTextSnackbar" parent="Widget.Design.Snackbar" tools:override="true">-->
     <!--<item name="background">@color/jccolorPrimaryDark</item>-->

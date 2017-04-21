@@ -16,14 +16,19 @@
         <activity
             android:name=".Startup.ActivityControllers.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".IndividualQuiz.Controller.IndividualQuizActivity" />
+        <activity
+          android:name=".IndividualQuiz.Controller.IndividualQuizActivity"
+          android:windowSoftInputMode="adjustPan" />
         <activity
           android:name=".Homepage.ActivityControllers.HomePageActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+          android:theme="@style/AppTheme.NoActionBar"
+          android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".Startup.ActivityControllers.Splash">
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +38,8 @@
         <activity
             android:name=".GroupQuiz.ActivityControllers.GroupWaitingArea"
             android:label="@string/title_activity_group_quiz_code"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+          android:theme="@style/AppTheme.NoActionBar"
+          android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
 
+import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +11,7 @@ import java.io.Serializable;
  * Created by Jeff on 2/11/17.
  */
 
-public class QuizAnswer implements Serializable {
+public class QuizAnswer implements Serializable, Comparable<QuizAnswer> {
 
     private String id;
     private String value;
@@ -108,6 +109,8 @@ public class QuizAnswer implements Serializable {
         return pointsAllocated;
     }
 
-
-
+  @Override
+  public int compareTo(@NonNull QuizAnswer answer) {
+    return (this.sortOrder - answer.sortOrder);
+  }
 }

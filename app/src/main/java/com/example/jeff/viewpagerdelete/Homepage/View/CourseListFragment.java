@@ -19,9 +19,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import android.widget.Toast;
+import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.R;
 
+import com.example.jeff.viewpagerdelete.Startup.Model.User;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,7 +34,7 @@ import java.util.Collections;
  * Created by Jeff on 4/11/17.
  */
 
-public class CourseListFragment extends Fragment implements OnRefreshListener {
+public class CourseListFragment extends Fragment implements OnRefreshListener, UserFetcherListener {
 
     public static final String ARG_COURSES_COURSE_LIST_FRAGMENT = "ARG_COURSES_COURSE_LIST_FRAGMENT";
 
@@ -44,9 +49,6 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
     private RecyclerView recyclerView;
     private CourseAdapter adapter;
 
-    Typeface regularFace;
-    Typeface boldFace;
-    Typeface boldItalicFace;
 
     @Nullable
     @Override
@@ -60,11 +62,13 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
             courses = (ArrayList<Course>) args.getSerializable(ARG_COURSES_COURSE_LIST_FRAGMENT);
 
           //TODO: Test code; delete proceeding later
-          Course firstCourse = courses.get(0);
-          courses.add(new Course(firstCourse.getId(), firstCourse.getCourseID(),
-              firstCourse.getExtendedID(), null, firstCourse.getSemester(),
-              firstCourse.getInstructor(), firstCourse.getQuiz()));
-          courses.get(1).setName("Ada Programming");
+          if (courses.size() == 1) {
+            Course firstCourse = courses.get(0);
+            courses.add(new Course(firstCourse.getId(), firstCourse.getCourseID(),
+                firstCourse.getExtendedID(), null, firstCourse.getSemester(),
+                firstCourse.getInstructor(), firstCourse.getQuiz()));
+            courses.get(1).setName("Ada Programming");
+          }
           //TODO: Test code; delete preceeding later
 
           Collections.sort(courses);
@@ -76,9 +80,6 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
             courses = new ArrayList<>();
         }
 
-        regularFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoRegular.ttf");
-        boldFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBold.ttf");
-        boldItalicFace = Typeface.createFromAsset(getContext(). getAssets(),"fonts/robotoBoldItalic.ttf");
 
       searchView = (SearchView) view.findViewById(R.id.course_search_view);
 
@@ -212,8 +213,6 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
             courseNameTextView = (TextView) itemView.findViewById(R.id.course_name_textview);
             instructorNameTextView = (TextView) itemView.findViewById(R.id.course_instructor_textview);
 
-            courseNameTextView.setTypeface(regularFace);
-            instructorNameTextView.setTypeface(regularFace);
 
             itemView.setOnClickListener(this);
         }
@@ -234,9 +233,29 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
 
   @Override
   public void onRefresh() {
-    Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_LONG).show();
 
-//    adapter.notifyDataSetChanged();
+    UserNetworkingService userNetworkingService = new UserNetworkingService(getContext());
+
+    userNetworkingService.downloadUser(this, UserDataSource.getInstance().getUser().getUserID());
+
+  }
+
+  //MARK: UserFetcherListener Methods
+
+
+  @Override
+  public void userDownloadSuccess(User user) {
+    UserDataSource.getInstance().setUser(user);
+    this.courses = user.getEnrolledCourses();
+    adapter.notifyDataSetChanged();
     swipeRefreshLayout.setRefreshing(false);
+  }
+
+  @Override
+  public void userDownloadFailure(VolleyError error) {
+    this.courses.clear();
+    adapter.notifyDataSetChanged();
+    swipeRefreshLayout.setRefreshing(false);
+
   }
 }

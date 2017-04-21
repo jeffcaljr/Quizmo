@@ -1,17 +1,14 @@
 package com.example.jeff.viewpagerdelete.Homepage.View;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -23,23 +20,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import android.widget.Toast;
+import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
-import com.example.jeff.viewpagerdelete.Miscellaneous.DrawableScaler;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jeff on 4/4/17.
@@ -52,18 +45,18 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
     private ArrayList<Course> courses;
   private ArrayList<Course> coursesCopy;
 
+  private QuizNetworkingService quizNetworkingService;
+
     private QuizListListener mListener;
 
   private SwipeRefreshLayout swipeRefreshLayout;
   private SearchView searchView;
   private RelativeLayout quizzesEmptyView;
-  private ImageView emptyListImageView;
     private RecyclerView mRecyclerView;
     private QuizAdapter mAdapter;
 
     private Animation shake;
 
-  private DrawableScaler drawableScaler;
 
     Typeface regularFace;
     Typeface boldFace;
@@ -161,7 +154,6 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
       colorPrimaryBright = ContextCompat.getColor(getContext(), R.color.jccolorPrimaryBright);
       colorWarningYellow = ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow);
 
-      drawableScaler = new DrawableScaler(getContext());
 
 
 
@@ -201,7 +193,9 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
 
   @Override
   public void onRefresh() {
+
     Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_LONG).show();
+
     swipeRefreshLayout.setRefreshing(false);
   }
 
@@ -235,9 +229,7 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
             //TODO: The following line is for test purposes
                 //because there is currently one quiz in the network, and I want to show a list, I
                 //am showing the same quiz multiple times
-          return 3;
-
-//          return courses.size();
+          return courses.size();
 
 
         }

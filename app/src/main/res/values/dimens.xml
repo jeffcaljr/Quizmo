@@ -9,5 +9,5 @@
   <dimen name="quiz_card_side_margin">8dp</dimen>
   <dimen name="quiz_card_elevation">12dp</dimen>
   <dimen name="quiz_question_card_elevation">32dp</dimen>
-  <dimen name="quiz_question_card_height">400dp</dimen>
+  <dimen name="quiz_question_card_height">200dp</dimen>
 </resources>

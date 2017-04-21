@@ -21,6 +21,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.eftimoff.viewpagertransformers.AccordionTransformer;
+import com.eftimoff.viewpagertransformers.BackgroundToForegroundTransformer;
+import com.eftimoff.viewpagertransformers.DefaultTransformer;
+import com.eftimoff.viewpagertransformers.DepthPageTransformer;
+import com.eftimoff.viewpagertransformers.ParallaxPageTransformer;
 import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
@@ -139,12 +144,13 @@ public class IndividualQuizActivity extends AppCompatActivity
             }
         });
 
-        mPager.setPageTransformer(true, new StackTransformer());
+      mPager.setPageTransformer(false, new DefaultTransformer());
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
       tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
+
 
 
     }
@@ -260,7 +266,9 @@ public class IndividualQuizActivity extends AppCompatActivity
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                   super.onDismissed(snackbar, event);
-                  mAdapter.notifyDataSetChanged();
+                  if (mPager.getCurrentItem() == mPager.getChildCount() - 1) {
+                    submitSnackBar.show();
+                  }
                 }
               });
 
