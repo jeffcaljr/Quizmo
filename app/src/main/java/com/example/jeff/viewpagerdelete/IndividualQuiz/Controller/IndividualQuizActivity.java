@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     public ViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
+  private DetailOnPageChangeListener onPageChangeListener;
   private TabLayout tabLayout;
   private ProgressBar quizTimerProgressBar;
 
@@ -114,35 +116,12 @@ public class IndividualQuizActivity extends AppCompatActivity
       quizTimerProgressBar = (ProgressBar) findViewById(R.id.quiz_timer_progress_bar);
 
       mPager = (ViewPager) findViewById(R.id.quiz_question_viewpager);
-        mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
+//        mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
 
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+      onPageChangeListener = new DetailOnPageChangeListener();
 
-            }
+      mPager.addOnPageChangeListener(onPageChangeListener);
 
-            @Override
-            public void onPageSelected(int position) {
-                //Page was changed; save quiz
-                IndividualQuizPersistence.sharedInstance(context).updateQuizInDatabase(quiz);
-
-
-                if(position == mPager.getChildCount() - 1){
-                    submitSnackBar.show();
-                }
-                else{
-                    submitSnackBar.dismiss();
-                }
-
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
       mPager.setPageTransformer(false, new DefaultTransformer());
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -193,38 +172,12 @@ public class IndividualQuizActivity extends AppCompatActivity
         exitDialog.create().show();
     }
 
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
-            Bundle extras = new Bundle();
-            extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
-            extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
-            extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
-            newFrag.setArguments(extras);
-            return newFrag;
-        }
-
-        @Override
-        public int getCount() {
-            return quiz.getQuestions().size();
-        }
-
-    }
 
     @Override
     public void advanceButtonClicked() {
 
-        int currentItem = mPager.getCurrentItem();
-        if(currentItem < mPager.getChildCount() - 1){ //there is a next page to go to
-            mPager.setCurrentItem(currentItem + 1);
-        }
-        else{ //there isn't a next page to go to, and the user has clicked the "Finish" button
+      //the user has clicked the "Finish" button
 
             IndividualQuizPersistence.sharedInstance(this).updateQuizInDatabase(quiz);
 
@@ -266,15 +219,13 @@ public class IndividualQuizActivity extends AppCompatActivity
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                   super.onDismissed(snackbar, event);
-                  if (mPager.getCurrentItem() == mPager.getChildCount() - 1) {
+                  if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
                     submitSnackBar.show();
                   }
                 }
               });
 
             }
-
-        }
     }
 
 
@@ -286,7 +237,7 @@ public class IndividualQuizActivity extends AppCompatActivity
         for(QuizQuestion question: quiz.getQuestions()){
             if(question.getPointsRemaining() != 0){
                 mPager.setCurrentItem(firstUnansweredIndex);
-                if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
+              if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
                     submitSnackBar.show();
                 }
                 break;
@@ -332,4 +283,67 @@ public class IndividualQuizActivity extends AppCompatActivity
     public void onQuizPostFailure(VolleyError error) {
         Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
     }
+
+  //ViewPager Helper Classes
+
+  private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
+    public ScreenSlidePagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
+      Bundle extras = new Bundle();
+      extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
+      extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
+      extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
+      newFrag.setArguments(extras);
+      return newFrag;
+    }
+
+    @Override
+    public int getCount() {
+      return quiz.getQuestions().size();
+    }
+
+  }
+
+  public class DetailOnPageChangeListener implements OnPageChangeListener {
+
+    private int currentPage;
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+      //Page was changed; save quiz
+      currentPage = position;
+      IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
+          .updateQuizInDatabase(quiz);
+
+      if (position == mAdapter.getCount() - 1) {
+        submitSnackBar.show();
+      } else {
+        submitSnackBar.dismiss();
+      }
+
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public final int getCurrentPage() {
+      return currentPage;
+    }
+  }
+
+
 }
