@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea">
+  tools:context="com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity">
 
     <android.support.design.widget.AppBarLayout
       android:id="@+id/search_edit_frame"

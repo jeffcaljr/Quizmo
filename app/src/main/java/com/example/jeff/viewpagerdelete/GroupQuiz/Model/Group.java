@@ -75,7 +75,8 @@ public class Group implements Serializable{
         this.name = name;
     }
 
-    public ArrayList<GroupUser> getMembers() {
+
+  public ArrayList<GroupUser> getMembers() {
         Collections.sort(members);
         return members;
     }

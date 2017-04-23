@@ -49,19 +49,21 @@ public class UserGroupStatus implements Serializable, Comparable<UserGroupStatus
     private String groupName;
     private Date timeStarted;
     private int timeLimit;
+  private boolean isLeader;
 
-  public UserGroupStatus(JSONObject json) {
+  public UserGroupStatus(JSONObject statusJSON, JSONObject leaderJSON) {
 
 
         try {
-            this.status = Status.fromString(json.getString("status"));
-            this.userID = json.getString("userId");
-            this.firstName = json.getString("firstName");
-            this.lastName = json.getString("lastName");
-            this.groupName = json.getString("groupName");
-            this.timeLimit = json.getInt("timeLimit");
+          this.status = Status.fromString(statusJSON.getString("status"));
+          this.userID = statusJSON.getString("userId");
+          this.firstName = statusJSON.getString("firstName");
+          this.lastName = statusJSON.getString("lastName");
+          this.groupName = statusJSON.getString("groupName");
+          this.timeLimit = statusJSON.getInt("timeLimit");
+          this.isLeader = leaderJSON.getString("userId").equals(this.userID);
 
-            String timeStartedString = json.getString("timeStarted");
+          String timeStartedString = statusJSON.getString("timeStarted");
 
             SimpleDateFormat format = new SimpleDateFormat(
                     "yyyy-MM-dd'T'HH:mm:ss");
@@ -147,7 +149,15 @@ public class UserGroupStatus implements Serializable, Comparable<UserGroupStatus
         this.timeLimit = timeLimit;
     }
 
-    @Override
+  public boolean isLeader() {
+    return isLeader;
+  }
+
+  public void setLeader(boolean leader) {
+    isLeader = leader;
+  }
+
+  @Override
     public int compareTo(@NonNull UserGroupStatus status) {
         return (this.userID.compareTo(status.getUserID()));
     }

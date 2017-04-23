@@ -30,8 +30,9 @@ import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
-public class GroupWaitingArea extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+public class GroupWaitingAreaActivity extends AppCompatActivity
+    implements NavigationView.OnNavigationItemSelectedListener,
+    GroupWaitingAreaFragment.OnGroupQuizStartedListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
     public static final String EXTRA_GRADED_QUIZ = "EXTRA_GRADED_QUIZ";
@@ -42,6 +43,7 @@ public class GroupWaitingArea extends AppCompatActivity
 
     private Course course;
     private GradedQuiz quiz;
+  private Group group;
 
     private TextView courseNameTextView;
 
@@ -79,6 +81,7 @@ public class GroupWaitingArea extends AppCompatActivity
               course.getCourseID(), new SingleGroupDownloadCallback() {
                 @Override
                 public void onDownloadSingleGroupSuccess(Group group) {
+                  GroupWaitingAreaActivity.this.group = group;
                   groupQuizCodeFragment = (GroupWaitingAreaFragment) manager
                       .findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
 
@@ -166,4 +169,15 @@ public class GroupWaitingArea extends AppCompatActivity
         return true;
     }
 
+  //MARK: OnGroupQuizStartedListener Method Implementations
+
+
+  @Override
+  public void onGroupQuizStarted() {
+    Intent i = new Intent(this, GroupQuizActivity.class);
+    i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
+    i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+    startActivity(i);
+
+  }
 }

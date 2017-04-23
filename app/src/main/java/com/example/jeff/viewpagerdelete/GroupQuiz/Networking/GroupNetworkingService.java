@@ -146,11 +146,12 @@ public class GroupNetworkingService {
 
                 try {
                     JSONArray status = response.getJSONArray("status");
+                  JSONObject leader = response.getJSONObject("leader");
                   ArrayList<UserGroupStatus> statuses = new ArrayList<>();
 
                     for (int i = 0; i < status.length(); i++) {
-                      UserGroupStatus userGroupStatus = new UserGroupStatus(
-                          status.getJSONObject(i));
+                      UserGroupStatus userGroupStatus = new UserGroupStatus(status.getJSONObject(i),
+                          leader);
                       statuses.add(userGroupStatus);
 
                     }

@@ -3,8 +3,6 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff.Mode;
-import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.Snackbar.Callback;
 import android.support.design.widget.TabLayout;
@@ -25,7 +23,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.eftimoff.viewpagertransformers.DefaultTransformer;
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
@@ -53,7 +51,6 @@ public class IndividualQuizActivity extends AppCompatActivity
     public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
     public static final String INTENT_EXTRA_SESSION_ID = "INTENT_EXTRA_SESSION_ID";
     public static final String INTENT_EXTRA_COURSE_QUIZ = "INTENT_EXTRA_COURSE_QUIZ";
-    public static final String EXTRA_FINISH_BUTTON_TEXT = "EXTRA_FINISH_BUTTON_TEXT";
     public static final String EXTRA_QUIZ_QUESTION = "EXTRA_QUIZ_QUESTION";
     public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
     public static final String EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS = "EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS ";
@@ -129,6 +126,9 @@ public class IndividualQuizActivity extends AppCompatActivity
       tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 
+      submittingFragment = new LoadingFragment(IndividualQuizActivity.this, "Submitting Quiz");
+
+
     }
 
   @Override
@@ -139,25 +139,26 @@ public class IndividualQuizActivity extends AppCompatActivity
     quizTimerProgressBar.setMax(max);
     quizTimerProgressBar.setProgress(0);
 
-    new CountDownTimer(max, 1000) {
-      @Override
-      public void onTick(long l) {
-        quizTimerProgressBar.setProgress((int) (quizTimerProgressBar.getMax() - l));
+    //TODO: If using this timer; stop it when the user submits the quiz!!!
 
-        if (l < max / 2) {
-          quizTimerProgressBar.getProgressDrawable().setColorFilter(0xFFFF0000, Mode.OVERLAY);
-        }
-      }
-
-      @Override
-      public void onFinish() {
-        submittingFragment = new LoadingFragment(IndividualQuizActivity.this, "Submitting Quiz");
-        submittingFragment.show();
-
-        userConfirmedSubmission();
-
-      }
-    }.start();
+//    new CountDownTimer(max, 1000) {
+//      @Override
+//      public void onTick(long l) {
+//        quizTimerProgressBar.setProgress((int) (quizTimerProgressBar.getMax() - l));
+//
+//        if (l < max / 2) {
+//          quizTimerProgressBar.getProgressDrawable().setColorFilter(0xFFFF0000, Mode.OVERLAY);
+//        }
+//      }
+//
+//      @Override
+//      public void onFinish() {
+//        submittingFragment.show();
+//
+//        userConfirmedSubmission();
+//
+//      }
+//    }.start();
   }
 
   @Override
@@ -289,9 +290,10 @@ public class IndividualQuizActivity extends AppCompatActivity
                 quiz, new IndividualQuizPostCallback() {
                   @Override
                   public void onQuizPostSuccess(GradedQuiz quiz) {
-                    Intent i = new Intent(IndividualQuizActivity.this, GroupWaitingArea.class);
-                    i.putExtra(GroupWaitingArea.EXTRA_COURSE, course);
-                    i.putExtra(GroupWaitingArea.EXTRA_GRADED_QUIZ, quiz);
+                    Intent i = new Intent(IndividualQuizActivity.this,
+                        GroupWaitingAreaActivity.class);
+                    i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
+                    i.putExtra(GroupWaitingAreaActivity.EXTRA_GRADED_QUIZ, quiz);
                     startActivity(i);
                     finish();
                     submittingFragment.dismiss();

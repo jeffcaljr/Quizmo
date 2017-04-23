@@ -1,24 +1,15 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.View;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener;
-import android.support.v7.widget.RecyclerView.RecyclerListener;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.method.ScrollingMovementMethod;
-import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,13 +18,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import android.widget.Toast;
-import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
@@ -243,7 +231,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
         public AnswerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             CollapsibleCardView view = (CollapsibleCardView) inflater
-                .inflate(R.layout.item_quiz_answer, parent, false);
+                .inflate(R.layout.item_individual_quiz_answer, parent, false);
             return new AnswerHolder(view);
         }
 
