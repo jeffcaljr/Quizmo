@@ -26,11 +26,11 @@ import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
 
 import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PushUser;
 
-public class LoginActivity extends AppCompatActivity implements
-    UserNetworkingService.UserFetcherListener {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String EXTRA_USERNAME_SAVED_INSTANCE_STATE = "EXTRA_USERNAME_SAVED_INSTANCE_STATE";
     private static final String EXTRA_PASSWORD_SAVED_INSTANCE_STATE = "EXTRA_PASSWORD_SAVED_INSTANCE_STATE";
@@ -72,9 +72,6 @@ public class LoginActivity extends AppCompatActivity implements
         loginTopLayout.startAnimation(slideFromRight);
 
 
-        setTypefaces();
-
-
         //handle case where user rotated device after entering data into text fields
         if(savedInstanceState != null){
             if(savedInstanceState.containsKey(EXTRA_USERNAME_SAVED_INSTANCE_STATE)){
@@ -87,7 +84,6 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
       userNetworkingService = new UserNetworkingService(this);
-      final UserNetworkingService.UserFetcherListener listener = this;
 
         dbHelper = new UserDbHelper(this);
         db = dbHelper.getWritableDatabase();
@@ -104,7 +100,35 @@ public class LoginActivity extends AppCompatActivity implements
                     authenticatingFragment.show();
 
                     loginButton.setEnabled(false);
-                  userNetworkingService.downloadUser(listener, userID);
+                  userNetworkingService.downloadUser(userID, new UserFetcherCallback() {
+                    @Override
+                    public void userDownloadSuccess(User u) {
+                      user = u;
+
+                      UserDataSource.getInstance().setUser(user);
+
+                      PushUser(user, db);
+
+                      Intent i = new Intent(LoginActivity.this, HomePageActivity.class);
+                      startActivity(i);
+                      authenticatingFragment.dismiss();
+                      finish();
+
+                    }
+
+                    @Override
+                    public void userDownloadFailure(VolleyError error) {
+
+                      loginButton.setEnabled(true);
+                      authenticatingFragment.dismiss();
+                      Snackbar snackbar = Snackbar
+                          .make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
+                              "Error authenticating user.", Snackbar.LENGTH_SHORT);
+
+                      snackbar.show();
+
+                    }
+                  });
 
                 }
             }
@@ -168,39 +192,4 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
-    private void setTypefaces(){
-        //set type face of views
-        Typeface regularFace = Typeface.createFromAsset(getAssets(),"fonts/robotoRegular.ttf");
-
-        usernameField.setTypeface(regularFace);
-        passwordField.setTypeface(regularFace);
-        loginButton.setTypeface(regularFace);
-
-    }
-
-    @Override
-    public void userDownloadSuccess(User user) {
-        this.user = user;
-
-        UserDataSource.getInstance().setUser(user);
-
-
-        PushUser(user, db);
-
-      Intent i = new Intent(this, HomePageActivity.class);
-        startActivity(i);
-        authenticatingFragment.dismiss();
-        finish();
-    }
-
-    @Override
-    public void userDownloadFailure(VolleyError error) {
-        loginButton.setEnabled(true);
-        authenticatingFragment.dismiss();
-//        Snackbar snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), Html.fromHtml("<strong color=\"#ffffff\">Error authenticating user</strong>"), Snackbar.LENGTH_SHORT);
-//        snackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.jccolorPrimary));
-        Snackbar snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Error authenticating user.", Snackbar.LENGTH_SHORT);
-
-        snackbar.show();
-    }
 }

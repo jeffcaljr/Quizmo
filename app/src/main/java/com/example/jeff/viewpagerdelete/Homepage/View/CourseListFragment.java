@@ -26,7 +26,8 @@ import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
-import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherListener;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -34,7 +35,7 @@ import java.util.Collections;
  * Created by Jeff on 4/11/17.
  */
 
-public class CourseListFragment extends Fragment implements OnRefreshListener, UserFetcherListener {
+public class CourseListFragment extends Fragment implements OnRefreshListener {
 
     public static final String ARG_COURSES_COURSE_LIST_FRAGMENT = "ARG_COURSES_COURSE_LIST_FRAGMENT";
 
@@ -236,26 +237,23 @@ public class CourseListFragment extends Fragment implements OnRefreshListener, U
 
     UserNetworkingService userNetworkingService = new UserNetworkingService(getContext());
 
-    userNetworkingService.downloadUser(this, UserDataSource.getInstance().getUser().getUserID());
+    userNetworkingService.downloadUser(UserDataSource.getInstance().getUser().getUserID(),
+        new UserFetcherCallback() {
+          @Override
+          public void userDownloadSuccess(User user) {
+            UserDataSource.getInstance().setUser(user);
+            courses = user.getEnrolledCourses();
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+          }
 
-  }
-
-  //MARK: UserFetcherListener Methods
-
-
-  @Override
-  public void userDownloadSuccess(User user) {
-    UserDataSource.getInstance().setUser(user);
-    this.courses = user.getEnrolledCourses();
-    adapter.notifyDataSetChanged();
-    swipeRefreshLayout.setRefreshing(false);
-  }
-
-  @Override
-  public void userDownloadFailure(VolleyError error) {
-    this.courses.clear();
-    adapter.notifyDataSetChanged();
-    swipeRefreshLayout.setRefreshing(false);
+          @Override
+          public void userDownloadFailure(VolleyError error) {
+            courses.clear();
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+          }
+        });
 
   }
 }

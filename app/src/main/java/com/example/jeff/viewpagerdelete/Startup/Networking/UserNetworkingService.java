@@ -24,9 +24,9 @@ public class UserNetworkingService {
         this.mContext = mContext.getApplicationContext();
     }
 
-    public void downloadUser(final UserFetcherListener listener, String userID){
+    public void downloadUser(String userID, final UserFetcherCallback callback) {
 
-        if(listener == null){
+        if (callback == null) {
             return;
         }
 
@@ -37,10 +37,10 @@ public class UserNetworkingService {
             public void onResponse(JSONObject response) {
 
                 if(response.isNull("_id")){
-                    listener.userDownloadFailure(null);
+                    callback.userDownloadFailure(null);
                 }
                 else{
-                    listener.userDownloadSuccess(new User(response));
+                    callback.userDownloadSuccess(new User(response));
                 }
 
 
@@ -48,7 +48,7 @@ public class UserNetworkingService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.userDownloadFailure(error);
+                callback.userDownloadFailure(error);
             }
         });
 
@@ -56,7 +56,7 @@ public class UserNetworkingService {
         RequestService.getInstance(mContext).addRequest(request);
     }
 
-    public interface UserFetcherListener{
+    public interface UserFetcherCallback {
         void userDownloadSuccess(User user);
         void userDownloadFailure(VolleyError error);
     }

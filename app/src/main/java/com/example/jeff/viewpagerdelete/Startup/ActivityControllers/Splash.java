@@ -15,17 +15,17 @@ import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
 
 import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PushUser;
 
-public class Splash extends AppCompatActivity implements UserNetworkingService.UserFetcherListener {
+public class Splash extends AppCompatActivity {
 
     private static final int SPLASH_MINIMUM_DISPLAY_LENGTH = 3000;
     private User user;
     private UserDbHelper dbHelper;
     private SQLiteDatabase db;
   private UserNetworkingService userNetworkingService;
-  private UserNetworkingService.UserFetcherListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class Splash extends AppCompatActivity implements UserNetworkingService.U
         db = dbHelper.getWritableDatabase();
       userNetworkingService = new UserNetworkingService(this);
 
-        listener = this;
 
 
 //       new Handler().postDelayed(new Runnable() {
@@ -70,7 +69,38 @@ public class Splash extends AppCompatActivity implements UserNetworkingService.U
 
                 //if the user is signed in, fetch their current data
                 if (user != null) {
-                  userNetworkingService.downloadUser(listener, user.getUserID());
+                  userNetworkingService.downloadUser(user.getUserID(), new UserFetcherCallback() {
+                    @Override
+                    public void userDownloadSuccess(User u) {
+
+                      user = u;
+
+                      //store user info for app-wide use
+                      UserDataSource.getInstance().setUser(user);
+
+                      //save user to database (Sign them in)
+                      PushUser(user, db);
+
+                      //Go to home screen
+                      Intent i = new Intent(Splash.this, HomePageActivity.class);
+                      startActivity(i);
+                      finish();
+
+                    }
+
+                    @Override
+                    public void userDownloadFailure(VolleyError error) {
+                      Toast.makeText(Splash.this, "Network error fetching user info",
+                          Toast.LENGTH_LONG).show();
+
+                      //If network error encountered for user "signed in", sign them out and go to login
+                      UserDBMethods.ClearUserDB(db);
+                      Intent i = new Intent(Splash.this, LoginActivity.class);
+                      startActivity(i);
+                      finish();
+                    }
+                  });
+
                 } else {
                     //no user saved in database; go to login
                     Intent intent = new Intent(Splash.this, LoginActivity.class);
@@ -87,36 +117,6 @@ public class Splash extends AppCompatActivity implements UserNetworkingService.U
         if (db != null) {
             db.close();
         }
-    }
-
-//    onC
-
-
-    @Override
-    public void userDownloadSuccess(User user) {
-        this.user = user;
-
-        //store user info for app-wide use
-        UserDataSource.getInstance().setUser(user);
-
-        //save user to database (Sign them in)
-        PushUser(user, db);
-
-        //Go to home screen
-      Intent i = new Intent(this, HomePageActivity.class);
-        startActivity(i);
-        finish();
-    }
-
-    @Override
-    public void userDownloadFailure(VolleyError error) {
-        Toast.makeText(this, "Network error fetching user info", Toast.LENGTH_LONG).show();
-
-        //If network error encountered for user "signed in", sign them out and go to login
-        UserDBMethods.ClearUserDB(db);
-        Intent i = new Intent(this, LoginActivity.class);
-        startActivity(i);
-        finish();
     }
 
 
