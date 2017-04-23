@@ -10,8 +10,6 @@
     android:layout_height="wrap_content"
     style="?android:attr/progressBarStyleHorizontal"
     android:layout_alignParentTop="true"
-    android:max="100"
-    android:progress="35"
     android:progressDrawable="@drawable/progress_bar_timer"
     android:layout_marginTop="-8dp" />
 

@@ -3,6 +3,8 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff.Mode;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.Snackbar.Callback;
 import android.support.design.widget.TabLayout;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,12 +39,16 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworking
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
+import com.example.jeff.viewpagerdelete.Miscellaneous.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
 
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Author: Jeffery Calhoun
@@ -78,6 +85,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     private String sessionID;
 
     private Snackbar submitSnackBar;
+
+  LoadingFragment submittingFragment;
 
 
 
@@ -130,11 +139,38 @@ public class IndividualQuizActivity extends AppCompatActivity
       tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 
-
-
     }
 
-    @Override
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    final int max = 30000;
+    quizTimerProgressBar.setMax(max);
+    quizTimerProgressBar.setProgress(0);
+
+    new CountDownTimer(max, 1000) {
+      @Override
+      public void onTick(long l) {
+        quizTimerProgressBar.setProgress((int) (quizTimerProgressBar.getMax() - l));
+
+        if (l < max / 2) {
+          quizTimerProgressBar.getProgressDrawable().setColorFilter(0xFFFF0000, Mode.OVERLAY);
+        }
+      }
+
+      @Override
+      public void onFinish() {
+        submittingFragment = new LoadingFragment(IndividualQuizActivity.this, "Submitting Quiz");
+        submittingFragment.show();
+
+        userConfirmedSubmission();
+
+      }
+    }.start();
+  }
+
+  @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -255,6 +291,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     @Override
     public void userConfirmedSubmission() {
 
+      submittingFragment.show();
+
         quizNetworkingService
             .uploadQuiz(this, course.getCourseID(),
                 UserDataSource.getInstance().getUser().getUserID(), quiz.getAssociatedSessionID(),
@@ -277,10 +315,12 @@ public class IndividualQuizActivity extends AppCompatActivity
         i.putExtra(GroupWaitingArea.EXTRA_GRADED_QUIZ, gradedQuiz);
         startActivity(i);
         finish();
+      submittingFragment.dismiss();
     }
 
     @Override
     public void onQuizPostFailure(VolleyError error) {
+      submittingFragment.dismiss();
         Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
     }
 
