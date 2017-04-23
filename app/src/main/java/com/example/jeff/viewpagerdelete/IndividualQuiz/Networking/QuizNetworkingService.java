@@ -34,9 +34,9 @@ public class QuizNetworkingService {
     }
 
 
-    public void downloadUserQuizzes(final UserQuizzesFetcherListener listener, String userID){
+  public void downloadUserQuizzes(String userID, final UserQuizzesDownloadCallback callback) {
 
-        if(listener == null){
+    if (callback == null) {
             return;
         }
 
@@ -59,13 +59,13 @@ public class QuizNetworkingService {
                     }
                 }
 
-                listener.onUserQuizzesDownloadSuccess(courses);
+              callback.onUserQuizzesDownloadSuccess(courses);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onUserQuizzesDownloadFailure(error);
+              callback.onUserQuizzesDownloadFailure(error);
             }
         });
 
@@ -74,9 +74,10 @@ public class QuizNetworkingService {
     }
 
 
-    public void downloadUserQuiz(final IndividualQuizFetcherListener listener, String userID, String courseID, String quizCode, String token){
+  public void downloadUserQuiz(String userID, String courseID, String quizCode, String token,
+      final IndividualQuizDownloadCallback callback) {
 
-        if(listener == null){
+    if (callback == null) {
             return;
         }
 
@@ -92,7 +93,7 @@ public class QuizNetworkingService {
                     String sessionID = response.getString("sessionId");
                     Quiz downloadedQuiz = new Quiz(response.getJSONObject("quiz"));
                     downloadedQuiz.setAssociatedSessionID(sessionID);
-                    listener.onQuizDownloadSuccess(sessionID, downloadedQuiz);
+                  callback.onQuizDownloadSuccess(sessionID, downloadedQuiz);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -105,7 +106,7 @@ public class QuizNetworkingService {
             public void onErrorResponse(VolleyError error) {
                 //Failed to load quiz from SQLite and from the network, load sample quiz from file
 
-               listener.onQuizDownloadFailure(error);
+              callback.onQuizDownloadFailure(error);
 
             }
         });
@@ -113,9 +114,10 @@ public class QuizNetworkingService {
         RequestService.getInstance(context).addRequest(request);
     }
 
-    public void uploadQuiz(final IndividualQuizPostListener listener, String courseID, String userID, String sessionID, final Quiz quiz){
+  public void uploadQuiz(String courseID, String userID, String sessionID, final Quiz quiz,
+      final IndividualQuizPostCallback callback) {
 
-        if(listener == null){
+    if (callback == null) {
             return;
         }
 
@@ -128,12 +130,12 @@ public class QuizNetworkingService {
         JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, urlString, quizJSONPost, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                listener.onQuizPostSuccess(new GradedQuiz(response));
+              callback.onQuizPostSuccess(new GradedQuiz(response));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onQuizPostFailure(error);
+              callback.onQuizPostFailure(error);
             }
         });
 
@@ -141,19 +143,18 @@ public class QuizNetworkingService {
     }
 
 
-
-    public interface IndividualQuizFetcherListener{
+  public interface IndividualQuizDownloadCallback {
         void onQuizDownloadSuccess(String sessionID, Quiz q);
         void onQuizDownloadFailure(VolleyError error);
     }
 
-    public interface IndividualQuizPostListener{
+  public interface IndividualQuizPostCallback {
         void onQuizPostSuccess(GradedQuiz quiz);
         void onQuizPostFailure(VolleyError error);
     }
 
 
-    public interface UserQuizzesFetcherListener{
+  public interface UserQuizzesDownloadCallback {
         void onUserQuizzesDownloadSuccess(ArrayList<Course> course);
         void onUserQuizzesDownloadFailure(VolleyError error);
     }

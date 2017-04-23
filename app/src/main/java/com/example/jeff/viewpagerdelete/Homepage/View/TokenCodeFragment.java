@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService.IndividualQuizDownloadCallback;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
@@ -26,8 +27,7 @@ import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
  * Created by Jeff on 4/12/17.
  */
 
-public class TokenCodeFragment extends Dialog implements
-    QuizNetworkingService.IndividualQuizFetcherListener {
+public class TokenCodeFragment extends Dialog {
 
     private Context context;
     private Course course;
@@ -65,8 +65,6 @@ public class TokenCodeFragment extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_fragment_token_code);
 
-      final QuizNetworkingService.IndividualQuizFetcherListener self = this;
-
 
         tokenCodeField = (EditText) findViewById(R.id.token_code_entry_field);
         cancelButton = (Button) findViewById(R.id.token_code_cancel_button);
@@ -74,8 +72,6 @@ public class TokenCodeFragment extends Dialog implements
         titleLabel = (TextView) findViewById(R.id.token_code_dialog_title);
         errorLabel = (TextView) findViewById(R.id.token_code_error_textfield);
         errorLayout = (LinearLayout) findViewById(R.id.token_code_error_layout);
-
-        setTypefaces();
 
         spinner = (ProgressBar) findViewById(R.id.token_code_progress_spinner);
 
@@ -95,8 +91,24 @@ public class TokenCodeFragment extends Dialog implements
                 errorLayout.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
               quizNetworkingService
-                  .downloadUserQuiz(self, UserDataSource.getInstance().getUser().getUserID(),
-                      course.getCourseID(), course.getQuiz().getId(), tokenCode);
+                  .downloadUserQuiz(UserDataSource.getInstance().getUser().getUserID(),
+                      course.getCourseID(), course.getQuiz().getId(), tokenCode,
+                      new IndividualQuizDownloadCallback() {
+                        @Override
+                        public void onQuizDownloadSuccess(String sessionID, Quiz q) {
+                          spinner.setVisibility(View.GONE);
+                          mListener.quizDownloaded(q, course);
+                          dismiss();
+                        }
+
+                        @Override
+                        public void onQuizDownloadFailure(VolleyError error) {
+                          spinner.setVisibility(View.GONE);
+                          setCanceledOnTouchOutside(true);
+                          errorLabel.setText("Invalid token code");
+                          errorLayout.setVisibility(View.VISIBLE);
+                        }
+                      });
             }
         });
 
@@ -117,37 +129,10 @@ public class TokenCodeFragment extends Dialog implements
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
-    private void setTypefaces(){
-        //set type face of views
-        Typeface regularFace = Typeface.createFromAsset(this.context.getAssets(),"fonts/robotoRegular.ttf");
-        Typeface boldFace = Typeface.createFromAsset(this.context.getAssets(),"fonts/robotoBold.ttf");
-        Typeface boldItalicFace = Typeface.createFromAsset(this.context.getAssets(),"fonts/robotoBoldItalic.ttf");
-
-        tokenCodeField.setTypeface(regularFace);
-        cancelButton.setTypeface(boldFace);
-        submitButton.setTypeface(boldFace);
-        titleLabel.setTypeface(boldFace);
-        errorLabel.setTypeface(boldItalicFace);
-    }
 
 
     public interface TokenCodeEntryListener{
         void quizDownloaded(Quiz quiz, Course course);
     }
 
-    @Override
-    public void onQuizDownloadSuccess(String sessionID, Quiz q) {
-
-        spinner.setVisibility(View.GONE);
-        mListener.quizDownloaded(q, course);
-        dismiss();
-    }
-
-    @Override
-    public void onQuizDownloadFailure(VolleyError error) {
-        spinner.setVisibility(View.GONE);
-        setCanceledOnTouchOutside(true);
-        errorLabel.setText("Invalid token code");
-        errorLayout.setVisibility(View.VISIBLE);
-    }
 }

@@ -27,6 +27,7 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDb
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService.UserQuizzesDownloadCallback;
 import com.example.jeff.viewpagerdelete.Miscellaneous.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
@@ -39,8 +40,8 @@ import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import java.util.ArrayList;
 
 public class HomePageActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener,
-    QuizNetworkingService.UserQuizzesFetcherListener, CourseListFragment.CourseListListener,
+    implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener,
+    CourseListFragment.CourseListListener,
     TokenCodeFragment.TokenCodeEntryListener,
         QuizLoadTask.QuizLoadTaskListener{
 
@@ -226,36 +227,39 @@ public class HomePageActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onUserQuizzesDownloadSuccess(ArrayList<Course> courses) {
 
-        this.courses = courses;
-
-        quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
-
-        Bundle args = new Bundle();
-        args.putSerializable(QuizListFragment.ARG_COURSES_QUIZ_LIST_FRAGMENT, this.courses);
-
-        if(quizListFragment == null) {
-            quizListFragment = new QuizListFragment();
-
-        }
-
-        quizListFragment.setArguments(args);
-
-        showQuizzesFragment();
-
-    }
-
-    @Override
-    public void onUserQuizzesDownloadFailure(VolleyError error) {
-        Toast.makeText(this, "Failed to load quizzes!", Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void courseItemClicked(Course course) {
         courseNameTextView.setText(course.getName());
-      quizNetworkingService.downloadUserQuizzes(this, user.getUserID());
+      quizNetworkingService.downloadUserQuizzes(user.getUserID(),
+          new UserQuizzesDownloadCallback() {
+            @Override
+            public void onUserQuizzesDownloadSuccess(ArrayList<Course> courses) {
+              HomePageActivity.this.courses = courses;
+
+              quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
+
+              Bundle args = new Bundle();
+              args.putSerializable(QuizListFragment.ARG_COURSES_QUIZ_LIST_FRAGMENT,
+                  HomePageActivity.this.courses);
+
+              if (quizListFragment == null) {
+                quizListFragment = new QuizListFragment();
+
+              }
+
+              quizListFragment.setArguments(args);
+
+              showQuizzesFragment();
+            }
+
+            @Override
+            public void onUserQuizzesDownloadFailure(VolleyError error) {
+              Toast.makeText(HomePageActivity.this, "Failed to load quizzes!", Toast.LENGTH_LONG)
+                  .show();
+            }
+          });
     }
 
     @Override

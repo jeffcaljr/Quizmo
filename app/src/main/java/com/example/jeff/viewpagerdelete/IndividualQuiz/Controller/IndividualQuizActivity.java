@@ -20,22 +20,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.eftimoff.viewpagertransformers.AccordionTransformer;
-import com.eftimoff.viewpagertransformers.BackgroundToForegroundTransformer;
 import com.eftimoff.viewpagertransformers.DefaultTransformer;
-import com.eftimoff.viewpagertransformers.DepthPageTransformer;
-import com.eftimoff.viewpagertransformers.ParallaxPageTransformer;
-import com.eftimoff.viewpagertransformers.StackTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingArea;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService.IndividualQuizPostCallback;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
@@ -43,12 +38,8 @@ import com.example.jeff.viewpagerdelete.Miscellaneous.LoadingFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
 
-import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Author: Jeffery Calhoun
@@ -56,8 +47,7 @@ import java.util.GregorianCalendar;
  */
 public class IndividualQuizActivity extends AppCompatActivity
         implements IndividualQuizQuestionFragment.PageFragmentListener,
-                    SubmissionAlertFragment.SubmissionAlertFragmentListener,
-    QuizNetworkingService.IndividualQuizPostListener {
+    SubmissionAlertFragment.SubmissionAlertFragmentListener {
 
   //Constants used for keys/values
     public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
@@ -294,9 +284,26 @@ public class IndividualQuizActivity extends AppCompatActivity
       submittingFragment.show();
 
         quizNetworkingService
-            .uploadQuiz(this, course.getCourseID(),
+            .uploadQuiz(course.getCourseID(),
                 UserDataSource.getInstance().getUser().getUserID(), quiz.getAssociatedSessionID(),
-                quiz);
+                quiz, new IndividualQuizPostCallback() {
+                  @Override
+                  public void onQuizPostSuccess(GradedQuiz quiz) {
+                    Intent i = new Intent(IndividualQuizActivity.this, GroupWaitingArea.class);
+                    i.putExtra(GroupWaitingArea.EXTRA_COURSE, course);
+                    i.putExtra(GroupWaitingArea.EXTRA_GRADED_QUIZ, quiz);
+                    startActivity(i);
+                    finish();
+                    submittingFragment.dismiss();
+                  }
+
+                  @Override
+                  public void onQuizPostFailure(VolleyError error) {
+                    submittingFragment.dismiss();
+                    Toast.makeText(IndividualQuizActivity.this, "Can't submit quiz yet",
+                        Toast.LENGTH_LONG).show();
+                  }
+                });
 
     }
 
@@ -305,24 +312,6 @@ public class IndividualQuizActivity extends AppCompatActivity
         submitSnackBar.show();
     }
 
-
-    //MARK: IndividualQuizPostListener Methods
-
-    @Override
-    public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
-        Intent i = new Intent(this, GroupWaitingArea.class);
-        i.putExtra(GroupWaitingArea.EXTRA_COURSE, course);
-        i.putExtra(GroupWaitingArea.EXTRA_GRADED_QUIZ, gradedQuiz);
-        startActivity(i);
-        finish();
-      submittingFragment.dismiss();
-    }
-
-    @Override
-    public void onQuizPostFailure(VolleyError error) {
-      submittingFragment.dismiss();
-        Toast.makeText(this, "Can't submit quiz yet", Toast.LENGTH_LONG).show();
-    }
 
   //ViewPager Helper Classes
 
