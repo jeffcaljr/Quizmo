@@ -40,6 +40,8 @@
             android:label="@string/title_activity_group_quiz_code"
           android:theme="@style/AppTheme.NoActionBar"
           android:windowSoftInputMode="adjustPan"></activity>
+
+        <service android:name=".GroupQuiz.Networking.PollingService" />
     </application>
 
 </manifest>

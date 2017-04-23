@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.View;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupUser;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupWaitingQueueService;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.PollingService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.R;
@@ -65,7 +67,14 @@ public class GroupWaitingAreaFragment extends Fragment implements
     private boolean statusLoaded = false;
 
 
-    @Nullable
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Intent i = PollingService.newIntent(getActivity());
+    getActivity().startService(i);
+  }
+
+  @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
