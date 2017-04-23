@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.SingleGroupDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
@@ -30,8 +31,7 @@ import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 public class GroupWaitingArea extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener,
-    GroupNetworkingService.SingleGroupFetcherListener {
+    implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
     public static final String EXTRA_GRADED_QUIZ = "EXTRA_GRADED_QUIZ";
@@ -75,8 +75,37 @@ public class GroupWaitingArea extends AppCompatActivity
         userDB = userDbHelper.getWritableDatabase();
 
       groupNetworkingService
-          .downloadGroupForUser(this, UserDataSource.getInstance().getUser().getUserID(),
-              course.getCourseID());
+          .downloadGroupForUser(UserDataSource.getInstance().getUser().getUserID(),
+              course.getCourseID(), new SingleGroupDownloadCallback() {
+                @Override
+                public void onDownloadSingleGroupSuccess(Group group) {
+                  groupQuizCodeFragment = (GroupWaitingAreaFragment) manager
+                      .findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
+
+                  if (groupQuizCodeFragment == null) {
+                    groupQuizCodeFragment = new GroupWaitingAreaFragment();
+                    Bundle args = new Bundle();
+                    args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
+                    args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
+                    args.putSerializable(GroupWaitingAreaFragment.ARG_GRADED_QUIZ, quiz);
+
+                    groupQuizCodeFragment.setArguments(args);
+
+                    manager.beginTransaction()
+                        .replace(R.id.group_code_fragment_container, groupQuizCodeFragment,
+                            FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT)
+                        .commit();
+
+                  }
+                }
+
+                @Override
+                public void onDownloadSingleGroupFailure(VolleyError error) {
+                  Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
+                      "Failed to load group", Snackbar.LENGTH_LONG).show();
+
+                }
+              });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -135,34 +164,6 @@ public class GroupWaitingArea extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onDownloadSingleGroupSuccess(Group group) {
-
-        groupQuizCodeFragment = (GroupWaitingAreaFragment) manager.findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
-
-        if (groupQuizCodeFragment == null) {
-            groupQuizCodeFragment = new GroupWaitingAreaFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
-            args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
-            args.putSerializable(GroupWaitingAreaFragment.ARG_GRADED_QUIZ, quiz);
-
-            groupQuizCodeFragment.setArguments(args);
-
-            manager.beginTransaction()
-                    .replace(R.id.group_code_fragment_container, groupQuizCodeFragment, FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT)
-                    .commit();
-
-        }
-
-    }
-
-
-    @Override
-    public void onDownloadSingleGroupFailure(VolleyError error) {
-        Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Failed to load group", Snackbar.LENGTH_LONG).show();
     }
 
 }

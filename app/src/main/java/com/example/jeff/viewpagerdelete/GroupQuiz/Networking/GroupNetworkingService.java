@@ -39,15 +39,15 @@ public class GroupNetworkingService {
     }
 
 
-    public void downloadAllGroups(final AllGroupFetcherListener listener, String courseID) {
+  public void downloadAllGroups(String courseID, final AllGroupFetcherListener callback) {
 
-        if (listener == null) {
+    if (callback == null) {
             return;
         }
 
       String urlString = ApiURLs.baseURL + "/groups?course_id=" + courseID;
 
-      JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, ApiURLs.groupURL, null,
+    JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlString, null,
           new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -62,23 +62,23 @@ public class GroupNetworkingService {
                         e.printStackTrace();
                     }
                 }
-                listener.onDownloadAllGroupsSuccess(groups);
+              callback.onDownloadAllGroupsSuccess(groups);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GROUP_FETCHER", "Failed to load groups from server");
-                listener.onDownloadAllGroupsFailure(error);
+              callback.onDownloadAllGroupsFailure(error);
             }
         });
 
         RequestService.getInstance(context).addRequest(request);
     }
 
-    public void downloadGroup(final SingleGroupFetcherListener listener, String groupID) {
+  public void downloadGroup(String groupID, final SingleGroupDownloadCallback callback) {
 
-        if (listener == null) {
+    if (callback == null) {
             return;
         }
 
@@ -86,21 +86,22 @@ public class GroupNetworkingService {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                listener.onDownloadSingleGroupSuccess(new Group(response));
+              callback.onDownloadSingleGroupSuccess(new Group(response));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onDownloadSingleGroupFailure(error);
+              callback.onDownloadSingleGroupFailure(error);
             }
         });
 
         RequestService.getInstance(context).addRequest(request);
     }
 
-    public void downloadGroupForUser(final SingleGroupFetcherListener listener, String userID, String courseID) {
+  public void downloadGroupForUser(String userID, String courseID,
+      final SingleGroupDownloadCallback callback) {
 
-        if (listener == null) {
+    if (callback == null) {
             return;
         }
 
@@ -110,22 +111,23 @@ public class GroupNetworkingService {
             @Override
             public void onResponse(JSONObject response) {
 
-                listener.onDownloadSingleGroupSuccess(new Group(response));
+              callback.onDownloadSingleGroupSuccess(new Group(response));
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onDownloadSingleGroupFailure(error);
+              callback.onDownloadSingleGroupFailure(error);
             }
         });
 
         RequestService.getInstance(context).addRequest(request);
     }
 
-    public void getGroupStatus(final GroupStatusFetcher listener, Group group, Course course, GradedQuiz quiz) {
+  public void getGroupStatus(Group group, Course course, GradedQuiz quiz,
+      final GroupStatusDownloadCallback callback) {
 
-        if (listener == null) {
+    if (callback == null) {
             return;
         }
 
@@ -153,27 +155,27 @@ public class GroupNetworkingService {
 
                     }
 
-                    listener.onGroupStatusSuccess(statuses);
+                  callback.onGroupStatusSuccess(statuses);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    listener.onGroupStatusFailure(new VolleyError("Error parsing JSON response"));
+                  callback.onGroupStatusFailure(new VolleyError("Error parsing JSON response"));
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onGroupStatusFailure(error);
+              callback.onGroupStatusFailure(error);
             }
         });
 
         RequestService.getInstance(context).addRequest(request);
     }
 
-  public void getGroupQuizProgress(final GroupQuizProgressListener listener, String quizID,
-      String groupID, String sessionID) {
-    if (listener == null) {
+  public void getGroupQuizProgress(String quizID, String groupID, String sessionID,
+      final GroupQuizProgressDownloadCallback callback) {
+    if (callback == null) {
       return;
     }
 
@@ -184,13 +186,13 @@ public class GroupNetworkingService {
         new Listener<JSONObject>() {
           @Override
           public void onResponse(JSONObject response) {
-            listener.onGroupQuizProgressSuccess(response);
+            callback.onGroupQuizProgressSuccess(response);
           }
         },
         new ErrorListener() {
           @Override
           public void onErrorResponse(VolleyError error) {
-            listener.onGroupQuizProgressFailure(error);
+            callback.onGroupQuizProgressFailure(error);
           }
         });
 
@@ -198,9 +200,10 @@ public class GroupNetworkingService {
 
   }
 
-  public void submitGroupQuizAnswer(final GroupQuizAnswerPostListener listener, String quizID,
-      String groupID, String sessionID, GroupQuizAnswer groupQuizAnswer) {
-    if (listener == null) {
+  public void submitGroupQuizAnswer(String quizID,
+      String groupID, String sessionID, GroupQuizAnswer groupQuizAnswer,
+      final GroupQuizAnswerPostCallback callback) {
+    if (callback == null) {
       return;
     }
 
@@ -212,13 +215,13 @@ public class GroupNetworkingService {
         groupQuizAnswer.toPostJSONFormat(), new Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
-        listener.onGroupQuizAnswerPostSuccess(response);
+        callback.onGroupQuizAnswerPostSuccess(response);
 
       }
     }, new ErrorListener() {
       @Override
       public void onErrorResponse(VolleyError error) {
-        listener.onGroupQuizAnswerPostFailure(error);
+        callback.onGroupQuizAnswerPostFailure(error);
       }
     });
 
@@ -232,27 +235,27 @@ public class GroupNetworkingService {
 
     }
 
-    public interface SingleGroupFetcherListener {
+  public interface SingleGroupDownloadCallback {
         void onDownloadSingleGroupSuccess(Group group);
 
         void onDownloadSingleGroupFailure(VolleyError error);
     }
 
-    public interface GroupStatusFetcher {
+  public interface GroupStatusDownloadCallback {
 
       void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses);
 
         void onGroupStatusFailure(VolleyError error);
     }
 
-  public interface GroupQuizProgressListener {
+  public interface GroupQuizProgressDownloadCallback {
 
     void onGroupQuizProgressSuccess(JSONObject response);
 
     void onGroupQuizProgressFailure(VolleyError error);
   }
 
-  public interface GroupQuizAnswerPostListener {
+  public interface GroupQuizAnswerPostCallback {
 
     void onGroupQuizAnswerPostSuccess(JSONObject response);
 

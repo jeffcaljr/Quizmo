@@ -21,6 +21,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupUser;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupStatusDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupWaitingQueueService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.PollingService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
@@ -35,7 +36,7 @@ import java.util.Collections;
  */
 
 public class GroupWaitingAreaFragment extends Fragment implements
-    GroupNetworkingService.GroupStatusFetcher, GroupWaitingQueueService.StatusCheckListener {
+    GroupWaitingQueueService.StatusCheckListener {
 
     public static final String ARG_GROUP = "ARG_GROUP";
     public static final String ARG_COURSE = "ARG_COURSE";
@@ -185,62 +186,47 @@ public class GroupWaitingAreaFragment extends Fragment implements
     public void updateStatus() {
         //send network request to check group status
         Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
-      groupNetworkingService.getGroupStatus(this, group, course, quiz);
-    }
+      groupNetworkingService.getGroupStatus(group, course, quiz, new GroupStatusDownloadCallback() {
+        @Override
+        public void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses) {
+//get an updated list of the statuses of each member
+          statusLoaded = true;
 
+          //Sort the statuses by username, to match the order of users in the recyclerview
+          GroupWaitingAreaFragment.this.statuses = statuses;
+          Collections.sort(GroupWaitingAreaFragment.this.statuses);
 
-    //MARK: GroupStatusFetcherListener Methods
-
-
-    @Override
-    public void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses) {
-
-        //get an updated list of the statuses of each member
-        statusLoaded = true;
-
-        //Sort the statuses by username, to match the order of users in the recyclerview
-        this.statuses = statuses;
-        Collections.sort(this.statuses);
-
-        //if no user has started the quiz; set the firstFinished user to null
-        if (statuses.size() == 0) {
+          //if no user has started the quiz; set the firstFinished user to null
+          if (statuses.size() == 0) {
             firstFinished = null;
-        } else {
+          } else {
             //loop through the users with a status != "not started" to find who started first
             //they will be the leader
 
             firstFinished = statuses.get(0);
-          for (UserGroupStatus status : this.statuses) {
-                if (status.getTimeStarted().compareTo(firstFinished.getTimeStarted()) < 0) {
-                    firstFinished = status;
-                }
+            for (UserGroupStatus status : GroupWaitingAreaFragment.this.statuses) {
+              if (status.getTimeStarted().compareTo(firstFinished.getTimeStarted()) < 0) {
+                firstFinished = status;
+              }
             }
+          }
+
+          //determine if all the members who have started the individual quiz have finisher
+          //at this point, the finished members will have the ability to start the group quiz
+          checkStatusFinished();
+
+          //refresh the recyclerview
+          adapter.notifyDataSetChanged();
         }
 
-        //TODO: Remove the proceeding code later
-        //Because Ryan and Josh's quizzes are stuck in limbo; this hack will trick the app into thinking they are finished
+        @Override
+        public void onGroupStatusFailure(VolleyError error) {
+          Toast.makeText(getContext(), "Error fetching group statuses", Toast.LENGTH_LONG).show();
 
-        for (int i = 0; i < this.statuses.size(); i++) {
-            if (statuses.get(i).getUserID().toLowerCase().equals("rpd4g5") || statuses.get(i).getUserID().toLowerCase().equals("jkv2c9")) {
-              this.statuses.get(i).setStatus(UserGroupStatus.Status.COMPLETE);
-            }
         }
-
-
-        //TODO: Remove the preceeding code later
-
-        //determine if all the members who have started the individual quiz have finisher
-        //at this point, the finished members will have the ability to start the group quiz
-        checkStatusFinished();
-
-        //refresh the recyclerview
-        adapter.notifyDataSetChanged();
+      });
     }
 
-    @Override
-    public void onGroupStatusFailure(VolleyError error) {
-        Toast.makeText(getContext(), "Error fetching group statuses", Toast.LENGTH_LONG).show();
-    }
 
     private class GroupAdapter extends RecyclerView.Adapter<GroupMemberHolder> {
         @Override
