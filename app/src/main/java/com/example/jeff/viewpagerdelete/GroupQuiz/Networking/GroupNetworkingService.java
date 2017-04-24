@@ -11,6 +11,8 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuizQuestion;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupQuizAnswer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
@@ -187,7 +189,8 @@ public class GroupNetworkingService {
         new Listener<JSONObject>() {
           @Override
           public void onResponse(JSONObject response) {
-            callback.onGroupQuizProgressSuccess(response);
+            GradedGroupQuiz gradedGroupQuiz = new GradedGroupQuiz(response);
+            callback.onGroupQuizProgressSuccess(gradedGroupQuiz);
           }
         },
         new ErrorListener() {
@@ -216,7 +219,8 @@ public class GroupNetworkingService {
         groupQuizAnswer.toPostJSONFormat(), new Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
-        callback.onGroupQuizAnswerPostSuccess(response);
+        GradedGroupQuizQuestion gradedQuestion = new GradedGroupQuizQuestion(response);
+        callback.onGroupQuizAnswerPostSuccess(gradedQuestion);
 
       }
     }, new ErrorListener() {
@@ -251,15 +255,16 @@ public class GroupNetworkingService {
 
   public interface GroupQuizProgressDownloadCallback {
 
-    void onGroupQuizProgressSuccess(JSONObject response);
+    void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz);
 
     void onGroupQuizProgressFailure(VolleyError error);
   }
 
   public interface GroupQuizAnswerPostCallback {
 
-    void onGroupQuizAnswerPostSuccess(JSONObject response);
+    void onGroupQuizAnswerPostSuccess(GradedGroupQuizQuestion gradedQuestion);
 
     void onGroupQuizAnswerPostFailure(VolleyError error);
   }
+
 }

@@ -50,7 +50,7 @@ public class CollapsibleCardView extends CardView {
   public void collapseContent() {
 //    TransitionManager.beginDelayedTransition((ViewGroup)this.getParent());
 
-    cardContent.animate().alpha(0.0f).setDuration(500).withEndAction(new Runnable() {
+    cardContent.animate().alpha(0.0f).setDuration(250).withEndAction(new Runnable() {
       @Override
       public void run() {
         cardContent.setVisibility(View.GONE);
@@ -65,7 +65,7 @@ public class CollapsibleCardView extends CardView {
   public void expandContent() {
 //    TransitionManager.beginDelayedTransition((ViewGroup)this.getParent());
 
-    cardContent.animate().alpha(1.0f).setDuration(500).withEndAction(new Runnable() {
+    cardContent.animate().alpha(1.0f).setDuration(250).withEndAction(new Runnable() {
       @Override
       public void run() {
         answerTextPreview.setVisibility(View.INVISIBLE);

@@ -6,14 +6,12 @@
   android:layout_marginRight="@dimen/quiz_card_side_margin"
   android:layout_marginTop="20dp"
   android:layout_height="wrap_content"
-  app:contentPadding="@dimen/quiz_card_content_padding"
   app:cardElevation="@dimen/quiz_card_elevation">
 
 
   <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp">
+    android:layout_height="match_parent">
 
     <RelativeLayout
       android:id="@+id/quiz_answer_card_header"
@@ -21,13 +19,14 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true"
-      android:padding="4dp">
+      android:padding="20dp"
+      android:background="@color/jccolorPrimary">
 
       <TextView
         android:id="@+id/quiz_answer_label"
         android:text="A."
         android:textSize="32sp"
-        android:textColor="@color/jccolorPrimaryDark"
+        android:textColor="@color/colorWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -39,7 +38,7 @@
         android:visibility="invisible"
         android:text="@string/lorem"
         android:textSize="14sp"
-        android:textColor="@color/jccolorPrimaryDark"
+        android:textColor="@color/colorWhite"
         android:gravity="center"
         android:maxLines="2"
         android:padding="8dp"
@@ -54,7 +53,7 @@
         android:id="@+id/quiz_points_allocated"
         android:text="4"
         android:textSize="32sp"
-        android:textColor="@color/jccolorPrimaryDark"
+        android:textColor="@color/colorWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -63,12 +62,14 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
       android:id="@+id/quiz_answer_card_content"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@id/quiz_answer_card_header"
-      android:layout_alignParentBottom="true">
+      android:layout_alignParentBottom="true"
+      android:padding="16dp"
+      app:ael_expanded="true">
 
       <TextView
         android:id="@+id/quiz_answer_text"
@@ -82,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minLines="2"
-        android:maxLines="7"
+        android:maxLines="5"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/quiz_increase_points_allocated"
         android:layout_toRightOf="@+id/quiz_reduce_points_allocated" />
@@ -104,7 +105,7 @@
         android:layout_below="@id/quiz_answer_text"
         android:layout_alignParentLeft="true" />
 
-    </RelativeLayout>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
 
   </RelativeLayout>

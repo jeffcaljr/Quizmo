@@ -12,8 +12,10 @@ import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -26,7 +28,9 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuiz
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.Miscellaneous.CollapsibleCardView;
+import com.example.jeff.viewpagerdelete.Miscellaneous.ScrollableTextTouchListener;
 import com.example.jeff.viewpagerdelete.R;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import java.util.Collections;
 
 /**
@@ -62,7 +66,6 @@ public class IndividualQuizQuestionFragment extends Fragment {
 //    private PagerAdapter mAdapter;
 
     private int questionNumber;
-    private int totalQuestions;
 
     private boolean allAnswersCollapsed = false;
     private boolean allAnswersExpanded = true;
@@ -72,12 +75,12 @@ public class IndividualQuizQuestionFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quiz_question_page, container, false);
+        View view = inflater
+            .inflate(R.layout.fragment_individual_quiz_question_page, container, false);
 
         //Get QuizQuestion extra arg
         Bundle args = getArguments();
         question = (QuizQuestion) args.getSerializable("EXTRA_QUIZ_QUESTION");
-        totalQuestions = args.getInt(IndividualQuizActivity.EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS);
         questionNumber = args.getInt(EXTRA_QUIZ_QUESTION_NUMBER);
 
         Collections.sort(question.getAvailableAnswers());
@@ -93,7 +96,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
 
         mQuestionLabelTextView.setText(questionNumber + ".");
 
-        mQuestionTextView.setText(question.getText());
+//        mQuestionTextView.setText(question.getText());
         mQuestionTextView.setMovementMethod(new ScrollingMovementMethod());
 
         recyclerView = (RecyclerView) view.findViewById(R.id.quiz_answer_recycler_view);
@@ -157,41 +160,8 @@ public class IndividualQuizQuestionFragment extends Fragment {
         });
 
         rotateUp = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_up_180_degrees);
-        rotateUp.setAnimationListener(new AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animation.setFillAfter(true);
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
 
         rotateDown = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_down_180_degrees);
-        rotateDown.setAnimationListener(new AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animation.setFillAfter(true);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
 
 
         return view;
@@ -218,7 +188,8 @@ public class IndividualQuizQuestionFragment extends Fragment {
     }
 
     public interface PageFragmentListener{
-        void advanceButtonClicked();
+
+        void submitButtonClicked();
 //        void quizStateUpdated();
 
     }
@@ -259,7 +230,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
         private TextView answerTextPreview;
 
         private RelativeLayout answerCardHeader;
-        private RelativeLayout answerCardContent;
+        private ExpandableRelativeLayout answerCardContent;
 
 
         public AnswerHolder(final CollapsibleCardView itemView) {
@@ -274,7 +245,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
                 .findViewById(R.id.quiz_reduce_points_allocated);
             answerTextPreview = (TextView) itemView.findViewById(R.id.quiz_answer_text_preview);
             answerCardHeader = (RelativeLayout) itemView.findViewById(R.id.quiz_answer_card_header);
-            answerCardContent = (RelativeLayout) itemView
+            answerCardContent = (ExpandableRelativeLayout) itemView
                 .findViewById(R.id.quiz_answer_card_content);
 
             itemView.setCardHeader(answerCardHeader);
@@ -286,19 +257,19 @@ public class IndividualQuizQuestionFragment extends Fragment {
 
         public void bindView(final QuizAnswer answer) {
             mAnswerValue.setText(answer.getValue());
-            mAnswerText.setText(answer.getText());
+//            mAnswerText.setText(answer.getText());
             mAnswerText.setMovementMethod(new ScrollingMovementMethod());
             mPointsAllocated.setText(answer.getPointsAllocated() + "");
-            answerTextPreview.setText(answer.getText());
+//            answerTextPreview.setText(answer.getText());
 
-            CollapsibleCardView view = ((CollapsibleCardView) itemView);
+            mAnswerText.setOnTouchListener(new ScrollableTextTouchListener());
 
-            if (allAnswersCollapsed) {
-                view.setCollapsed(true);
-
-            } else if (allAnswersExpanded) {
-                view.setCollapsed(false);
+            if (allAnswersExpanded) {
+                answerCardContent.expand();
+            } else if (allAnswersCollapsed) {
+                answerCardContent.collapse();
             }
+
 
             mIncrementPointsAllocatedBtn.setOnClickListener(new OnClickListener() {
                 @Override
@@ -334,4 +305,6 @@ public class IndividualQuizQuestionFragment extends Fragment {
 //        mListener.quizStateUpdated();
         }
     }
+
+
 }

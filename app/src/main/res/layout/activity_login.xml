@@ -82,7 +82,6 @@
                     android:hint="Username"
                     android:textColorHint="#FFFFFF"
                     android:textColor="#FFFFFF"
-                    android:backgroundTint="#FFFFFF"
                     android:drawablePadding="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +96,6 @@
                 <EditText
                     android:id="@+id/password_field"
                     android:drawableLeft="@drawable/ic_password"
-                    android:drawableTint="#FFFFFF"
                     android:maxLines="1"
                     android:hint="Password"
                     android:inputType="textPassword"

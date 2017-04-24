@@ -105,7 +105,7 @@ public class IndividualQuizActivity extends AppCompatActivity
         submitSnackBar.setAction("Submit", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                advanceButtonClicked();
+              submitButtonClicked();
             }
         });
 
@@ -202,7 +202,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
 
     @Override
-    public void advanceButtonClicked() {
+    public void submitButtonClicked() {
 
       //the user has clicked the "Finish" button
 
@@ -283,6 +283,10 @@ public class IndividualQuizActivity extends AppCompatActivity
     public void userConfirmedSubmission() {
 
       submittingFragment.show();
+
+      //Save the quiz to the database one last time, because this method won't get called on the last page (only gets called on page change)
+      IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
+          .updateQuizInDatabase(quiz);
 
         quizNetworkingService
             .uploadQuiz(course.getCourseID(),

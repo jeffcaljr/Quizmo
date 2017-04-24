@@ -175,7 +175,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
   @Override
   public void onGroupQuizStarted() {
     Intent i = new Intent(this, GroupQuizActivity.class);
-    i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
+    i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
     i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
     startActivity(i);
 
