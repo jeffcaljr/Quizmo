@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnChildAttachStateChangeListener;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuizAnswer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuizQuestion;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
@@ -42,8 +44,11 @@ import java.util.Collections;
 
 public class GroupQuizQuestionFragment extends Fragment {
 
+  public static final String TAG = "GroupQuizQuestionFrag";
   public static final String ANSWER_EXTRA = "ANSWER_EXTRA";
-  public static final String EXTRA_QUIZ_QUESTION_NUMBER = "EXTRA_QUIZ_QUESTION_NUMBER";
+  public static final String ARG_QUIZ_QUESTION_NUMBER = "ARG_QUIZ_QUESTION_NUMBER";
+  public static final String ARG_QUIZ_QUESTION = "ARG_QUIZ_QUESTION";
+  public static final String ARG_GRADED_QUIZ_QUESTION = "ARG_GRADED_QUIZ_QUESTION";
 
   private QuizQuestion question;
   private GradedGroupQuizQuestion gradedGroupQuizQuestion;
@@ -81,6 +86,8 @@ public class GroupQuizQuestionFragment extends Fragment {
 
   private OnGroupQuizAnswerSelectedListener answerSelectedListener;
 
+  private GroupNetworkingService groupNetworkingService;
+
   //TODO: Test code; delete proceeding later
 
   private ArrayList<GradedGroupQuizAnswer> sampleGradedAnswers;
@@ -89,7 +96,8 @@ public class GroupQuizQuestionFragment extends Fragment {
 
   public interface OnGroupQuizAnswerSelectedListener {
 
-    void answerSelected(QuizQuestion question, QuizAnswer answer);
+    void answerSelected(QuizQuestion question, QuizAnswer answer,
+        GroupQuizQuestionFragment currentQuestionFragment);
 
   }
 
@@ -101,9 +109,17 @@ public class GroupQuizQuestionFragment extends Fragment {
 
     //Get QuizQuestion extra arg
     Bundle args = getArguments();
-    question = (QuizQuestion) args.getSerializable("EXTRA_QUIZ_QUESTION");
-    questionNumber = args.getInt(EXTRA_QUIZ_QUESTION_NUMBER);
-    Collections.sort(question.getAvailableAnswers());
+
+    if (args != null && args.containsKey(ARG_QUIZ_QUESTION) && args
+        .containsKey(ARG_QUIZ_QUESTION_NUMBER)) {
+      question = (QuizQuestion) args.getSerializable(ARG_QUIZ_QUESTION);
+      questionNumber = args.getInt(ARG_QUIZ_QUESTION_NUMBER);
+      Collections.sort(question.getAvailableAnswers());
+    } else {
+      Log.e(TAG, "Args error");
+    }
+
+
 
     //Bind Views
 
@@ -112,7 +128,20 @@ public class GroupQuizQuestionFragment extends Fragment {
         .findViewById(R.id.quiz_question_points_earned_label);
     mQuestionLabelTextView = (TextView) view.findViewById(R.id.quiz_question_number_label);
 
-    mPointsEarnedTextView.setText("?");
+    if (args.containsKey(ARG_GRADED_QUIZ_QUESTION)) {
+      gradedGroupQuizQuestion = (GradedGroupQuizQuestion) args
+          .getSerializable(ARG_GRADED_QUIZ_QUESTION);
+
+      //check if the question was answered correctly; and if so, set the "Group Earned Points" textField text
+      if (gradedGroupQuizQuestion.isAnsweredCorrectly()) {
+        for (GradedGroupQuizAnswer gradedAnswer : gradedGroupQuizQuestion.getGradedAnswers()) {
+          if (gradedAnswer.isCorrect()) {
+            mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
+          }
+        }
+      }
+    }
+
 
     mQuestionLabelTextView.setText(questionNumber + ".");
 
@@ -166,18 +195,10 @@ public class GroupQuizQuestionFragment extends Fragment {
     Arrays.fill(expandedStates, true);
 
 
-
-    //TODO: Test code; delete proceeding later
-
-    sampleGradedAnswers = new ArrayList<>();
-    sampleGradedAnswers.add(new GradedGroupQuizAnswer("A", 4, false));
-    sampleGradedAnswers.add(new GradedGroupQuizAnswer("C", 1, true));
-    sampleGradedAnswers.add(new GradedGroupQuizAnswer("D", 2, false));
-
-    //TODO: Test code; delete preceeding later
-
     correctDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.ic_correct_white);
     incorrectDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.ic_incorrect_white);
+
+    groupNetworkingService = new GroupNetworkingService(getActivity());
 
     return view;
   }
@@ -198,6 +219,19 @@ public class GroupQuizQuestionFragment extends Fragment {
     super.onDestroy();
     answerSelectedListener = null;
     mListener = null;
+  }
+
+  public void onGradeRecieved(GradedGroupQuizQuestion gradedQuestion) {
+    this.gradedGroupQuizQuestion = gradedQuestion;
+    //check if the question was answered correctly; and if so, set the "Group Earned Points" textField text
+    if (gradedGroupQuizQuestion.isAnsweredCorrectly()) {
+      for (GradedGroupQuizAnswer gradedAnswer : gradedGroupQuizQuestion.getGradedAnswers()) {
+        if (gradedAnswer.isCorrect()) {
+          mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
+        }
+      }
+    }
+    adapter.notifyDataSetChanged();
   }
 
   private void updateCollapsedState() {
@@ -229,10 +263,6 @@ public class GroupQuizQuestionFragment extends Fragment {
     }
   }
 
-  public void onGradeRecieved(GradedGroupQuizQuestion gradedQuestion) {
-
-  }
-
   //RecyclerView Implementation
 
   private class AnswerAdapter extends RecyclerView.Adapter<AnswerHolder> {
@@ -249,10 +279,13 @@ public class GroupQuizQuestionFragment extends Fragment {
     public void onBindViewHolder(AnswerHolder holder, int position) {
       QuizAnswer answer = question.getAvailableAnswers().get(position);
       GradedGroupQuizAnswer thisGradedAnswer = null;
-      for (GradedGroupQuizAnswer a : sampleGradedAnswers) {
-        if (a.getValue().equals(answer.getValue())) {
-          thisGradedAnswer = a;
-          break;
+
+      if (gradedGroupQuizQuestion != null) {
+        for (GradedGroupQuizAnswer a : gradedGroupQuizQuestion.getGradedAnswers()) {
+          if (a.getValue().equals(answer.getValue())) {
+            thisGradedAnswer = a;
+            break;
+          }
         }
       }
 
@@ -351,6 +384,7 @@ public class GroupQuizQuestionFragment extends Fragment {
         }
       });
 
+
       if (gradedAnswer != null) {
 
         mSubmitAnswerButton.setEnabled(false);
@@ -364,12 +398,20 @@ public class GroupQuizQuestionFragment extends Fragment {
         } else if (gradedAnswer.isCorrect()) {
           //answer is the correct one
           mResultLabel.setImageDrawable(correctDrawable);
-          mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
+//          mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
           mResultLabel.setVisibility(View.VISIBLE);
           answerMask.setBackgroundColor(correctMaskColor);
           answerMask.setVisibility(View.VISIBLE);
         }
       } else {
+        //answer not submitted
+
+        if (gradedGroupQuizQuestion != null && gradedGroupQuizQuestion.isAnsweredCorrectly()) {
+          answerMask.setBackgroundColor(unansweredMaskColor);
+          answerMask.setVisibility(View.VISIBLE);
+          mSubmitAnswerButton.setVisibility(View.GONE);
+        }
+
         mResultLabel.setVisibility(View.INVISIBLE);
       }
 
@@ -377,7 +419,7 @@ public class GroupQuizQuestionFragment extends Fragment {
         @Override
         public void onClick(View view) {
 
-          answerSelectedListener.answerSelected(question, answer);
+          answerSelectedListener.answerSelected(question, answer, GroupQuizQuestionFragment.this);
         }
       });
 

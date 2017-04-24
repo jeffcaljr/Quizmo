@@ -1,6 +1,7 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.Model;
 
 import android.support.annotation.NonNull;
+import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 
 //  {"question":"58cf4424507783a09e799a2c","submittedAnswers":[{"value":"A","points":4,"isCorrect":false}]}
 
-public class GradedGroupQuizAnswer implements Comparable<GradedGroupQuizAnswer> {
+public class GradedGroupQuizAnswer implements Serializable, Comparable<GradedGroupQuizAnswer> {
 
   private String value;
   private int points;
@@ -58,6 +59,7 @@ public class GradedGroupQuizAnswer implements Comparable<GradedGroupQuizAnswer> 
   public void setCorrect(boolean correct) {
     isCorrect = correct;
   }
+
 
   @Override
   public int compareTo(@NonNull GradedGroupQuizAnswer gradedGroupQuizAnswer) {

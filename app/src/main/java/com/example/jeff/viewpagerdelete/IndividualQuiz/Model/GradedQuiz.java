@@ -1,5 +1,8 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,5 +136,19 @@ public class GradedQuiz implements Serializable {
 
     public void setQuestions(ArrayList<GradedQuizQuestion> questions) {
         this.questions = questions;
+    }
+
+    public String toJSON() {
+        return new Gson().toJson(this);
+    }
+
+    public static GradedQuiz buildQuizFromJsonString(String quizJsonString)
+        throws JsonSyntaxException {
+        try {
+            return new Gson().fromJson(quizJsonString, new TypeToken<GradedQuiz>() {
+            }.getType());
+        } catch (JsonSyntaxException e) {
+            throw new JsonSyntaxException("Could not parse provided Json string into Quiz object");
+        }
     }
 }

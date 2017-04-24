@@ -17,9 +17,13 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import android.widget.Toast;
+import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupQuizProgressDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.SingleGroupDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
@@ -174,10 +178,36 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
   @Override
   public void onGroupQuizStarted() {
-    Intent i = new Intent(this, GroupQuizActivity.class);
-    i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
-    i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
-    startActivity(i);
+
+    groupNetworkingService.getGroupQuizProgress(quiz.getQuizID(), group.getId(),
+        quiz.getSessionID(), new GroupQuizProgressDownloadCallback() {
+          @Override
+          public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
+            Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
+            i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
+            i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+            i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
+            startActivity(i);
+
+          }
+
+          @Override
+          public void onGroupQuizProgressFailure(VolleyError error) {
+
+            if (error instanceof NoConnectionError) {
+              Toast.makeText(GroupWaitingAreaActivity.this, "No network connection",
+                  Toast.LENGTH_LONG).show();
+            } else {
+              Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
+              i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
+              i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+              startActivity(i);
+            }
+
+
+          }
+        });
+
 
   }
 }

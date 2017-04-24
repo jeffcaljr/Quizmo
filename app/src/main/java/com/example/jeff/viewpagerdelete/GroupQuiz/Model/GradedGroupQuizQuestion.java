@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.json.JSONArray;
@@ -15,7 +16,7 @@ import org.json.JSONObject;
  */
 
 
-public class GradedGroupQuizQuestion implements Comparable<GradedGroupQuizQuestion> {
+public class GradedGroupQuizQuestion implements Serializable, Comparable<GradedGroupQuizQuestion> {
 
   private String id;
   private ArrayList<GradedGroupQuizAnswer> gradedAnswers;
@@ -85,6 +86,7 @@ public class GradedGroupQuizQuestion implements Comparable<GradedGroupQuizQuesti
   public void setAnsweredCorrectly(boolean answeredCorrectly) {
     isAnsweredCorrectly = answeredCorrectly;
   }
+
 
   @Override
   public int compareTo(@NonNull GradedGroupQuizQuestion gradedGroupQuizQuestion) {
