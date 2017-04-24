@@ -33,6 +33,7 @@ import com.example.jeff.viewpagerdelete.R;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -58,11 +59,15 @@ public class GroupQuizQuestionFragment extends Fragment {
   private AnswerAdapter adapter;
 
   private ImageButton toggleAnswersCollapsedButton;
+  private boolean toggleExpandedButtonState = true;
 
   private Drawable collapsedDrawable;
   private Drawable expandedDrawable;
   private Drawable correctDrawable;
   private Drawable incorrectDrawable;
+  private int correctMaskColor;
+  private int incorrectMaskColor;
+  private int unansweredMaskColor;
 
   private Animation rotateUp;
   private Animation rotateDown;
@@ -71,6 +76,8 @@ public class GroupQuizQuestionFragment extends Fragment {
 
   private boolean allAnswersCollapsed = false;
   private boolean allAnswersExpanded = true;
+
+  private boolean[] expandedStates;
 
   private OnGroupQuizAnswerSelectedListener answerSelectedListener;
 
@@ -109,7 +116,7 @@ public class GroupQuizQuestionFragment extends Fragment {
 
     mQuestionLabelTextView.setText(questionNumber + ".");
 
-//    mQuestionTextView.setText(question.getText());
+    mQuestionTextView.setText(question.getText());
     mQuestionTextView.setMovementMethod(new ScrollingMovementMethod());
 
     recyclerView = (RecyclerView) view.findViewById(R.id.quiz_answer_recycler_view);
@@ -123,6 +130,9 @@ public class GroupQuizQuestionFragment extends Fragment {
     expandedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand);
     rotateUp = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_up_180_degrees);
     rotateDown = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_down_180_degrees);
+    correctMaskColor = ContextCompat.getColor(getActivity(), R.color.jccolorCorrectMask);
+    incorrectMaskColor = ContextCompat.getColor(getActivity(), R.color.jccolorIncorrectMask);
+    unansweredMaskColor = ContextCompat.getColor(getActivity(), R.color.jccolorUnansweredMask);
 
     toggleAnswersCollapsedButton = (ImageButton) view
         .findViewById(R.id.quiz_question_toggle_answers_collapse_button);
@@ -130,21 +140,30 @@ public class GroupQuizQuestionFragment extends Fragment {
     toggleAnswersCollapsedButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (allAnswersCollapsed) {
+
+        if (toggleExpandedButtonState == false) {
           allAnswersCollapsed = false;
           allAnswersExpanded = true;
-          toggleAnswersCollapsedButton.startAnimation(rotateUp);
+          Arrays.fill(expandedStates, true);
+          toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+          toggleExpandedButtonState = true;
+
 
         } else {
           allAnswersCollapsed = true;
           allAnswersExpanded = false;
-          toggleAnswersCollapsedButton.startAnimation(rotateDown);
+          Arrays.fill(expandedStates, false);
+          toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+          toggleExpandedButtonState = false;
         }
 
         adapter.notifyDataSetChanged();
 
       }
     });
+
+    expandedStates = new boolean[question.getAvailableAnswers().size()];
+    Arrays.fill(expandedStates, true);
 
 
 
@@ -179,6 +198,35 @@ public class GroupQuizQuestionFragment extends Fragment {
     super.onDestroy();
     answerSelectedListener = null;
     mListener = null;
+  }
+
+  private void updateCollapsedState() {
+    boolean isAllAnswersCollapsed = true;
+    boolean isAllAnswersExpanded = true;
+
+    //check if all
+    for (boolean isExpanded : expandedStates) {
+      if (isExpanded) {
+        isAllAnswersCollapsed = false;
+      }
+      if (!isExpanded) {
+        isAllAnswersExpanded = false;
+      }
+    }
+
+    //update the expand/collapse button state based on state of answer cards
+
+    if (isAllAnswersCollapsed) {
+      allAnswersCollapsed = true;
+      allAnswersExpanded = false;
+      toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+      toggleExpandedButtonState = false;
+    } else if (isAllAnswersExpanded) {
+      allAnswersExpanded = true;
+      allAnswersCollapsed = false;
+      toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+      toggleExpandedButtonState = true;
+    }
   }
 
   public void onGradeRecieved(GradedGroupQuizQuestion gradedQuestion) {
@@ -231,6 +279,8 @@ public class GroupQuizQuestionFragment extends Fragment {
     private RelativeLayout answerCardHeader;
     private ExpandableRelativeLayout answerCardContent;
 
+    private View answerMask;
+
 
     public AnswerHolder(final View itemView) {
       super(itemView);
@@ -244,7 +294,15 @@ public class GroupQuizQuestionFragment extends Fragment {
       answerCardContent = (ExpandableRelativeLayout) itemView
           .findViewById(R.id.quiz_answer_card_content);
 
-      answerCardContent.expand();
+      answerMask = (View) itemView.findViewById(R.id.group_quiz_answer_graded_mask);
+
+      //make the answer mask absorb click/touch events
+      answerMask.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+      });
 
       answerCardContent.setListener(new ExpandableLayoutListenerAdapter() {
         @Override
@@ -266,16 +324,20 @@ public class GroupQuizQuestionFragment extends Fragment {
 
     public void bindView(final QuizAnswer answer, GradedGroupQuizAnswer gradedAnswer) {
       mAnswerValue.setText(answer.getValue());
-//      mAnswerText.setText(answer.getText());
+      mAnswerText.setText(answer.getText());
       mAnswerText.setMovementMethod(new ScrollingMovementMethod());
-//      mAnswerTextPreview.setText(answer.getText());
+      mAnswerTextPreview.setText(answer.getText());
 
       mAnswerText.setOnTouchListener(new ScrollableTextTouchListener());
 
       if (allAnswersExpanded) {
-        answerCardContent.expand();
+        if (!answerCardContent.isExpanded()) {
+          answerCardContent.expand();
+        }
       } else if (allAnswersCollapsed) {
-        answerCardContent.collapse();
+        if (answerCardContent.isExpanded()) {
+          answerCardContent.collapse();
+        }
       }
 
       answerCardHeader.setOnClickListener(new OnClickListener() {
@@ -284,21 +346,28 @@ public class GroupQuizQuestionFragment extends Fragment {
           allAnswersCollapsed = false;
           allAnswersExpanded = false;
           answerCardContent.toggle();
+          expandedStates[getAdapterPosition()] = !expandedStates[getAdapterPosition()];
+          updateCollapsedState();
         }
       });
 
       if (gradedAnswer != null) {
 
         mSubmitAnswerButton.setEnabled(false);
+        mSubmitAnswerButton.setVisibility(View.GONE);
 
         if (!gradedAnswer.isCorrect()) {
           mResultLabel.setImageDrawable(incorrectDrawable);
           mResultLabel.setVisibility(View.VISIBLE);
-        } else {
+          answerMask.setBackgroundColor(incorrectMaskColor);
+          answerMask.setVisibility(View.VISIBLE);
+        } else if (gradedAnswer.isCorrect()) {
           //answer is the correct one
           mResultLabel.setImageDrawable(correctDrawable);
           mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
           mResultLabel.setVisibility(View.VISIBLE);
+          answerMask.setBackgroundColor(correctMaskColor);
+          answerMask.setVisibility(View.VISIBLE);
         }
       } else {
         mResultLabel.setVisibility(View.INVISIBLE);

@@ -24,4 +24,7 @@
   <color name="jccolorPrimaryMuted">#F1E3E3</color>
   <color name="jccolorAccent">#8BC34A</color>
     <color name="colorWhite">#FFFFFF</color>
+  <color name="jccolorCorrectMask">#7100FF00</color>
+  <color name="jccolorIncorrectMask">#71FF0000</color>
+  <color name="jccolorUnansweredMask">#71000000</color>
 </resources>

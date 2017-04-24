@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.jeff.viewpagerdelete.Miscellaneous.CollapsibleCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_marginLeft="@dimen/quiz_card_side_margin"
@@ -67,7 +67,8 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/quiz_answer_card_header"
       android:layout_alignParentBottom="true"
-      android:padding="16dp">
+      android:padding="16dp"
+      app:ael_expanded="true">
 
       <TextView
         android:id="@+id/quiz_answer_text"
@@ -118,7 +119,15 @@
 
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
+    <View
+      android:id="@+id/group_quiz_answer_graded_mask"
+      android:layout_alignTop="@id/quiz_answer_card_content"
+      android:layout_alignBottom="@id/quiz_answer_card_content"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      android:background="@color/jccolorUnansweredMask" />
 
   </RelativeLayout>
 
-</com.example.jeff.viewpagerdelete.Miscellaneous.CollapsibleCardView>
+</android.support.v7.widget.CardView>

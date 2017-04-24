@@ -32,6 +32,7 @@ import com.example.jeff.viewpagerdelete.R;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -56,6 +57,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
     private AnswerAdapter adapter;
 
     private ImageButton toggleAnswersCollapsedButton;
+    private boolean toggleExpandedButtonState = true;
 
     private Drawable collapsedDrawable;
     private Drawable expandedDrawable;
@@ -70,6 +72,15 @@ public class IndividualQuizQuestionFragment extends Fragment {
 
     private boolean allAnswersCollapsed = false;
     private boolean allAnswersExpanded = true;
+
+    private boolean[] expandedStates;
+
+    public interface PageFragmentListener {
+
+        void submitButtonClicked();
+//        void quizStateUpdated();
+
+    }
 
 
 
@@ -119,21 +130,29 @@ public class IndividualQuizQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (allAnswersCollapsed) {
+                if (toggleExpandedButtonState == false) {
                     allAnswersCollapsed = false;
                     allAnswersExpanded = true;
-                    toggleAnswersCollapsedButton.startAnimation(rotateUp);
+                    Arrays.fill(expandedStates, true);
+                    toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+                    toggleExpandedButtonState = true;
+
 
                 } else {
                     allAnswersCollapsed = true;
                     allAnswersExpanded = false;
-                    toggleAnswersCollapsedButton.startAnimation(rotateDown);
+                    Arrays.fill(expandedStates, false);
+                    toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+                    toggleExpandedButtonState = false;
                 }
 
                 adapter.notifyDataSetChanged();
 
             }
         });
+
+        expandedStates = new boolean[question.getAvailableAnswers().size()];
+        Arrays.fill(expandedStates, true);
 
 
 
@@ -160,12 +179,35 @@ public class IndividualQuizQuestionFragment extends Fragment {
         mListener = null;
     }
 
-    public interface PageFragmentListener{
+    private void updateCollapsedState() {
+        boolean isAllAnswersCollapsed = true;
+        boolean isAllAnswersExpanded = true;
 
-        void submitButtonClicked();
-//        void quizStateUpdated();
+        //check if all
+        for (boolean isExpanded : expandedStates) {
+            if (isExpanded) {
+                isAllAnswersCollapsed = false;
+            }
+            if (!isExpanded) {
+                isAllAnswersExpanded = false;
+            }
+        }
 
+        //update the expand/collapse button state based on state of answer cards
+
+        if (isAllAnswersCollapsed) {
+            allAnswersCollapsed = true;
+            allAnswersExpanded = false;
+            toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+            toggleExpandedButtonState = false;
+        } else if (isAllAnswersExpanded) {
+            allAnswersExpanded = true;
+            allAnswersCollapsed = false;
+            toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+            toggleExpandedButtonState = true;
+        }
     }
+
 
     //RecyclerView Implementation
 
@@ -221,8 +263,6 @@ public class IndividualQuizQuestionFragment extends Fragment {
             answerCardContent = (ExpandableRelativeLayout) itemView
                 .findViewById(R.id.quiz_answer_card_content);
 
-            answerCardContent.expand();
-
             answerCardContent.setListener(new ExpandableLayoutListenerAdapter() {
                 @Override
                 public void onPreOpen() {
@@ -249,9 +289,13 @@ public class IndividualQuizQuestionFragment extends Fragment {
             mAnswerText.setOnTouchListener(new ScrollableTextTouchListener());
 
             if (allAnswersExpanded) {
-                answerCardContent.expand();
+                if (!answerCardContent.isExpanded()) {
+                    answerCardContent.expand();
+                }
             } else if (allAnswersCollapsed) {
-                answerCardContent.collapse();
+                if (answerCardContent.isExpanded()) {
+                    answerCardContent.collapse();
+                }
             }
 
             answerCardHeader.setOnClickListener(new OnClickListener() {
@@ -260,6 +304,8 @@ public class IndividualQuizQuestionFragment extends Fragment {
                     allAnswersCollapsed = false;
                     allAnswersExpanded = false;
                     answerCardContent.toggle();
+                    expandedStates[getAdapterPosition()] = !expandedStates[getAdapterPosition()];
+                    updateCollapsedState();
                 }
             });
 
