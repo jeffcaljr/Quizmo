@@ -61,7 +61,7 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
       android:id="@+id/quiz_answer_card_content"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
       </LinearLayout>
 
 
-    </RelativeLayout>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
 
   </RelativeLayout>

@@ -68,8 +68,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/quiz_answer_card_header"
       android:layout_alignParentBottom="true"
-      android:padding="16dp"
-      app:ael_expanded="true">
+      android:padding="16dp">
 
       <TextView
         android:id="@+id/quiz_answer_text"
