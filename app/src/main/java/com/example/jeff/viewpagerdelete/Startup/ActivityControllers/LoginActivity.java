@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -111,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
                       Intent i = new Intent(LoginActivity.this, HomePageActivity.class);
                       startActivity(i);
-                      authenticatingFragment.dismiss();
+                      authenticatingFragment.dismissWithDelay(500);
                       finish();
 
                     }
@@ -120,7 +121,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void userDownloadFailure(VolleyError error) {
 
                       loginButton.setEnabled(true);
-                      authenticatingFragment.dismiss();
+                      authenticatingFragment.dismissWithDelay(500);
+
                       Snackbar snackbar = Snackbar
                           .make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
                               "Error authenticating user.", Snackbar.LENGTH_SHORT);

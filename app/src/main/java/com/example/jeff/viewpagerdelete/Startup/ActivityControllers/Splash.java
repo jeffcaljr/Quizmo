@@ -21,7 +21,7 @@ import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.Pu
 
 public class Splash extends AppCompatActivity {
 
-    private static final int SPLASH_MINIMUM_DISPLAY_LENGTH = 3000;
+  private static final int SPLASH_MINIMUM_DISPLAY_LENGTH = 2000;
     private User user;
     private UserDbHelper dbHelper;
     private SQLiteDatabase db;
@@ -36,26 +36,6 @@ public class Splash extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
       userNetworkingService = new UserNetworkingService(this);
 
-
-
-//       new Handler().postDelayed(new Runnable() {
-//           @Override
-//           public void run() {
-//               //check if user is saved locally (this means the user is signed in)
-//               user = UserDBMethods.PullUserInfo(db);
-//
-//               //if the user is signed in, fetch their current data
-//               if (user != null) {
-//                   userNetworkingService.downloadUser(listener, user.getUserID());
-//               }
-//               else{
-//                   //no user saved in database; go to login
-//                   Intent intent = new Intent(Splash.this, LoginActivity.class);
-//                   Splash.this.startActivity(intent);
-//                   Splash.this.finish();
-//               }
-//           }
-//       }, SPLASH_MINIMUM_DISPLAY_LENGTH);
     }
 
     @Override

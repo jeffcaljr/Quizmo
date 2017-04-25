@@ -22,6 +22,8 @@
   <color name="jccolorPrimaryDark">#5b0000</color>
   <color name="jccolorPrimaryBright">#c44b3e</color>
   <color name="jccolorPrimaryMuted">#F1E3E3</color>
+  <color name="jccolorBrightButton">#F3F44336</color>
+  <color name="jccolorBrightButtonDisabled">#FAADA8</color>
   <color name="jccolorAccent">#8BC34A</color>
     <color name="colorWhite">#FFFFFF</color>
   <color name="jccolorCorrectMask">#7100FF00</color>

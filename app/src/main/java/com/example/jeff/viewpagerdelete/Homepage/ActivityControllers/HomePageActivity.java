@@ -120,19 +120,12 @@ public class HomePageActivity extends AppCompatActivity
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
 
 
-        Typeface regularFace = Typeface.createFromAsset(getAssets(),"fonts/robotoRegular.ttf");
-        Typeface boldFace = Typeface.createFromAsset(getAssets(),"fonts/robotoBold.ttf");
-
-        courseNameTextView.setTypeface(boldFace);
 
         userNameTextView.setText("@" + user.getUserID());
-        userNameTextView.setTypeface(boldFace);
 
         fullNameTextView.setText(user.getFirstName() + " " + user.getLastName());
-        fullNameTextView.setTypeface(regularFace);
 
         emailTextView.setText(user.getEmail());
-        emailTextView.setTypeface(regularFace);
 
         loadingFragment = new LoadingFragment(this, "Loading");
 

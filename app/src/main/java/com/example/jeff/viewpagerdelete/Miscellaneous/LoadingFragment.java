@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -40,7 +41,6 @@ public class LoadingFragment extends Dialog implements View.OnClickListener {
 
         dialogText.setText(loadingText);
 
-        setTypefaces();
 
     }
 
@@ -54,13 +54,12 @@ public class LoadingFragment extends Dialog implements View.OnClickListener {
 
     }
 
-    private void setTypefaces(){
-        //set type face of views
-//        Typeface regularFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoRegular.ttf");
-        Typeface boldFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBold.ttf");
-//        Typeface boldItalicFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBoldItalic.ttf");
-
-        dialogText.setTypeface(boldFace);
-
+    public void dismissWithDelay(long delay) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LoadingFragment.this.dismiss();
+            }
+        }, delay);
     }
 }
