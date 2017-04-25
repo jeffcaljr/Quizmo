@@ -194,16 +194,14 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
           @Override
           public void onGroupQuizProgressFailure(VolleyError error) {
 
-            if (error instanceof NoConnectionError) {
-              Toast.makeText(GroupWaitingAreaActivity.this, "No network connection",
-                  Toast.LENGTH_LONG).show();
-            } else {
+              if (error instanceof NoConnectionError) {
+                  Toast.makeText(GroupWaitingAreaActivity.this, "No network connection", Toast.LENGTH_LONG).
+            }
               Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
               i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
               i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+              i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
               startActivity(i);
-            }
-
 
           }
         });

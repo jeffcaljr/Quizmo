@@ -9,13 +9,16 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
@@ -46,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private RelativeLayout rootLayout;
     private RelativeLayout loginTopLayout;
+    private ScrollView videoScrollView;
 
     private Animation slideFromRight;
 
@@ -66,6 +70,15 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.login_button);
         rootLayout = (RelativeLayout) findViewById(R.id.login_root_layout);
         loginTopLayout = (RelativeLayout) findViewById(R.id.login_top_layout);
+        videoScrollView = (ScrollView) findViewById(R.id.video_scrollview);
+
+        //disable scrollview
+        videoScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
+            }
+        });
 
         slideFromRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right);
 
@@ -146,10 +159,12 @@ public class LoginActivity extends AppCompatActivity {
                 mp.setLooping(true);
             }
         });
+
         videoView.start();
 
-        usernameField.setOnFocusChangeListener(new EditTextFocusChangeListener(rootLayout));
+        usernameField.requestFocus();
 
+//        usernameField.setOnFocusChangeListener(new EditTextFocusChangeListener(rootLayout));
 
     }
 
