@@ -3,6 +3,7 @@ package com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
+import com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.View.StatisticsMasterFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
@@ -33,12 +35,13 @@ public class StatisticsActivity extends AppCompatActivity
   public static final String INTENT_EXTRA_GROUP_QUIZ = "INTENT_EXTRA_GROUP_QUIZ";
   public static final String INTENT_EXTRA_INDIVIDUAL_QUIZ = "INTENT_EXTRA_INDIVIDUAL_QUIZ";
 
-  private TextView individualQuizStatsTextView;
-  private TextView groupQuizStatsTextView;
 
   private GradedGroupQuiz gradedGroupQuiz;
   private GradedQuiz gradedQuiz;
     private Quiz individualQuiz;
+
+  private StatisticsMasterFragment statisticsMasterFragment;
+  private FragmentManager fragmentManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +59,6 @@ public class StatisticsActivity extends AppCompatActivity
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    individualQuizStatsTextView = (TextView) findViewById(R.id.stats_individual_textview);
-    groupQuizStatsTextView = (TextView) findViewById(R.id.stats_group_tv);
-
-    individualQuizStatsTextView.setMovementMethod(new ScrollingMovementMethod());
-    groupQuizStatsTextView.setMovementMethod(new ScrollingMovementMethod());
 
     Bundle extras = getIntent().getExtras();
 
@@ -73,11 +71,24 @@ public class StatisticsActivity extends AppCompatActivity
       Log.e(TAG, "Expected graded group and individual quizzes");
     }
 
-    try {
-      individualQuizStatsTextView.setText(new JSONObject(gradedQuiz.toJSON()).toString(4));
-      groupQuizStatsTextView.setText(new JSONObject(gradedGroupQuiz.toJSON()).toString(4));
-    } catch (JSONException e) {
-      e.printStackTrace();
+
+    fragmentManager = getSupportFragmentManager();
+
+    statisticsMasterFragment = (StatisticsMasterFragment) fragmentManager.findFragmentByTag(StatisticsMasterFragment.TAG);
+
+    if (statisticsMasterFragment == null) {
+      statisticsMasterFragment = new StatisticsMasterFragment();
+      Bundle args = new Bundle();
+      args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_QUIZ, individualQuiz);
+      args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_GRADED_INDIVIDUAL_QUIZ, gradedQuiz);
+      args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_GRADED_GROUP_QUIZ, gradedGroupQuiz);
+      statisticsMasterFragment.setArguments(args);
+
+      fragmentManager.beginTransaction()
+              .replace(R.id.statistics_container, statisticsMasterFragment, StatisticsMasterFragment.TAG)
+              .addToBackStack(null)
+              .commit();
+
     }
 
   }

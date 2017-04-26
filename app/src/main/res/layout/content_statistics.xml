@@ -5,49 +5,10 @@
   android:layout_height="match_parent"
   tools:showIn="@layout/app_bar_statistics">
 
-  <TextView
-    android:id="@+id/stats_title"
-    android:text="Raw Stats"
-    android:textColor="@color/jccolorPrimaryDark"
-    android:gravity="center"
-    android:textSize="24sp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="80dp" />
 
-  <LinearLayout
-    android:id="@+id/stats_text_layout"
-    android:layout_below="@id/stats_title"
-    android:layout_alignParentBottom="true"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-      android:id="@+id/stats_individual_textview"
+  <FrameLayout
+      android:id="@+id/statistics_container"
       android:layout_width="match_parent"
-      android:padding="8dp"
-      android:scrollbars="vertical"
-      android:textSize="18sp"
-      android:textColor="@color/jccolorPrimaryDark"
-      android:text="Failed to load individual stats"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:layout_marginBottom="16dp"
-      android:background="#dddddd" />
-
-    <TextView
-      android:id="@+id/stats_group_tv"
-      android:text="Failed to load group stats"
-      android:textColor="@color/jccolorPrimaryDark"
-      android:textSize="18sp"
-      android:padding="8dp"
-      android:scrollbars="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:background="#dddddd" />
-  </LinearLayout>
+      android:layout_height="match_parent"></FrameLayout>
 
 </RelativeLayout>
