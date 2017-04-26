@@ -146,6 +146,7 @@ public class GroupWaitingAreaFragment extends Fragment implements
                     .commit();
 
 
+
         }
 
 
@@ -156,6 +157,8 @@ public class GroupWaitingAreaFragment extends Fragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         statusChecker.startSequence();
+
+//        PollingService.setServiceAlarm(getActivity(), true, group, course, quiz);
     }
 
   @Override
