@@ -419,13 +419,16 @@ public class GroupQuizQuestionFragment extends Fragment {
             }
 
 
-            mSubmitAnswerButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            //Didn't want to disable user interaction with the answer text after they got the question right;
+            //still want them to be able to scroll!
 
-                    answerSelectedListener.answerSelected(question, answer, GroupQuizQuestionFragment.this);
-                }
-            });
+//            mSubmitAnswerButton.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    answerSelectedListener.answerSelected(question, answer, GroupQuizQuestionFragment.this);
+//                }
+//            });
 
 
         }

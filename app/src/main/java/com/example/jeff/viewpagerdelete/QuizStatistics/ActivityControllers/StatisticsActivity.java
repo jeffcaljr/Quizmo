@@ -86,7 +86,6 @@ public class StatisticsActivity extends AppCompatActivity
 
       fragmentManager.beginTransaction()
               .replace(R.id.statistics_container, statisticsMasterFragment, StatisticsMasterFragment.TAG)
-              .addToBackStack(null)
               .commit();
 
     }

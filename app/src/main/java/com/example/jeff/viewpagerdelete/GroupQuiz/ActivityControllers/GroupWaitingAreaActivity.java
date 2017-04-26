@@ -1,10 +1,14 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,12 +26,12 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupQuizProgressDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.SingleGroupDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
@@ -35,16 +39,17 @@ import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
+import java.util.ArrayList;
+
 public class GroupWaitingAreaActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
     GroupWaitingAreaFragment.OnGroupQuizStartedListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
     public static final String EXTRA_QUIZ = "EXTRA_GRADED_QUIZ";
-    public static final String FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT = "FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT";
 
     private FragmentManager manager;
-    private GroupWaitingAreaFragment groupQuizCodeFragment;
+    private GroupWaitingAreaFragment groupWaitingAreaFragment;
 
     private Course course;
     private Quiz quiz;
@@ -57,6 +62,24 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
     private UserDbHelper userDbHelper;
     private SQLiteDatabase userDB;
+
+    private LocalBroadcastManager bManager;
+
+    //Your activity will respond to this action String
+    public static final String RECEIVE_JSON = "com.your.package.RECEIVE_JSON";
+
+    private BroadcastReceiver bReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(RECEIVE_JSON)) {
+                ArrayList<UserGroupStatus> statuses = (ArrayList<UserGroupStatus>) intent.getSerializableExtra("json");
+                if (manager != null && groupWaitingAreaFragment != null) {
+                    groupWaitingAreaFragment.onStatusUpdate(statuses);
+                }
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,21 +110,21 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
                 @Override
                 public void onDownloadSingleGroupSuccess(Group group) {
                   GroupWaitingAreaActivity.this.group = group;
-                  groupQuizCodeFragment = (GroupWaitingAreaFragment) manager
-                      .findFragmentByTag(FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT);
+                    groupWaitingAreaFragment = (GroupWaitingAreaFragment) manager
+                            .findFragmentByTag(GroupWaitingAreaFragment.TAG);
 
-                  if (groupQuizCodeFragment == null) {
-                    groupQuizCodeFragment = new GroupWaitingAreaFragment();
+                    if (groupWaitingAreaFragment == null) {
+                        groupWaitingAreaFragment = new GroupWaitingAreaFragment();
                     Bundle args = new Bundle();
                     args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
                     args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
                       args.putSerializable(GroupWaitingAreaFragment.ARG_QUIZ, quiz);
 
-                    groupQuizCodeFragment.setArguments(args);
+                        groupWaitingAreaFragment.setArguments(args);
 
                     manager.beginTransaction()
-                        .replace(R.id.group_code_fragment_container, groupQuizCodeFragment,
-                            FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT)
+                            .replace(R.id.group_code_fragment_container, groupWaitingAreaFragment,
+                                    GroupWaitingAreaFragment.TAG)
                         .commit();
 
                   }
@@ -131,12 +154,18 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         TextView fullNameTextView = (TextView) headerView.findViewById(R.id.header_fullname);
         TextView emailTextView = (TextView) headerView.findViewById(R.id.header_email);
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
+
+        bManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(RECEIVE_JSON);
+        bManager.registerReceiver(bReceiver, intentFilter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         userDB.close();
+        bManager.unregisterReceiver(bReceiver);
     }
 
     @Override
@@ -205,7 +234,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
           }
         });
-
-
   }
+
+
 }
