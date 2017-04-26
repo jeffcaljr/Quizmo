@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.IndividualQuiz.Database;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;

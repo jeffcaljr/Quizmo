@@ -2,7 +2,6 @@ package com.example.jeff.viewpagerdelete.Homepage.ActivityControllers;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -18,17 +17,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.Homepage.Database.QuizLoadTask;
 import com.example.jeff.viewpagerdelete.Homepage.View.CourseListFragment;
 import com.example.jeff.viewpagerdelete.Homepage.View.QuizListFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizDbHelper;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz.IndividualQuizDbHelper;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService.UserQuizzesDownloadCallback;
 import com.example.jeff.viewpagerdelete.Miscellaneous.LoadingFragment;
+import com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.StatisticsActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
@@ -67,6 +72,7 @@ public class HomePageActivity extends AppCompatActivity
 
 
   private QuizNetworkingService quizNetworkingService;
+    private GroupNetworkingService groupNetworkingService;
 
     private UserDbHelper userDbHelper;
     private SQLiteDatabase userDB;
@@ -90,6 +96,7 @@ public class HomePageActivity extends AppCompatActivity
         quizDB = quizDbHelper.getWritableDatabase();
 
       quizNetworkingService = new QuizNetworkingService(this);
+        groupNetworkingService = new GroupNetworkingService(this);
 
 
         courseListFragment = (CourseListFragment) manager.findFragmentByTag(FRAG_TAG_COURSE_LIST);
@@ -274,21 +281,79 @@ public class HomePageActivity extends AppCompatActivity
 
 
     @Override
-    public void onQuizLoadResponse(Course course, Quiz quiz) {
+    public void onQuizLoadResponse(final Course course, final Quiz quiz) {
         if(quiz != null){
             //Loaded Quiz From SQLite Successfully
 
+            if (quiz.isFinished()) {
+                Toast.makeText(HomePageActivity.this, "Quiz is finished!", Toast.LENGTH_SHORT).show();
 
-            Intent i = new Intent(this, IndividualQuizActivity.class);
-            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, quiz);
-            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
-            i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
-            startActivity(i);
-            loadingFragment.dismiss();
+                //Maybe check group progress for the given quiz, and move to next activity accordingly?
 
+                //get user group id
+
+                groupNetworkingService.downloadGroupForUser(UserDataSource.getInstance().getUser().getUserID(), course.getCourseID(), new GroupNetworkingService.SingleGroupDownloadCallback() {
+                    @Override
+                    public void onDownloadSingleGroupSuccess(Group group) {
+                        String groupID = group.getId();
+                        groupNetworkingService.getGroupQuizProgress(quiz.getId(), groupID, quiz.getAssociatedSessionID(), new GroupNetworkingService.GroupQuizProgressDownloadCallback() {
+                            @Override
+                            public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
+                                if (gradedGroupQuiz.getTotalQuestions() == gradedGroupQuiz.getQuestionsAnswered()) {
+                                    //the group quiz is complete, go to stats page
+                                    Intent i = new Intent(HomePageActivity.this, StatisticsActivity.class);
+                                    i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, quiz);
+                                    i.putExtra(StatisticsActivity.INTENT_EXTRA_GROUP_QUIZ, gradedGroupQuiz);
+                                    startActivity(i);
+                                    loadingFragment.dismissWithDelay(500);
+                                } else {
+                                    //the group quiz is incomplete, go to waiting area page
+                                    //TODO: should this go straight to the group quiz page?
+                                    Intent i = new Intent(HomePageActivity.this, GroupWaitingAreaActivity.class);
+                                    i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
+                                    i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
+                                    startActivity(i);
+                                    loadingFragment.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onGroupQuizProgressFailure(VolleyError error) {
+
+                                //the individual quiz is finished, but the group quiz hasn't been started?
+                                //also go to waiting area page
+                                Intent i = new Intent(HomePageActivity.this, GroupWaitingAreaActivity.class);
+                                i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
+                                i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
+                                startActivity(i);
+                                loadingFragment.dismiss();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onDownloadSingleGroupFailure(VolleyError error) {
+
+                        //the quiz has been finished, but there was an error determining what group the user belongs to
+                        Toast.makeText(HomePageActivity.this, "Failed to load group!", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
+            } else {
+                //the quiz has been started, but hasn't been finished
+                //go back to quiz
+                Intent i = new Intent(this, IndividualQuizActivity.class);
+                i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, quiz);
+                i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
+                i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
+                startActivity(i);
+                loadingFragment.dismiss();
+            }
         }
         else{
-
+            //the quiz isn't in the SQLite database, so it hasn't been started; request token code
             TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
 
             loadingFragment.dismiss();

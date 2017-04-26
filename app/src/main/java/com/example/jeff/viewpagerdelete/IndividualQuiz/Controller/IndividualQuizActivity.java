@@ -25,7 +25,8 @@ import com.android.volley.VolleyError;
 import com.eftimoff.viewpagertransformers.DefaultTransformer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService.IndividualQuizPostCallback;
@@ -73,7 +74,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     private Snackbar submitSnackBar;
 
-  LoadingFragment submittingFragment;
+    private LoadingFragment submittingFragment;
 
 
 
@@ -282,7 +283,17 @@ public class IndividualQuizActivity extends AppCompatActivity
     @Override
     public void userConfirmedSubmission() {
 
+        //Set the quiz as finished; save it to SQLite
+        //Then, post it to the server
+        //If posting was successsful, and graded quiz is returned, save that graded quiz to SQLite for calculating stats later
+        //then, go to group waiting area
+        //If posting was unsuccessful, display error to the user
+
+        //TODO: When the quiz expires, if posting is unsuccessful, what to do then? Perhaps post the quiz the next time a user clicks it on the homescreen?
+
       submittingFragment.show();
+
+        quiz.setFinished(true);
 
       //Save the quiz to the database one last time, because this method won't get called on the last page (only gets called on page change)
       IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
@@ -293,14 +304,27 @@ public class IndividualQuizActivity extends AppCompatActivity
                 UserDataSource.getInstance().getUser().getUserID(), quiz.getAssociatedSessionID(),
                 quiz, new IndividualQuizPostCallback() {
                   @Override
-                  public void onQuizPostSuccess(GradedQuiz quiz) {
-                    Intent i = new Intent(IndividualQuizActivity.this,
-                        GroupWaitingAreaActivity.class);
-                    i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
-                    i.putExtra(GroupWaitingAreaActivity.EXTRA_GRADED_QUIZ, quiz);
-                    startActivity(i);
-                    finish();
-                    submittingFragment.dismiss();
+                  public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
+
+                      //set the id of the graded quiz to the id of the individual quiz
+                      gradedQuiz.setId(quiz.getId());
+
+                      boolean writeSuccess = GradedQuizPersistence.sharedInstance(IndividualQuizActivity.this).writeGradedQuizToDatabase(gradedQuiz);
+
+                      if (writeSuccess == true) {
+                          Intent i = new Intent(IndividualQuizActivity.this,
+                                  GroupWaitingAreaActivity.class);
+                          i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
+                          i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
+                          startActivity(i);
+                          finish();
+                          submittingFragment.dismiss();
+                      } else {
+                          submittingFragment.dismiss();
+                          Toast.makeText(IndividualQuizActivity.this, "Failed to save graded quiz to DB", Toast.LENGTH_LONG).show();
+
+                      }
+
                   }
 
                   @Override

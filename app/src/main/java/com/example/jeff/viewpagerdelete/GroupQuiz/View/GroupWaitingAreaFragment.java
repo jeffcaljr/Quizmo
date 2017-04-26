@@ -32,6 +32,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupWaitingQueueSe
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.PollingService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
@@ -46,13 +47,13 @@ public class GroupWaitingAreaFragment extends Fragment implements
 
     public static final String ARG_GROUP = "ARG_GROUP";
     public static final String ARG_COURSE = "ARG_COURSE";
-    public static final String ARG_GRADED_QUIZ = "ARG_GRADED_QUIZ";
+    public static final String ARG_QUIZ = "ARG_QUIZ";
     public static final String FRAG_TAG_STATUS_CHECKER = "FRAG_TAG_STATUS_CHECKER";
 
     private Group group;
     private ArrayList<String> memberNames;
     private Course course;
-    private GradedQuiz quiz;
+    private Quiz quiz;
   private ArrayList<UserGroupStatus> statuses;
 
   private GroupNetworkingService groupNetworkingService;
@@ -91,10 +92,10 @@ public class GroupWaitingAreaFragment extends Fragment implements
 
         Bundle args = getArguments();
 
-        if (args != null && args.containsKey(ARG_GROUP) && args.containsKey(ARG_COURSE) && args.containsKey(ARG_GRADED_QUIZ)) {
+      if (args != null && args.containsKey(ARG_GROUP) && args.containsKey(ARG_COURSE) && args.containsKey(ARG_QUIZ)) {
             group = (Group) args.getSerializable(ARG_GROUP);
             course = (Course) args.getSerializable(ARG_COURSE);
-            quiz = (GradedQuiz) args.getSerializable(ARG_GRADED_QUIZ);
+          quiz = (Quiz) args.getSerializable(ARG_QUIZ);
 
             statuses = new ArrayList<>();
 

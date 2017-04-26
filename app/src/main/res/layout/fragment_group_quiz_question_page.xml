@@ -48,7 +48,7 @@
 
         <TextView
           android:id="@+id/quiz_question_points_earned_label"
-          android:text="4"
+            android:text="-"
           android:textSize="32sp"
           android:textStyle="bold"
           android:textColor="@color/colorWhite"

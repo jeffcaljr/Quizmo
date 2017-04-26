@@ -18,6 +18,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupQuizAnswer;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.Miscellaneous.RequestService;
 import com.example.jeff.viewpagerdelete.Miscellaneous.ApiURLs;
 
@@ -126,8 +127,8 @@ public class GroupNetworkingService {
         RequestService.getInstance(context).addRequest(request);
     }
 
-  public void getGroupStatus(Group group, Course course, GradedQuiz quiz,
-      final GroupStatusDownloadCallback callback) {
+    public void getGroupStatus(Group group, Course course, Quiz quiz,
+                               final GroupStatusDownloadCallback callback) {
 
     if (callback == null) {
             return;
@@ -135,8 +136,8 @@ public class GroupNetworkingService {
 
         String groupID = group.getId();
         String courseID = course.getCourseID();
-        String quizID = quiz.getQuizID();
-        String sessionID = quiz.getSessionID();
+        String quizID = quiz.getId();
+        String sessionID = quiz.getAssociatedSessionID();
 
       String urlString =
           ApiURLs.groupStatusURL + "?group_id=" + groupID + "&course_id=" + courseID + "&quiz_id="

@@ -15,8 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
+
 import android.view.MenuItem;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +38,7 @@ public class StatisticsActivity extends AppCompatActivity
 
   private GradedGroupQuiz gradedGroupQuiz;
   private GradedQuiz gradedQuiz;
+    private Quiz individualQuiz;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,8 @@ public class StatisticsActivity extends AppCompatActivity
     if (extras != null && extras.containsKey(INTENT_EXTRA_INDIVIDUAL_QUIZ) && extras
         .containsKey(INTENT_EXTRA_GROUP_QUIZ)) {
       gradedGroupQuiz = (GradedGroupQuiz) extras.getSerializable(INTENT_EXTRA_GROUP_QUIZ);
-      gradedQuiz = (GradedQuiz) extras.getSerializable(INTENT_EXTRA_INDIVIDUAL_QUIZ);
+        individualQuiz = (Quiz) extras.getSerializable(INTENT_EXTRA_INDIVIDUAL_QUIZ);
+        gradedQuiz = GradedQuizPersistence.sharedInstance(this).readGradedQuizFromDatabase(individualQuiz.getId(), UserDataSource.getInstance().getUser().getUserID());
     } else {
       Log.e(TAG, "Expected graded group and individual quizzes");
     }

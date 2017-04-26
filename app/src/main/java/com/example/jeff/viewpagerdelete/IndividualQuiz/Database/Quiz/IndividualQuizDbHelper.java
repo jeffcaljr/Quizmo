@@ -1,4 +1,4 @@
-package com.example.jeff.viewpagerdelete.IndividualQuiz.Database;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

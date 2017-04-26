@@ -28,6 +28,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingServ
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
@@ -39,14 +40,14 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
     GroupWaitingAreaFragment.OnGroupQuizStartedListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
-    public static final String EXTRA_GRADED_QUIZ = "EXTRA_GRADED_QUIZ";
+    public static final String EXTRA_QUIZ = "EXTRA_GRADED_QUIZ";
     public static final String FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT = "FRAG_TAG_GROUP_QUIZ_CODE_FRAGMENT";
 
     private FragmentManager manager;
     private GroupWaitingAreaFragment groupQuizCodeFragment;
 
     private Course course;
-    private GradedQuiz quiz;
+    private Quiz quiz;
   private Group group;
 
     private TextView courseNameTextView;
@@ -66,9 +67,9 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
 
-        if (extras != null && extras.containsKey(EXTRA_COURSE) && extras.containsKey(EXTRA_GRADED_QUIZ)) {
+        if (extras != null && extras.containsKey(EXTRA_COURSE) && extras.containsKey(EXTRA_QUIZ)) {
             course = (Course) extras.getSerializable(EXTRA_COURSE);
-            quiz = (GradedQuiz) extras.getSerializable(EXTRA_GRADED_QUIZ);
+            quiz = (Quiz) extras.getSerializable(EXTRA_QUIZ);
         } else {
             Log.e("TAG", "expected required extra \"EXTRA_COURSE\" in GroupWaitingAreaActivity");
             finish();
@@ -94,7 +95,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
                     Bundle args = new Bundle();
                     args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
                     args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
-                    args.putSerializable(GroupWaitingAreaFragment.ARG_GRADED_QUIZ, quiz);
+                      args.putSerializable(GroupWaitingAreaFragment.ARG_QUIZ, quiz);
 
                     groupQuizCodeFragment.setArguments(args);
 
@@ -179,12 +180,12 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
   @Override
   public void onGroupQuizStarted() {
 
-    groupNetworkingService.getGroupQuizProgress(quiz.getQuizID(), group.getId(),
-        quiz.getSessionID(), new GroupQuizProgressDownloadCallback() {
+      groupNetworkingService.getGroupQuizProgress(quiz.getId(), group.getId(),
+              quiz.getAssociatedSessionID(), new GroupQuizProgressDownloadCallback() {
           @Override
           public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
             Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
-            i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
+              i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
             i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
             i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
             startActivity(i);
@@ -195,12 +196,11 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
           public void onGroupQuizProgressFailure(VolleyError error) {
 
               if (error instanceof NoConnectionError) {
-                  Toast.makeText(GroupWaitingAreaActivity.this, "No network connection", Toast.LENGTH_LONG).
+                  Toast.makeText(GroupWaitingAreaActivity.this, "No network connection", Toast.LENGTH_LONG).show();
             }
               Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
-              i.putExtra(GroupQuizActivity.INTENT_EXTRA_GRADED_QUIZ, quiz);
+              i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
               i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
-              i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
               startActivity(i);
 
           }

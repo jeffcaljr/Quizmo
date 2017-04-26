@@ -1,13 +1,11 @@
-package com.example.jeff.viewpagerdelete.IndividualQuiz.Database;
+package com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizSchema.QuizEntry;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
-import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import com.google.gson.JsonSyntaxException;
 
 /**
@@ -36,12 +34,12 @@ public class IndividualQuizPersistence {
         Quiz quiz;
 
         String[] projection = {
-            QuizEntry.COLUMN_NAME_QUIZ_ID,
-            QuizEntry.COLUMN_NAME_QUIZ_JSON
+                IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID,
+                IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON
         };
 
-    String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " = ? AND "
-        + QuizEntry.COLUMN_NAME_USER_ID + " = ?";
+      String selection = IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " = ? AND "
+              + IndividualQuizSchema.QuizEntry.COLUMN_NAME_USER_ID + " = ?";
     String[] selectionArgs = {quizID, userID};
 
         Cursor cursor = db.query(
@@ -96,8 +94,8 @@ public class IndividualQuizPersistence {
 
         ContentValues values = getContentValues(quiz);
 
-      String selection = QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ? AND "
-          + QuizEntry.COLUMN_NAME_USER_ID + " = ?";
+        String selection = IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID + " LIKE ? AND "
+                + IndividualQuizSchema.QuizEntry.COLUMN_NAME_USER_ID + " = ?";
       String[] selectionArgs = {quiz.getId(), quiz.getUserID()};
 
         db.update(
@@ -112,9 +110,9 @@ public class IndividualQuizPersistence {
 
     private ContentValues getContentValues(Quiz quiz){
       ContentValues values = new ContentValues();
-      values.put(QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
-      values.put(QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
-      values.put(QuizEntry.COLUMN_NAME_USER_ID, quiz.getUserID());
+        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_ID, quiz.getId());
+        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_QUIZ_JSON, quiz.toJSON());
+        values.put(IndividualQuizSchema.QuizEntry.COLUMN_NAME_USER_ID, quiz.getUserID());
 
         return values;
     }

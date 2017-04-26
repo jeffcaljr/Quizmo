@@ -341,9 +341,6 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
         @Override
         public void onClick(View view) {
 
-            //TODO: The following line sets the click listener for a cell to pass the firs quiz in the list to the listener
-                //no matter what; this is only for testing purposes
-//            mListener.itemClicked((courses.get(0)));
           mListener.itemClicked(courses.get(this.getAdapterPosition()));
         }
     }

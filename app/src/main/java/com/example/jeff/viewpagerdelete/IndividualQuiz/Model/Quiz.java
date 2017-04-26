@@ -32,6 +32,7 @@ public class Quiz implements Serializable, Comparable<Quiz> {
     private boolean isTimed;
     private int timedLength;
     private String associatedSessionID;
+    private boolean isFinished;
 
   private String userID; //used to idenfity same quiz for different users
 
@@ -186,6 +187,14 @@ public class Quiz implements Serializable, Comparable<Quiz> {
 
   public void setUserID(String userID) {
     this.userID = userID;
+  }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 
     //Convenience Methods

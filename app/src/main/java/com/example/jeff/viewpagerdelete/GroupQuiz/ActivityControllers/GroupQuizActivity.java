@@ -1,14 +1,12 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,16 +26,15 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingServ
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupQuizQuestionFragment.OnGroupQuizAnswerSelectedListener;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity.DetailOnPageChangeListener;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.IndividualQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
+import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz.IndividualQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.View.IndividualQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.StatisticsActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
-import org.json.JSONObject;
 
 public class GroupQuizActivity extends AppCompatActivity implements
     OnGroupQuizAnswerSelectedListener {
@@ -46,7 +43,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
   //Constants used for keys/values
   public static final String INTENT_EXTRA_GROUP_QUIZ_PROGRESS = "INTENT_EXTRA_GROUP_QUIZ_PROGRESS";
-  public static final String INTENT_EXTRA_GRADED_QUIZ = "INTENT_EXTRA_QUIZ";
+  public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
   public static final String INTENT_EXTRA_SESSION_ID = "INTENT_EXTRA_SESSION_ID";
   public static final String INTENT_EXTRA_GROUP = "INTENT_EXTRA_GROUP";
   public static final String INTENT_EXTRA_COURSE = "INTENT_EXTRA_COURSE";
@@ -75,18 +72,18 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
     Bundle extras = getIntent().getExtras();
 
-    if (extras == null || !extras.containsKey(INTENT_EXTRA_GRADED_QUIZ) || !extras
+    if (extras == null || !extras.containsKey(INTENT_EXTRA_QUIZ) || !extras
         .containsKey(INTENT_EXTRA_GROUP)) {
       Log.e(TAG, "Expected Course and Quiz passed via intent");
       finish();
     } else {
-      gradedQuiz = (GradedQuiz) extras.getSerializable(INTENT_EXTRA_GRADED_QUIZ);
+      quiz = (Quiz) extras.getSerializable(INTENT_EXTRA_QUIZ);
       group = (Group) extras.getSerializable(INTENT_EXTRA_GROUP);
     }
 
-    quiz = IndividualQuizPersistence.sharedInstance(this)
-        .readIndividualQuizFromDatabase(gradedQuiz.getQuizID(),
-            UserDataSource.getInstance().getUser().getUserID());
+//    quiz = IndividualQuizPersistence.sharedInstance(this)
+//        .readIndividualQuizFromDatabase(gradedQuiz.getQuizID(),
+//            UserDataSource.getInstance().getUser().getUserID());
 
     if (extras.containsKey(INTENT_EXTRA_GROUP_QUIZ_PROGRESS)) {
       gradedGroupQuiz = (GradedGroupQuiz) extras.getSerializable(INTENT_EXTRA_GROUP_QUIZ_PROGRESS);
@@ -114,8 +111,9 @@ public class GroupQuizActivity extends AppCompatActivity implements
             GroupQuizActivity.this.gradedGroupQuiz = gradedGroupQuiz;
             if (gradedGroupQuiz.getQuestionsAnswered() == gradedGroupQuiz.getTotalQuestions()) {
               // the quiz is done
-              Toast.makeText(GroupQuizActivity.this, "Group quiz is done!!!", Toast.LENGTH_LONG)
-                  .show();
+
+              gradedQuiz = GradedQuizPersistence.sharedInstance(GroupQuizActivity.this).readGradedQuizFromDatabase(quiz.getId(), UserDataSource.getInstance().getUser().getUserID());
+
               Snackbar snackbar = Snackbar
                   .make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
                       "Group quiz complete!", Snackbar.LENGTH_INDEFINITE)
@@ -124,7 +122,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
                     public void onClick(View view) {
                       Intent i = new Intent(GroupQuizActivity.this, StatisticsActivity.class);
                       i.putExtra(StatisticsActivity.INTENT_EXTRA_GROUP_QUIZ, gradedGroupQuiz);
-                      i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, gradedQuiz);
+                      i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, quiz);
                       startActivity(i);
                     }
                   });
@@ -142,6 +140,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
             Toast
                 .makeText(GroupQuizActivity.this, "Error updating quiz progress", Toast.LENGTH_LONG)
                 .show();
+            gradedGroupQuiz = new GradedGroupQuiz();
 
           }
         });
