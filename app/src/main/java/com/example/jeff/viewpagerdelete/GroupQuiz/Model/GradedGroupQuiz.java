@@ -104,6 +104,20 @@ public class GradedGroupQuiz implements Serializable {
     this.questionsAnswered = questionsAnswered;
   }
 
+    public int getTotalPointsScored() {
+        int total = 0;
+
+        for (GradedGroupQuizQuestion question : this.gradedQuestions) {
+            for (GradedGroupQuizAnswer answer : question.getGradedAnswers()) {
+                if (answer.isCorrect()) {
+                    total += answer.getPoints();
+                }
+            }
+        }
+
+        return total;
+    }
+
   public String toJSON() {
     return new Gson().toJson(this);
 

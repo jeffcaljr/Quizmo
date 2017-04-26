@@ -138,6 +138,20 @@ public class GradedQuiz implements Serializable {
         this.questions = questions;
     }
 
+    public int getTotalPointsScored() {
+        int total = 0;
+
+        for (GradedQuizQuestion question : this.questions) {
+            for (GradedQuizAnswer answer : question.getSubmittedAnswers()) {
+                if (answer.isCorrect()) {
+                    total += answer.getPointsEarned();
+                }
+            }
+        }
+
+        return total;
+    }
+
     public String toJSON() {
         return new Gson().toJson(this);
     }

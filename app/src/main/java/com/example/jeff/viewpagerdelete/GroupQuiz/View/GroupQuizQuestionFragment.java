@@ -330,13 +330,16 @@ public class GroupQuizQuestionFragment extends Fragment {
 
             answerMask = (View) itemView.findViewById(R.id.group_quiz_answer_graded_mask);
 
-            //make the answer mask absorb click/touch events
-            answerMask.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            //Didn't want to disable user interaction with the answer text after they got the question right;
+            //still want them to be able to scroll!
 
-                }
-            });
+            //make the answer mask absorb click/touch events
+//            answerMask.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
 
             answerCardContent.setListener(new ExpandableLayoutListenerAdapter() {
                 @Override
@@ -419,16 +422,13 @@ public class GroupQuizQuestionFragment extends Fragment {
             }
 
 
-            //Didn't want to disable user interaction with the answer text after they got the question right;
-            //still want them to be able to scroll!
+            mSubmitAnswerButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-//            mSubmitAnswerButton.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                    answerSelectedListener.answerSelected(question, answer, GroupQuizQuestionFragment.this);
-//                }
-//            });
+                    answerSelectedListener.answerSelected(question, answer, GroupQuizQuestionFragment.this);
+                }
+            });
 
 
         }

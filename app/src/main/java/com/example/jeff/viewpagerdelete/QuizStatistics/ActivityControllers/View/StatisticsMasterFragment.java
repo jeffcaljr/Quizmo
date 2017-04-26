@@ -3,6 +3,7 @@ package com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.View
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -76,14 +77,32 @@ public class StatisticsMasterFragment extends Fragment {
 
         mBarChart = (BarChart) view.findViewById(R.id.statistics_graph_view);
 
-        mBarChart.addBar(new BarModel(2.3f, 0xFF123456));
-        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
-        mBarChart.addBar(new BarModel(3.3f, 0xFF563456));
-        mBarChart.addBar(new BarModel(1.1f, 0xFF873F56));
-        mBarChart.addBar(new BarModel(2.7f, 0xFF56B7F1));
-        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
-        mBarChart.addBar(new BarModel(0.4f, 0xFF1FF4AC));
-        mBarChart.addBar(new BarModel(4.f, 0xFF1BA4E6));
+
+        //TODO: Test code proceeding, delete later
+        float totalPointsPossible = 40.0f; //MAY NOT BE TRUE FOR OTHER QUIZZES; FIND WAY TO CALCULATE THIS BASED ON QUIZ
+        float individualPercentageGrade = gradedIndividualQuiz.getTotalPointsScored() / totalPointsPossible;
+        float groupPercentageGrade = gradedGroupQuiz.getTotalPointsScored() / totalPointsPossible;
+
+        BarModel individualBarModel = new BarModel(UserDataSource.getInstance().getUser().getUserID(), individualPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorPrimaryDark));
+        BarModel groupBarModel = new BarModel("Front Row", groupPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorAccent));
+
+        individualBarModel.setValue(gradedIndividualQuiz.getTotalPointsScored());
+
+        mBarChart.setShowValues(false);
+
+        mBarChart.addBar(individualBarModel);
+        mBarChart.addBar(groupBarModel);
+
+        //TODO: Test code preceeding, delete later
+
+        mBarChart.addBar(new BarModel("", 1.0f, 0xFF123456));
+//        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
+//        mBarChart.addBar(new BarModel(3.3f, 0xFF563456));
+//        mBarChart.addBar(new BarModel(1.1f, 0xFF873F56));
+//        mBarChart.addBar(new BarModel(2.7f, 0xFF56B7F1));
+//        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
+//        mBarChart.addBar(new BarModel(0.4f, 0xFF1FF4AC));
+//        mBarChart.addBar(new BarModel(4.f, 0xFF1BA4E6));
 
 
         return view;
