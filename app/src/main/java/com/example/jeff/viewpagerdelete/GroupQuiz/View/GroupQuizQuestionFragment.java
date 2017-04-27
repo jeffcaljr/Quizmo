@@ -3,6 +3,7 @@ package com.example.jeff.viewpagerdelete.GroupQuiz.View;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -232,7 +233,18 @@ public class GroupQuizQuestionFragment extends Fragment {
                 }
             }
         }
-        adapter.notifyDataSetChanged();
+
+        Handler mainHandler = new Handler(getActivity().getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        };
+        mainHandler.post(myRunnable);
+
+
     }
 
     private void updateCollapsedState() {

@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
@@ -25,13 +24,12 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupUser;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupStatusDownloadCallback;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.PollingService;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by Jeff on 3/24/17.
@@ -126,12 +124,13 @@ public class GroupWaitingAreaFragment extends Fragment {
             startGroupQuizButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    PollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+                    GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
                     groupQuizStartListener.onGroupQuizStarted();
                 }
             });
 
             groupNetworkingService = new GroupNetworkingService(getContext());
+
 
         }
 
@@ -143,7 +142,33 @@ public class GroupWaitingAreaFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        PollingService.setServiceAlarm(getActivity(), true, group, course, quiz);
+        //perform initial load of group members' status
+        groupNetworkingService.getGroupStatus(group, course, quiz, new GroupStatusDownloadCallback() {
+            @Override
+            public void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses) {
+                statusLoaded = true;
+                GroupWaitingAreaFragment.this.statuses = statuses;
+
+
+                //after the initial load, if the entire group isn't finished, start polling for status updates
+
+                if (isWholeGroupFinished() == false) {
+                    GroupStatusPollingService.setServiceAlarm(getActivity(), true, group, course, quiz);
+                } else {
+                    checkStatusFinished();
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onGroupStatusFailure(VolleyError error) {
+
+            }
+        });
+
+
+
     }
 
     @Override
@@ -159,16 +184,18 @@ public class GroupWaitingAreaFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        PollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+        GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
         groupQuizStartListener = null;
     }
 
 
     public void onStatusUpdate(ArrayList<UserGroupStatus> statuses) {
         statusLoaded = true;
-        Toast.makeText(getActivity(), statuses.toString(), Toast.LENGTH_LONG).show();
         this.statuses = statuses;
         checkStatusFinished();
+        if (isWholeGroupFinished() == true) {
+            GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -197,10 +224,25 @@ public class GroupWaitingAreaFragment extends Fragment {
         } else {
             startGroupQuizButton.setEnabled(false);
         }
-        if (statuses.size() == group.getMembers().size()) {
-            PollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+    }
 
+    private boolean isWholeGroupFinished() {
+        boolean wholeGroupFinished = true;
+
+        //if the number of members who have started the quiz isn't equal to the total number of members; they cant all be finished
+        if (statuses.size() != group.getMembers().size()) {
+            return false;
+        } else {
+            //if all members of the group have started, check if they are all finished, and if one isnt; then the whole group cant be finished
+            for (UserGroupStatus userStatus : statuses) {
+                if (userStatus.getStatus() != UserGroupStatus.Status.COMPLETE) {
+                    wholeGroupFinished = false;
+                    break;
+                }
+            }
         }
+
+        return wholeGroupFinished;
     }
 
 

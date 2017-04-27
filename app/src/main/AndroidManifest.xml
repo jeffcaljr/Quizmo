@@ -54,7 +54,7 @@
       android:screenOrientation="portrait"
         android:configChanges="orientation|keyboardHidden" />
 
-    <service android:name=".GroupQuiz.Networking.PollingService" />
+    <service android:name=".GroupQuiz.Networking.GroupStatusPollingService" />
 
     <activity
         android:name=".GroupQuiz.ActivityControllers.GroupQuizActivity"

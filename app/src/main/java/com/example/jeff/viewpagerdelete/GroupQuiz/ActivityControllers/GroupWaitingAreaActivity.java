@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import android.widget.Toast;
+
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
@@ -42,8 +43,8 @@ import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import java.util.ArrayList;
 
 public class GroupWaitingAreaActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener,
-    GroupWaitingAreaFragment.OnGroupQuizStartedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        GroupWaitingAreaFragment.OnGroupQuizStartedListener {
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
     public static final String EXTRA_QUIZ = "EXTRA_GRADED_QUIZ";
@@ -53,12 +54,12 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
     private Course course;
     private Quiz quiz;
-  private Group group;
+    private Group group;
 
     private TextView courseNameTextView;
 
 
-  private GroupNetworkingService groupNetworkingService;
+    private GroupNetworkingService groupNetworkingService;
 
     private UserDbHelper userDbHelper;
     private SQLiteDatabase userDB;
@@ -84,7 +85,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_group_waiting_area);
+        setContentView(R.layout.activity_group_waiting_area);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -99,44 +100,14 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         }
 
         manager = getSupportFragmentManager();
-      groupNetworkingService = new GroupNetworkingService(this);
+        groupNetworkingService = new GroupNetworkingService(this);
 
         userDbHelper = new UserDbHelper(this);
         userDB = userDbHelper.getWritableDatabase();
 
-      groupNetworkingService
-          .downloadGroupForUser(UserDataSource.getInstance().getUser().getUserID(),
-              course.getCourseID(), new SingleGroupDownloadCallback() {
-                @Override
-                public void onDownloadSingleGroupSuccess(Group group) {
-                  GroupWaitingAreaActivity.this.group = group;
-                    groupWaitingAreaFragment = (GroupWaitingAreaFragment) manager
-                            .findFragmentByTag(GroupWaitingAreaFragment.TAG);
+        //Download the group the user belongs to, so that the member statuses can be listed in waiting room fragment
 
-                    if (groupWaitingAreaFragment == null) {
-                        groupWaitingAreaFragment = new GroupWaitingAreaFragment();
-                    Bundle args = new Bundle();
-                    args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
-                    args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
-                      args.putSerializable(GroupWaitingAreaFragment.ARG_QUIZ, quiz);
-
-                        groupWaitingAreaFragment.setArguments(args);
-
-                    manager.beginTransaction()
-                            .replace(R.id.group_code_fragment_container, groupWaitingAreaFragment,
-                                    GroupWaitingAreaFragment.TAG)
-                        .commit();
-
-                  }
-                }
-
-                @Override
-                public void onDownloadSingleGroupFailure(VolleyError error) {
-                  Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
-                      "Failed to load group", Snackbar.LENGTH_LONG).show();
-
-                }
-              });
+        loadGroupForUser();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -155,16 +126,23 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         TextView emailTextView = (TextView) headerView.findViewById(R.id.header_email);
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
 
+
+        //listen for group status updates
         bManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RECEIVE_JSON);
         bManager.registerReceiver(bReceiver, intentFilter);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        //free FB
         userDB.close();
+
+        //stop listening for group status updates
         bManager.unregisterReceiver(bReceiver);
     }
 
@@ -203,38 +181,91 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         return true;
     }
 
-  //MARK: OnGroupQuizStartedListener Method Implementations
+    private void loadGroupForUser() {
+        groupNetworkingService
+                .downloadGroupForUser(UserDataSource.getInstance().getUser().getUserID(),
+                        course.getCourseID(), new SingleGroupDownloadCallback() {
+                            @Override
+                            public void onDownloadSingleGroupSuccess(Group group) {
+                                GroupWaitingAreaActivity.this.group = group;
+                                groupWaitingAreaFragment = (GroupWaitingAreaFragment) manager
+                                        .findFragmentByTag(GroupWaitingAreaFragment.TAG);
+
+                                if (groupWaitingAreaFragment == null) {
+                                    groupWaitingAreaFragment = new GroupWaitingAreaFragment();
+                                    Bundle args = new Bundle();
+                                    args.putSerializable(GroupWaitingAreaFragment.ARG_GROUP, group);
+                                    args.putSerializable(GroupWaitingAreaFragment.ARG_COURSE, course);
+                                    args.putSerializable(GroupWaitingAreaFragment.ARG_QUIZ, quiz);
+
+                                    groupWaitingAreaFragment.setArguments(args);
+
+                                    manager.beginTransaction()
+                                            .replace(R.id.group_code_fragment_container, groupWaitingAreaFragment,
+                                                    GroupWaitingAreaFragment.TAG)
+                                            .commit();
+
+                                }
+                            }
+
+                            @Override
+                            public void onDownloadSingleGroupFailure(VolleyError error) {
+                                Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
+                                        "Failed to load group", Snackbar.LENGTH_INDEFINITE)
+                                        .setAction("Retry", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                loadGroupForUser();
+                                            }
+                                        }).show();
+
+                            }
+                        });
+    }
+
+    //MARK: OnGroupQuizStartedListener Method Implementations
 
 
-  @Override
-  public void onGroupQuizStarted() {
+    @Override
+    public void onGroupQuizStarted() {
 
-      groupNetworkingService.getGroupQuizProgress(quiz.getId(), group.getId(),
-              quiz.getAssociatedSessionID(), new GroupQuizProgressDownloadCallback() {
-          @Override
-          public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
-            Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
-              i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
-            i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
-            i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
-            startActivity(i);
+        //when group quiz start button is pressed (in fragment): load the group's quiz progress (if any), then go to group quiz activity
 
-          }
 
-          @Override
-          public void onGroupQuizProgressFailure(VolleyError error) {
+        groupNetworkingService.getGroupQuizProgress(quiz.getId(), group.getId(),
+                quiz.getAssociatedSessionID(), new GroupQuizProgressDownloadCallback() {
+                    @Override
+                    public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
+                        Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
+                        startActivity(i);
 
-              if (error instanceof NoConnectionError) {
-                  Toast.makeText(GroupWaitingAreaActivity.this, "No network connection", Toast.LENGTH_LONG).show();
-            }
-              Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
-              i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
-              i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
-              startActivity(i);
+                    }
 
-          }
-        });
-  }
+                    @Override
+                    public void onGroupQuizProgressFailure(VolleyError error) {
+
+                        if (error instanceof NoConnectionError) {
+                            Toast.makeText(GroupWaitingAreaActivity.this, "No network connection", Toast.LENGTH_LONG).show();
+                            Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
+                                    "No network connection", Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Retry", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            onGroupQuizStarted();
+                                        }
+                                    }).show();
+                        }
+                        Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+                        startActivity(i);
+
+                    }
+                });
+    }
 
 
 }

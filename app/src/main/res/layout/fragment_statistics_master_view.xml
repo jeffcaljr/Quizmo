@@ -8,8 +8,11 @@
 
         android:id="@+id/statistics_graph_view"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:padding="10dp"
+        android:layout_height="250dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="100dp"
         app:egFixedBarWidth="true"
         app:egBarWidth="20dp"
         app:egLegendHeight="40dp"
@@ -21,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/statistics_graph_view"
         android:layout_alignParentBottom="true"
-        android:background="@color/jccolorPrimaryMuted"></android.support.v7.widget.RecyclerView>
+        android:background="@color/jccolorPrimaryMuted"
+        android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

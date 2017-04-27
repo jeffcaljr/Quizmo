@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,10 +16,8 @@ import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus.Status;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupStatusDownloadCallback;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 
 import java.util.ArrayList;
@@ -32,15 +29,15 @@ import java.util.ArrayList;
 //TODO: Couldn't get #onHandleIntent to recieve extras after wrapping intent in PendingIntent inside #setServiceAlarm
 //TODO: As a temporary workaround, I set the paramaters needed for the network call through static variables. Should revise later
 
-public class PollingService extends IntentService {
+public class GroupStatusPollingService extends IntentService {
 
-    private static final String TAG = "PollService";
+    private static final String TAG = "GroupStatusPollingService";
 
-    private static final String EXTRA_GROUP = "EXTRA_GROUP";
-    private static final String EXTRA_COURSE = "EXTRA_COURSE";
-    private static final String EXTRA_QUIZ = "EXTRA_QUIZ";
+    public static final String EXTRA_GROUP = "EXTRA_GROUP";
+    public static final String EXTRA_COURSE = "EXTRA_COURSE";
+    public static final String EXTRA_QUIZ = "EXTRA_QUIZ";
 
-    private static final int POLL_INTERVAL = 5000;
+    private static final int POLL_INTERVAL = 12000;
 
     private static Course course;
     private static Group group;
@@ -49,7 +46,7 @@ public class PollingService extends IntentService {
     private GroupNetworkingService groupNetworkingService;
 
 
-    public PollingService() {
+    public GroupStatusPollingService() {
         super(TAG);
     }
 
@@ -78,12 +75,12 @@ public class PollingService extends IntentService {
                 System.out.println("intent Received");
                 Intent RTReturn = new Intent(GroupWaitingAreaActivity.RECEIVE_JSON);
                 RTReturn.putExtra("json", statuses);
-                LocalBroadcastManager.getInstance(PollingService.this).sendBroadcast(RTReturn);
+                LocalBroadcastManager.getInstance(GroupStatusPollingService.this).sendBroadcast(RTReturn);
             }
 
             @Override
             public void onGroupStatusFailure(VolleyError error) {
-                Toast.makeText(PollingService.this.getApplicationContext(), "Error checking status", Toast.LENGTH_LONG).show();
+                Toast.makeText(GroupStatusPollingService.this.getApplicationContext(), "Error checking status", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -91,7 +88,7 @@ public class PollingService extends IntentService {
     }
 
     public static Intent buildIntent(Context context, Group group, Course course, Quiz quiz) {
-        Intent i = new Intent(context, PollingService.class);
+        Intent i = new Intent(context, GroupStatusPollingService.class);
 //    i.putExtra(EXTRA_GROUP, group);
 //    i.putExtra(EXTRA_COURSE, course);
 //    i.putExtra(EXTRA_QUIZ, quiz);
@@ -101,7 +98,7 @@ public class PollingService extends IntentService {
 
     public static void setServiceAlarm(Context context, boolean isOn, Group group, Course course, Quiz quiz) {
 
-        Intent i = PollingService.buildIntent(context, group, course, quiz);
+        Intent i = GroupStatusPollingService.buildIntent(context, group, course, quiz);
 
         //TODO: Couldn't get #onHandleIntent to recieve extras after wrapping intent in PendingIntent inside #setServiceAlarm
         //TODO: As a temporary workaround, I set the paramaters needed for the network call through static variables. Should revise later
@@ -109,9 +106,9 @@ public class PollingService extends IntentService {
 //    i.putExtra(EXTRA_COURSE, course);
 //    i.putExtra(EXTRA_QUIZ ,quiz);
 
-        PollingService.group = group;
-        PollingService.quiz = quiz;
-        PollingService.course = course;
+        GroupStatusPollingService.group = group;
+        GroupStatusPollingService.quiz = quiz;
+        GroupStatusPollingService.course = course;
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
 

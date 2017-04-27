@@ -36,6 +36,42 @@ public class GroupNetworkingService {
 
     private Context context;
 
+    public interface AllGroupFetcherListener {
+        void onDownloadAllGroupsSuccess(ArrayList<Group> groups);
+
+        void onDownloadAllGroupsFailure(VolleyError error);
+
+    }
+
+    public interface SingleGroupDownloadCallback {
+        void onDownloadSingleGroupSuccess(Group group);
+
+        void onDownloadSingleGroupFailure(VolleyError error);
+    }
+
+    public interface GroupStatusDownloadCallback {
+
+        void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses);
+
+        void onGroupStatusFailure(VolleyError error);
+    }
+
+    public interface GroupQuizProgressDownloadCallback {
+
+        void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz);
+
+        void onGroupQuizProgressFailure(VolleyError error);
+    }
+
+    public interface GroupQuizAnswerPostCallback {
+
+        void onGroupQuizAnswerPostSuccess(GradedGroupQuizQuestion gradedQuestion);
+
+        void onGroupQuizAnswerPostFailure(VolleyError error);
+    }
+
+    //API METHODS
+
 
   public GroupNetworkingService(Context context) {
         this.context = context.getApplicationContext();
@@ -234,38 +270,6 @@ public class GroupNetworkingService {
     RequestService.getInstance(context).addRequest(request);
   }
 
-    public interface AllGroupFetcherListener {
-        void onDownloadAllGroupsSuccess(ArrayList<Group> groups);
 
-        void onDownloadAllGroupsFailure(VolleyError error);
-
-    }
-
-  public interface SingleGroupDownloadCallback {
-        void onDownloadSingleGroupSuccess(Group group);
-
-        void onDownloadSingleGroupFailure(VolleyError error);
-    }
-
-  public interface GroupStatusDownloadCallback {
-
-      void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses);
-
-        void onGroupStatusFailure(VolleyError error);
-    }
-
-  public interface GroupQuizProgressDownloadCallback {
-
-    void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz);
-
-    void onGroupQuizProgressFailure(VolleyError error);
-  }
-
-  public interface GroupQuizAnswerPostCallback {
-
-    void onGroupQuizAnswerPostSuccess(GradedGroupQuizQuestion gradedQuestion);
-
-    void onGroupQuizAnswerPostFailure(VolleyError error);
-  }
 
 }

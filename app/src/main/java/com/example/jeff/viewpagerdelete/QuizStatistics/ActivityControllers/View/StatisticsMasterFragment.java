@@ -78,6 +78,7 @@ public class StatisticsMasterFragment extends Fragment {
         mBarChart = (BarChart) view.findViewById(R.id.statistics_graph_view);
 
 
+
         //TODO: Test code proceeding, delete later
         float totalPointsPossible = 40.0f; //MAY NOT BE TRUE FOR OTHER QUIZZES; FIND WAY TO CALCULATE THIS BASED ON QUIZ
         float individualPercentageGrade = gradedIndividualQuiz.getTotalPointsScored() / totalPointsPossible;
@@ -86,16 +87,16 @@ public class StatisticsMasterFragment extends Fragment {
         BarModel individualBarModel = new BarModel(UserDataSource.getInstance().getUser().getUserID(), individualPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorPrimaryDark));
         BarModel groupBarModel = new BarModel("Front Row", groupPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorAccent));
 
-        individualBarModel.setValue(gradedIndividualQuiz.getTotalPointsScored());
 
         mBarChart.setShowValues(false);
 
         mBarChart.addBar(individualBarModel);
         mBarChart.addBar(groupBarModel);
 
+
         //TODO: Test code preceeding, delete later
 
-        mBarChart.addBar(new BarModel("", 1.0f, 0xFF123456));
+//        mBarChart.addBar(new BarModel("", 2.3f, 0xFF123456));
 //        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
 //        mBarChart.addBar(new BarModel(3.3f, 0xFF563456));
 //        mBarChart.addBar(new BarModel(1.1f, 0xFF873F56));
