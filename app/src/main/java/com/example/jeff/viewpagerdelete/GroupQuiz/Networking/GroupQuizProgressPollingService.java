@@ -14,6 +14,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 
 /**
@@ -31,9 +32,8 @@ public class GroupQuizProgressPollingService extends IntentService {
     private static final int POLL_INTERVAL = 12000;
 
     private static GroupNetworkingService groupNetworkingService;
-    private static String quizID;
-    private static String groupID;
-    private static String sessionID;
+    private static Quiz quiz;
+    private static Group group;
 
     public GroupQuizProgressPollingService(String name) {
         super(name);
@@ -48,7 +48,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
         groupNetworkingService = new GroupNetworkingService(getApplicationContext());
 
-        groupNetworkingService.getGroupQuizProgress(quizID, groupID, sessionID, new GroupNetworkingService.GroupQuizProgressDownloadCallback() {
+        groupNetworkingService.getGroupQuizProgress(quiz, group, new GroupNetworkingService.GroupQuizProgressDownloadCallback() {
             @Override
             public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
                 System.out.println("intent Received");
@@ -66,7 +66,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
     }
 
-    public static Intent buildIntent(Context context, String groupID, String quizID, String sessionID) {
+    public static Intent buildIntent(Context context, Group group, Quiz quiz) {
         Intent i = new Intent(context, GroupQuizProgressPollingService.class);
 //        i.putExtra(EXTRA_QUIZ_ID, quizID);
 //        i.putExtra(EXTRA_SESSION_ID, sessionID);
@@ -75,17 +75,16 @@ public class GroupQuizProgressPollingService extends IntentService {
 
     }
 
-    public static void setServiceAlarm(Context context, boolean isOn, String groupID, String quizID, String sessionID) {
+    public static void setServiceAlarm(Context context, boolean isOn, Group group, Quiz quiz) {
 
-        Intent i = buildIntent(context, groupID, quizID, sessionID);
+        Intent i = buildIntent(context, group, quiz);
 
         //TODO: Couldn't get #onHandleIntent to recieve extras after wrapping intent in PendingIntent inside #setServiceAlarm
         //TODO: As a temporary workaround, I set the paramaters needed for the network call through static variables. Should revise later
 
 
-        GroupQuizProgressPollingService.groupID = groupID;
-        GroupQuizProgressPollingService.quizID = quizID;
-        GroupQuizProgressPollingService.sessionID = sessionID;
+        GroupQuizProgressPollingService.group = group;
+        GroupQuizProgressPollingService.quiz = quiz;
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
 

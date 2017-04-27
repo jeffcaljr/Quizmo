@@ -296,7 +296,7 @@ public class HomePageActivity extends AppCompatActivity
                     @Override
                     public void onDownloadSingleGroupSuccess(Group group) {
                         String groupID = group.getId();
-                        groupNetworkingService.getGroupQuizProgress(quiz.getId(), groupID, quiz.getAssociatedSessionID(), new GroupNetworkingService.GroupQuizProgressDownloadCallback() {
+                        groupNetworkingService.getGroupQuizProgress(quiz, group, new GroupNetworkingService.GroupQuizProgressDownloadCallback() {
                             @Override
                             public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
                                 if (gradedGroupQuiz.getTotalQuestions() == gradedGroupQuiz.getQuestionsAnswered()) {

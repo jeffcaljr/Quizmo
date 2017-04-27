@@ -85,7 +85,7 @@ public class StatisticsMasterFragment extends Fragment {
         float groupPercentageGrade = gradedGroupQuiz.getTotalPointsScored() / totalPointsPossible;
 
         BarModel individualBarModel = new BarModel(UserDataSource.getInstance().getUser().getUserID(), individualPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorPrimaryDark));
-        BarModel groupBarModel = new BarModel("Front Row", groupPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorAccent));
+        BarModel groupBarModel = new BarModel(gradedGroupQuiz.getGroup().getName(), groupPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorAccent));
 
 
         mBarChart.setShowValues(false);
@@ -158,7 +158,7 @@ public class StatisticsMasterFragment extends Fragment {
         public void bindView(QuizQuestion question, GradedQuizQuestion gradedQuizQuestion, GradedGroupQuizQuestion gradedGroupQuizQuestion) {
             questionNumberLabel.setText((getAdapterPosition() + 1) + ".");
             userNameLabel.setText(UserDataSource.getInstance().getUser().getUserID());
-            groupNameLabel.setText("????");
+            groupNameLabel.setText(gradedGroupQuiz.getGroup().getName());
 
             //find the correct answer for individual quiz, and set text label with points earned
             for (GradedQuizAnswer answer : gradedQuizQuestion.getSubmittedAnswers()) {

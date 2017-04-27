@@ -232,8 +232,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         //when group quiz start button is pressed (in fragment): load the group's quiz progress (if any), then go to group quiz activity
 
 
-        groupNetworkingService.getGroupQuizProgress(quiz.getId(), group.getId(),
-                quiz.getAssociatedSessionID(), new GroupQuizProgressDownloadCallback() {
+        groupNetworkingService.getGroupQuizProgress(quiz, group, new GroupQuizProgressDownloadCallback() {
                     @Override
                     public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
                         Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);

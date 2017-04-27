@@ -213,20 +213,21 @@ public class GroupNetworkingService {
         RequestService.getInstance(context).addRequest(request);
     }
 
-  public void getGroupQuizProgress(String quizID, String groupID, String sessionID,
-      final GroupQuizProgressDownloadCallback callback) {
+    public void getGroupQuizProgress(Quiz quiz, final Group group,
+                                     final GroupQuizProgressDownloadCallback callback) {
     if (callback == null) {
       return;
     }
 
-    String urlString = ApiURLs.groupQuizProgressURL + "?quiz_id=" + quizID + "&group_id=" + groupID
-        + "&session_id=" + sessionID;
+        String urlString = ApiURLs.groupQuizProgressURL + "?quiz_id=" + quiz.getId() + "&group_id=" + group.getId()
+                + "&session_id=" + quiz.getAssociatedSessionID();
 
     JsonObjectRequest request = new JsonObjectRequest(Method.GET, urlString, null,
         new Listener<JSONObject>() {
           @Override
           public void onResponse(JSONObject response) {
             GradedGroupQuiz gradedGroupQuiz = new GradedGroupQuiz(response);
+              gradedGroupQuiz.setGroup(group);
             callback.onGroupQuizProgressSuccess(gradedGroupQuiz);
           }
         },

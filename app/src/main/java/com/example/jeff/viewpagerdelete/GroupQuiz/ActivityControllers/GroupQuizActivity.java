@@ -104,8 +104,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
   }
 
   private void updateQuizProgress() {
-    groupNetworkingService.getGroupQuizProgress(quiz.getId(), group.getId(),
-        quiz.getAssociatedSessionID(), new GroupQuizProgressDownloadCallback() {
+    groupNetworkingService.getGroupQuizProgress(quiz, group, new GroupQuizProgressDownloadCallback() {
           @Override
           public void onGroupQuizProgressSuccess(final GradedGroupQuiz gradedGroupQuiz) {
             GroupQuizActivity.this.gradedGroupQuiz = gradedGroupQuiz;

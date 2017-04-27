@@ -3,9 +3,11 @@ package com.example.jeff.viewpagerdelete.GroupQuiz.Model;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,93 +18,102 @@ import org.json.JSONObject;
 
 public class GradedGroupQuiz implements Serializable {
 
-  private String id;
-  private ArrayList<GradedGroupQuizQuestion> gradedQuestions;
-  private int totalQuestions;
-  private int questionsAnswered;
+    private String id;
+    private ArrayList<GradedGroupQuizQuestion> gradedQuestions;
+    private int totalQuestions;
+    private int questionsAnswered;
+    private Group group;
 
 
-  public GradedGroupQuiz(JSONObject json) {
-    try {
-      this.totalQuestions = json.getInt("totalQuestions");
-      this.questionsAnswered = json.getInt("questionsAnswered");
+    public GradedGroupQuiz(JSONObject json) {
+        try {
+            this.totalQuestions = json.getInt("totalQuestions");
+            this.questionsAnswered = json.getInt("questionsAnswered");
 
-      this.gradedQuestions = new ArrayList<>();
+            this.gradedQuestions = new ArrayList<>();
 
-      JSONArray answeredQuestionsJSON = json.getJSONArray("givenAnswers");
+            JSONArray answeredQuestionsJSON = json.getJSONArray("givenAnswers");
 
-      for (int i = 0; i < answeredQuestionsJSON.length(); i++) {
-        this.gradedQuestions
-            .add(new GradedGroupQuizQuestion(answeredQuestionsJSON.getJSONObject(i)));
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public GradedGroupQuiz() {
-    gradedQuestions = new ArrayList<>();
-  }
-
-  public GradedGroupQuiz(String id, ArrayList<GradedGroupQuizQuestion> gradedQuestions) {
-    this.id = id;
-    this.gradedQuestions = gradedQuestions;
-
-  }
-
-  public void updateQuestion(GradedGroupQuizQuestion gradedQuestion) {
-
-    boolean isQuestionInQuiz = false;
-
-    for (int i = 0; i < this.gradedQuestions.size(); i++) {
-      if (this.gradedQuestions.get(i).getId().equals(gradedQuestion.getId())) {
-        isQuestionInQuiz = true;
-        //the question is already in this quiz's list of questions; so update it
-        this.gradedQuestions.set(i, gradedQuestion);
-        break;
-      }
+            for (int i = 0; i < answeredQuestionsJSON.length(); i++) {
+                this.gradedQuestions
+                        .add(new GradedGroupQuizQuestion(answeredQuestionsJSON.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    //if the question was not found in the quiz, add it to the quiz's list of questions
-    if (!isQuestionInQuiz) {
-      this.gradedQuestions.add(gradedQuestion);
+    public GradedGroupQuiz() {
+        gradedQuestions = new ArrayList<>();
     }
 
-    //keep the quiz questions sorted by id?
-    Collections.sort(this.gradedQuestions);
-  }
+    public GradedGroupQuiz(String id, ArrayList<GradedGroupQuizQuestion> gradedQuestions) {
+        this.id = id;
+        this.gradedQuestions = gradedQuestions;
 
-  public String getId() {
-    return id;
-  }
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public void updateQuestion(GradedGroupQuizQuestion gradedQuestion) {
 
-  public ArrayList<GradedGroupQuizQuestion> getGradedQuestions() {
-    return gradedQuestions;
-  }
+        boolean isQuestionInQuiz = false;
 
-  public void setGradedQuestions(ArrayList<GradedGroupQuizQuestion> gradedQuestions) {
-    this.gradedQuestions = gradedQuestions;
-  }
+        for (int i = 0; i < this.gradedQuestions.size(); i++) {
+            if (this.gradedQuestions.get(i).getId().equals(gradedQuestion.getId())) {
+                isQuestionInQuiz = true;
+                //the question is already in this quiz's list of questions; so update it
+                this.gradedQuestions.set(i, gradedQuestion);
+                break;
+            }
+        }
 
-  public int getTotalQuestions() {
-    return totalQuestions;
-  }
+        //if the question was not found in the quiz, add it to the quiz's list of questions
+        if (!isQuestionInQuiz) {
+            this.gradedQuestions.add(gradedQuestion);
+        }
 
-  public void setTotalQuestions(int totalQuestions) {
-    this.totalQuestions = totalQuestions;
-  }
+        //keep the quiz questions sorted by id?
+        Collections.sort(this.gradedQuestions);
+    }
 
-  public int getQuestionsAnswered() {
-    return questionsAnswered;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public void setQuestionsAnswered(int questionsAnswered) {
-    this.questionsAnswered = questionsAnswered;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ArrayList<GradedGroupQuizQuestion> getGradedQuestions() {
+        return gradedQuestions;
+    }
+
+    public void setGradedQuestions(ArrayList<GradedGroupQuizQuestion> gradedQuestions) {
+        this.gradedQuestions = gradedQuestions;
+    }
+
+    public int getTotalQuestions() {
+        return totalQuestions;
+    }
+
+    public void setTotalQuestions(int totalQuestions) {
+        this.totalQuestions = totalQuestions;
+    }
+
+    public int getQuestionsAnswered() {
+        return questionsAnswered;
+    }
+
+    public void setQuestionsAnswered(int questionsAnswered) {
+        this.questionsAnswered = questionsAnswered;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
     public int getTotalPointsScored() {
         int total = 0;
@@ -118,19 +129,19 @@ public class GradedGroupQuiz implements Serializable {
         return total;
     }
 
-  public String toJSON() {
-    return new Gson().toJson(this);
+    public String toJSON() {
+        return new Gson().toJson(this);
 
-  }
-
-  public static GradedGroupQuiz buildQuizFromJsonString(String quizJsonString)
-      throws JsonSyntaxException {
-    try {
-      return new Gson().fromJson(quizJsonString, new TypeToken<GradedGroupQuiz>() {
-      }.getType());
-    } catch (JsonSyntaxException e) {
-      throw new JsonSyntaxException(
-          "Could not parse provided Json string into GradedGroupQuiz object");
     }
-  }
+
+    public static GradedGroupQuiz buildQuizFromJsonString(String quizJsonString)
+            throws JsonSyntaxException {
+        try {
+            return new Gson().fromJson(quizJsonString, new TypeToken<GradedGroupQuiz>() {
+            }.getType());
+        } catch (JsonSyntaxException e) {
+            throw new JsonSyntaxException(
+                    "Could not parse provided Json string into GradedGroupQuiz object");
+        }
+    }
 }
