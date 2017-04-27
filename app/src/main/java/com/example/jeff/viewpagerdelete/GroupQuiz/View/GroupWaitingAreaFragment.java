@@ -120,7 +120,7 @@ public class GroupWaitingAreaFragment extends Fragment {
                 memberNames.add(member.getFirstName() + " " + member.getLastName());
             }
 
-            startGroupQuizButton.setEnabled(false);
+//            startGroupQuizButton.setEnabled(false);
             startGroupQuizButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -130,6 +130,7 @@ public class GroupWaitingAreaFragment extends Fragment {
             });
 
             groupNetworkingService = new GroupNetworkingService(getContext());
+
 
 
         }

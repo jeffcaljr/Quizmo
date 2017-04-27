@@ -3,7 +3,6 @@ package com.example.jeff.viewpagerdelete.GroupQuiz.View;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -52,9 +51,11 @@ public class GroupQuizQuestionFragment extends Fragment {
     public static final String ARG_QUIZ_QUESTION_NUMBER = "ARG_QUIZ_QUESTION_NUMBER";
     public static final String ARG_QUIZ_QUESTION = "ARG_QUIZ_QUESTION";
     public static final String ARG_GRADED_QUIZ_QUESTION = "ARG_GRADED_QUIZ_QUESTION";
+    public static final String ARG_IS_USER_GROUP_LEADER = "ARG_IS_USER_GROUP_LEADER";
 
     private QuizQuestion question;
     private GradedGroupQuizQuestion gradedGroupQuizQuestion;
+    private boolean isGroupLeader;
 
     private PageFragmentListener mListener;
 
@@ -223,7 +224,7 @@ public class GroupQuizQuestionFragment extends Fragment {
     public void onGradeRecieved(GradedGroupQuizQuestion gradedQuestion) {
         this.gradedGroupQuizQuestion = gradedQuestion;
         //check if the question was answered correctly; and if so, set the "Group Earned Points" textField text
-        if (gradedQuestion.isAnsweredCorrectly()) {
+        if (gradedQuestion != null) {
             for (GradedGroupQuizAnswer gradedAnswer : gradedQuestion.getGradedAnswers()) {
                 if (gradedAnswer.isCorrect()) {
                     gradedGroupQuizQuestion.setAnsweredCorrectly(true);
@@ -233,18 +234,7 @@ public class GroupQuizQuestionFragment extends Fragment {
                 }
             }
         }
-
-        Handler mainHandler = new Handler(getActivity().getMainLooper());
-
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                adapter.notifyDataSetChanged();
-            }
-        };
-        mainHandler.post(myRunnable);
-
-
+        adapter.notifyDataSetChanged();
     }
 
     private void updateCollapsedState() {
@@ -406,32 +396,94 @@ public class GroupQuizQuestionFragment extends Fragment {
 
             //if the question has been answered, and the answer hasn't, it is an unsubmitted answer
 
-            if (gradedGroupQuizQuestion != null && gradedGroupQuizQuestion.isAnsweredCorrectly() == true && gradedAnswer == null) {
+            if (gradedGroupQuizQuestion != null && gradedGroupQuizQuestion.isAnsweredCorrectly()) {
+                //this question has been answered correctly
+
                 mSubmitAnswerButton.setVisibility(View.GONE);
-                answerMask.setBackgroundColor(unansweredMaskColor);
-                answerMask.setVisibility(View.VISIBLE);
-            }
 
-            //if the question hasn't been answered correctly, and the answer hasn't been tried, views should be as default
+                if (gradedAnswer != null) {
+                    //this answer has been attempted
 
-            //if the question has been answered, and the answer has as well, determine if it was correct or incorrect
-            if (gradedAnswer != null) {
-                if (gradedAnswer.isCorrect()) {
-                    mSubmitAnswerButton.setVisibility(View.GONE);
-                    answerMask.setBackgroundColor(correctMaskColor);
-                    answerMask.setVisibility(View.VISIBLE);
-                    mResultLabel.setImageDrawable(correctDrawable);
-                    mResultLabel.setVisibility(View.VISIBLE);
-                    mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
+                    if (gradedAnswer.isCorrect()) {
+                        //answer has been tried and is correct
+
+                        mResultLabel.setImageDrawable(correctDrawable);
+                        answerMask.setBackgroundColor(correctMaskColor);
+                        mResultLabel.setVisibility(View.VISIBLE);
+                        answerMask.setVisibility(View.VISIBLE);
+
+                    } else {
+                        //answer has been tried and is incorrect
+
+                        mResultLabel.setImageDrawable(incorrectDrawable);
+                        answerMask.setBackgroundColor(incorrectMaskColor);
+                        mResultLabel.setVisibility(View.VISIBLE);
+                        answerMask.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    //the answer has been tried, and is incorrect
-                    mSubmitAnswerButton.setVisibility(View.GONE);
-                    answerMask.setBackgroundColor(incorrectMaskColor);
+                    //this answer has not been attempted
+
+                    mResultLabel.setVisibility(View.INVISIBLE);
+                    answerMask.setBackgroundColor(unansweredMaskColor);
                     answerMask.setVisibility(View.VISIBLE);
-                    mResultLabel.setImageDrawable(incorrectDrawable);
-                    mResultLabel.setVisibility(View.VISIBLE);
                 }
+
+            } else {
+                //this question has not been answered correctly yet
+
+                if (gradedAnswer != null) {
+                    //this answer has been attempted
+
+                    if (gradedAnswer.isCorrect()) {
+                        //answer has been tried and is correct
+                        mResultLabel.setImageDrawable(correctDrawable);
+                        answerMask.setBackgroundColor(correctMaskColor);
+                        mResultLabel.setVisibility(View.VISIBLE);
+                        answerMask.setVisibility(View.VISIBLE);
+                        mSubmitAnswerButton.setVisibility(View.GONE);
+
+                    } else {
+                        //answer has been tried and is incorrect
+
+                        mResultLabel.setImageDrawable(incorrectDrawable);
+                        answerMask.setBackgroundColor(incorrectMaskColor);
+                        mResultLabel.setVisibility(View.VISIBLE);
+                        answerMask.setVisibility(View.VISIBLE);
+                        mSubmitAnswerButton.setVisibility(View.GONE);
+                    }
+                } else {
+                    //this answer has not been attempted
+                    Log.d("", "");
+                }
+
             }
+
+//            if (gradedGroupQuizQuestion != null && gradedGroupQuizQuestion.isAnsweredCorrectly() == true && gradedAnswer == null) {
+//                mSubmitAnswerButton.setVisibility(View.GONE);
+//                answerMask.setBackgroundColor(unansweredMaskColor);
+//                answerMask.setVisibility(View.VISIBLE);
+//            }
+//
+//            //if the question hasn't been answered correctly, and the answer hasn't been tried, views should be as default
+//
+//            //if the question has been answered, and the answer has as well, determine if it was correct or incorrect
+//            if (gradedAnswer != null) {
+//                if (gradedAnswer.isCorrect()) {
+//                    mSubmitAnswerButton.setVisibility(View.GONE);
+//                    answerMask.setBackgroundColor(correctMaskColor);
+//                    answerMask.setVisibility(View.VISIBLE);
+//                    mResultLabel.setImageDrawable(correctDrawable);
+//                    mResultLabel.setVisibility(View.VISIBLE);
+//                    mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
+//                } else {
+//                    //the answer has been tried, and is incorrect
+//                    mSubmitAnswerButton.setVisibility(View.GONE);
+//                    answerMask.setBackgroundColor(incorrectMaskColor);
+//                    answerMask.setVisibility(View.VISIBLE);
+//                    mResultLabel.setImageDrawable(incorrectDrawable);
+//                    mResultLabel.setVisibility(View.VISIBLE);
+//                }
+//            }
 
 
             mSubmitAnswerButton.setOnClickListener(new OnClickListener() {

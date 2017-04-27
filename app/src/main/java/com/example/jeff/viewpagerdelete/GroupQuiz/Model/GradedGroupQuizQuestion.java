@@ -64,6 +64,7 @@ public class GradedGroupQuizQuestion implements Serializable, Comparable<GradedG
   }
 
   public ArrayList<GradedGroupQuizAnswer> getGradedAnswers() {
+      Collections.sort(gradedAnswers);
     return gradedAnswers;
   }
 

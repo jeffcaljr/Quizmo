@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -57,15 +58,15 @@ public class GroupStatusPollingService extends IntentService {
             return;
         }
 
-//    Bundle extras = intent.getExtras();
-//
-//    if (extras != null && extras.containsKey(EXTRA_GROUP) && extras.containsKey(EXTRA_COURSE) && extras.containsKey(EXTRA_QUIZ)) {
-//      course = (Course) extras.getSerializable(EXTRA_COURSE);
-//      group = (Group) extras.getSerializable(EXTRA_GROUP);
-//      quiz = (Quiz) extras.getSerializable(EXTRA_QUIZ);
-//    } else {
-//      return;
-//    }
+//        Bundle extras = intent.getExtras();
+
+//        if (extras != null && extras.containsKey(EXTRA_GROUP) && extras.containsKey(EXTRA_COURSE) && extras.containsKey(EXTRA_QUIZ)) {
+//            course = (Course) extras.getSerializable(EXTRA_COURSE);
+//            group = (Group) extras.getSerializable(EXTRA_GROUP);
+//            quiz = (Quiz) extras.getSerializable(EXTRA_QUIZ);
+//        } else {
+//            return;
+//        }
 
         groupNetworkingService = new GroupNetworkingService(getApplicationContext());
 
@@ -84,7 +85,6 @@ public class GroupStatusPollingService extends IntentService {
             }
         });
 
-        Log.i(TAG, "Received an intent: " + intent);
     }
 
     public static Intent buildIntent(Context context, Group group, Course course, Quiz quiz) {
@@ -102,9 +102,9 @@ public class GroupStatusPollingService extends IntentService {
 
         //TODO: Couldn't get #onHandleIntent to recieve extras after wrapping intent in PendingIntent inside #setServiceAlarm
         //TODO: As a temporary workaround, I set the paramaters needed for the network call through static variables. Should revise later
-//    i.putExtra(EXTRA_GROUP, group);
-//    i.putExtra(EXTRA_COURSE, course);
-//    i.putExtra(EXTRA_QUIZ ,quiz);
+//        i.putExtra(com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService.EXTRA_GROUP, group);
+//        i.putExtra(com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService.EXTRA_COURSE, course);
+//        i.putExtra(com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService.EXTRA_QUIZ, quiz);
 
         GroupStatusPollingService.group = group;
         GroupStatusPollingService.quiz = quiz;
