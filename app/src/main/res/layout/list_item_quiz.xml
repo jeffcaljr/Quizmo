@@ -20,7 +20,6 @@
     <TextView
         android:id="@+id/quiz_name_textview"
         android:text="Quiz Name"
-        android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/jccolorPrimaryDark"
         android:layout_centerHorizontal="true"
@@ -40,7 +39,8 @@
           android:layout_centerHorizontal="true"
             android:layout_marginLeft="8dp"
           android:layout_marginBottom="12dp"
-          android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+            android:textStyle="bold"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
 
     </RelativeLayout>
 

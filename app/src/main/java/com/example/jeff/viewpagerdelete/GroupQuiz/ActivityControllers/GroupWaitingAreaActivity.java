@@ -27,10 +27,11 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupMemberStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupQuizProgressDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.SingleGroupDownloadCallback;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
@@ -55,6 +56,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
     private Course course;
     private Quiz quiz;
     private Group group;
+    private boolean isGroupLeader;
 
     private TextView courseNameTextView;
 
@@ -66,14 +68,14 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
     private LocalBroadcastManager bManager;
 
-    //Your activity will respond to this action String
-    public static final String RECEIVE_JSON = "com.your.package.RECEIVE_JSON";
+    //This activity will listen for Group Status Updates
+    public static final String RECEIVE_GROUP_STATUS = "com.example.jeff.viewpagerdelete.RECEIVE_GROUP_STATUS";
 
     private BroadcastReceiver bReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(RECEIVE_JSON)) {
-                ArrayList<UserGroupStatus> statuses = (ArrayList<UserGroupStatus>) intent.getSerializableExtra("json");
+            if (intent.getAction().equals(RECEIVE_GROUP_STATUS)) {
+                ArrayList<GroupMemberStatus> statuses = (ArrayList<GroupMemberStatus>) intent.getSerializableExtra("json");
                 if (manager != null && groupWaitingAreaFragment != null) {
                     groupWaitingAreaFragment.onStatusUpdate(statuses);
                 }
@@ -98,6 +100,9 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
             Log.e("TAG", "expected required extra \"EXTRA_COURSE\" in GroupWaitingAreaActivity");
             finish();
         }
+
+        getSupportActionBar().setTitle("Group Waiting Queue");
+
 
         manager = getSupportFragmentManager();
         groupNetworkingService = new GroupNetworkingService(this);
@@ -130,7 +135,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         //listen for group status updates
         bManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(RECEIVE_JSON);
+        intentFilter.addAction(RECEIVE_GROUP_STATUS);
         bManager.registerReceiver(bReceiver, intentFilter);
 
     }
@@ -144,6 +149,8 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
         //stop listening for group status updates
         bManager.unregisterReceiver(bReceiver);
+
+        GroupStatusPollingService.setServiceAlarm(this, false, group, course, quiz);
     }
 
     @Override
@@ -239,7 +246,11 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_IS_LEADER, isGroupLeader);
+//                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_COURSE, course);
                         startActivity(i);
+
+                        finish();
 
                     }
 
@@ -260,11 +271,19 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
                         Intent i = new Intent(GroupWaitingAreaActivity.this, GroupQuizActivity.class);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_IS_LEADER, isGroupLeader);
+//                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_COURSE, course);
                         startActivity(i);
+
+                        finish();
 
                     }
                 });
     }
 
+    @Override
+    public void onLeaderFound(boolean isCurrentUserLeader) {
 
+        this.isGroupLeader = isCurrentUserLeader;
+    }
 }

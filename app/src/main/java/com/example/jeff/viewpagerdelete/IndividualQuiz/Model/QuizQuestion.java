@@ -1,5 +1,7 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Model;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
  * Created by Jeff on 2/11/17.
  */
 
-public class QuizQuestion implements Serializable{
+public class QuizQuestion implements Serializable, Comparable<QuizQuestion> {
 
     private String id;
     private String title;
@@ -132,13 +134,15 @@ public class QuizQuestion implements Serializable{
      */
     public QuizAnswer getAnswerByValue(String value){
         for(QuizAnswer a: availableAnswers){
-            if(a.getValue().equals(value)){
+            if (a.getValue().equalsIgnoreCase(value)) {
                 return a;
             }
         }
         return null;
     }
 
-
-
+    @Override
+    public int compareTo(@NonNull QuizQuestion quizQuestion) {
+        return (this.id.compareTo(quizQuestion.getId()));
+    }
 }

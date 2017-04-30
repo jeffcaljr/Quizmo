@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
@@ -29,7 +30,7 @@ public class GroupQuizProgressPollingService extends IntentService {
     public static final String EXTRA_SESSION_ID = "EXTRA_SESSION_ID";
     public static final String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
 
-    private static final int POLL_INTERVAL = 12000;
+    private static final int POLL_INTERVAL = 7000;
 
     private static GroupNetworkingService groupNetworkingService;
     private static Quiz quiz;
@@ -51,9 +52,8 @@ public class GroupQuizProgressPollingService extends IntentService {
         groupNetworkingService.getGroupQuizProgress(quiz, group, new GroupNetworkingService.GroupQuizProgressDownloadCallback() {
             @Override
             public void onGroupQuizProgressSuccess(GradedGroupQuiz gradedGroupQuiz) {
-                System.out.println("intent Received");
-                Intent RTReturn = new Intent(GroupWaitingAreaActivity.RECEIVE_JSON);
-                RTReturn.putExtra("json", gradedGroupQuiz);
+                Intent RTReturn = new Intent(GroupQuizActivity.RECEIVE_GROUP_PROGRESS);
+                RTReturn.putExtra("gradedGroupQuiz", gradedGroupQuiz);
                 LocalBroadcastManager.getInstance(GroupQuizProgressPollingService.this).sendBroadcast(RTReturn);
             }
 
@@ -77,7 +77,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
     public static void setServiceAlarm(Context context, boolean isOn, Group group, Quiz quiz) {
 
-        Intent i = buildIntent(context, group, quiz);
+        Intent i = GroupQuizProgressPollingService.buildIntent(context, group, quiz);
 
         //TODO: Couldn't get #onHandleIntent to recieve extras after wrapping intent in PendingIntent inside #setServiceAlarm
         //TODO: As a temporary workaround, I set the paramaters needed for the network call through static variables. Should revise later
@@ -85,7 +85,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
         GroupQuizProgressPollingService.group = group;
         GroupQuizProgressPollingService.quiz = quiz;
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
 
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);

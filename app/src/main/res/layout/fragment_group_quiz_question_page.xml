@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:orientation="vertical"
   android:layout_width="match_parent"
@@ -11,12 +11,12 @@
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/jccolorPrimaryDark"
     app:cardElevation="8dp"
-    app:contentPadding="@dimen/quiz_card_content_padding">
+      app:contentPadding="@dimen/quiz_card_content_padding"
+      android:layout_alignParentTop="true">
 
     <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:padding="8dp">
+        android:layout_height="match_parent">
 
       <TextView
         android:id="@+id/quiz_question_number_label"
@@ -38,7 +38,7 @@
 
         <TextView
           android:text="Earned Group Pts."
-          android:textSize="16sp"
+            android:textSize="14sp"
           android:textStyle="bold"
           android:textColor="@color/colorWhite"
           android:layout_width="wrap_content"
@@ -67,13 +67,13 @@
         android:layout_height="wrap_content"
         android:minLines="1"
         android:maxLines="4"
-        android:textSize="22sp"
+          android:textSize="16sp"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:lineSpacingMultiplier="1.02"
         android:textIsSelectable="false"
-        android:padding="8dp"
+          android:padding="2dp"
         android:scrollbars="vertical"
         android:layout_below="@id/quiz_question_number_label"
 
@@ -94,23 +94,79 @@
 
   </android.support.v7.widget.CardView>
 
-  <!--<android.support.design.widget.TabLayout-->
-  <!--android:id="@+id/tabDots"-->
-  <!--android:layout_alignParentBottom="true"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--app:tabBackground="@drawable/tab_selector_question"-->
-  <!--app:tabGravity="center"-->
-  <!--app:tabIndicatorHeight="0dp"-->
-  <!--android:layout_marginTop="@dimen/quiz_question_card_elevation"/>-->
 
   <android.support.v7.widget.RecyclerView
     android:overScrollMode="never"
     android:id="@+id/quiz_answer_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="58dp"
-    android:clipToPadding="false"></android.support.v7.widget.RecyclerView>
+      android:paddingBottom="8dp"
+      android:clipToPadding="false"
+      android:layout_below="@id/quiz_question_card"
+      android:layout_above="@+id/group_quiz_individual_points_scrollview"></android.support.v7.widget.RecyclerView>
+
+    <HorizontalScrollView
+        android:id="@+id/group_quiz_individual_points_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/jccolorPrimaryDark"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:minWidth="300dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/group_quiz_individual_point_allocation_tv_a"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="A: ?"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:id="@+id/group_quiz_individual_point_allocation_tv_b"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="B: ?"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:id="@+id/group_quiz_individual_point_allocation_tv_c"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="C: ?"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:id="@+id/group_quiz_individual_point_allocation_tv_d"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="D: ?"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginRight="16dp" />s
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -280,7 +280,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
 
 
         public void bindView(final QuizAnswer answer) {
-            mAnswerValue.setText(answer.getValue());
+            mAnswerValue.setText(answer.getValue() + ".");
             mAnswerText.setText(answer.getText());
             mAnswerText.setMovementMethod(new ScrollingMovementMethod());
             mPointsAllocated.setText(answer.getPointsAllocated() + "");

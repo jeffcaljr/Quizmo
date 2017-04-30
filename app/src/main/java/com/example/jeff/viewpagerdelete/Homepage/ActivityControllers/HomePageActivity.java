@@ -54,8 +54,6 @@ public class HomePageActivity extends AppCompatActivity
     public static final String FRAG_TAG_QUIZ_LIST = "FRAG_TAG_QUIZ_LIST";
     public static final String FRAG_TAG_COURSE_LIST = "FRAG_TAG_COURSE_LIST";
 
-    private User user;
-
     private ArrayList<Course> courses;
 
     private FragmentManager manager;
@@ -84,8 +82,6 @@ public class HomePageActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.user = UserDataSource.getInstance().getUser();
-
         manager = getSupportFragmentManager();
 
         userDbHelper = new UserDbHelper(this);
@@ -103,7 +99,7 @@ public class HomePageActivity extends AppCompatActivity
         if(courseListFragment == null){
             courseListFragment = new CourseListFragment();
             Bundle args = new Bundle();
-            args.putSerializable(CourseListFragment.ARG_COURSES_COURSE_LIST_FRAGMENT, user.getEnrolledCourses());
+            args.putSerializable(CourseListFragment.ARG_COURSES_COURSE_LIST_FRAGMENT, UserDataSource.getInstance().getUser().getEnrolledCourses());
             courseListFragment.setArguments(args);
 
             showCoursesFragment();
@@ -127,12 +123,11 @@ public class HomePageActivity extends AppCompatActivity
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
 
 
+        userNameTextView.setText("@" + UserDataSource.getInstance().getUser().getUserID());
 
-        userNameTextView.setText("@" + user.getUserID());
+        fullNameTextView.setText(UserDataSource.getInstance().getUser().getFirstName() + " " + UserDataSource.getInstance().getUser().getLastName());
 
-        fullNameTextView.setText(user.getFirstName() + " " + user.getLastName());
-
-        emailTextView.setText(user.getEmail());
+        emailTextView.setText(UserDataSource.getInstance().getUser().getEmail());
 
         loadingFragment = new LoadingFragment(this, "Loading");
 
@@ -232,7 +227,7 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     public void courseItemClicked(Course course) {
         courseNameTextView.setText(course.getName());
-      quizNetworkingService.downloadUserQuizzes(user.getUserID(),
+        quizNetworkingService.downloadUserQuizzes(UserDataSource.getInstance().getUser().getUserID(),
           new UserQuizzesDownloadCallback() {
             @Override
             public void onUserQuizzesDownloadSuccess(ArrayList<Course> courses) {

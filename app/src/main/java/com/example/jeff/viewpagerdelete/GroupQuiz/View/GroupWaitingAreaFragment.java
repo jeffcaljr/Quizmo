@@ -20,16 +20,19 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupUser;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupMemberStatus;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupMember;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupStatusDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
+import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import java.util.ArrayList;
+
+import info.hoang8f.widget.FButton;
 
 /**
  * Created by Jeff on 3/24/17.
@@ -48,12 +51,12 @@ public class GroupWaitingAreaFragment extends Fragment {
     private ArrayList<String> memberNames;
     private Course course;
     private Quiz quiz;
-    private ArrayList<UserGroupStatus> statuses;
+    private ArrayList<GroupMemberStatus> statuses;
 
     private GroupNetworkingService groupNetworkingService;
 
     private TextView groupNameTextView;
-    private Button startGroupQuizButton;
+    private FButton startGroupQuizButton;
     private ImageButton refreshButton;
 
     private Drawable doneDrawable;
@@ -74,6 +77,8 @@ public class GroupWaitingAreaFragment extends Fragment {
     public interface OnGroupQuizStartedListener {
 
         void onGroupQuizStarted();
+
+        void onLeaderFound(boolean isCurrentUserLeader);
     }
 
 
@@ -98,7 +103,7 @@ public class GroupWaitingAreaFragment extends Fragment {
 
             spinAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.spin);
 
-            startGroupQuizButton = (Button) view.findViewById(R.id.qroup_waiting_area_start_quiz_button);
+            startGroupQuizButton = (FButton) view.findViewById(R.id.qroup_waiting_area_start_quiz_button);
             groupNameTextView = (TextView) view.findViewById(R.id.group_name_textview);
             refreshButton = (ImageButton) view.findViewById(R.id.group_waiting_area_refresh_imgbtn);
 
@@ -116,7 +121,7 @@ public class GroupWaitingAreaFragment extends Fragment {
 
             memberNames = new ArrayList<>();
 
-            for (GroupUser member : group.getMembers()) {
+            for (GroupMember member : group.getMembers()) {
                 memberNames.add(member.getFirstName() + " " + member.getLastName());
             }
 
@@ -146,7 +151,7 @@ public class GroupWaitingAreaFragment extends Fragment {
         //perform initial load of group members' status
         groupNetworkingService.getGroupStatus(group, course, quiz, new GroupStatusDownloadCallback() {
             @Override
-            public void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses) {
+            public void onGroupStatusSuccess(ArrayList<GroupMemberStatus> statuses) {
                 statusLoaded = true;
                 GroupWaitingAreaFragment.this.statuses = statuses;
 
@@ -157,6 +162,16 @@ public class GroupWaitingAreaFragment extends Fragment {
                     GroupStatusPollingService.setServiceAlarm(getActivity(), true, group, course, quiz);
                 } else {
                     checkStatusFinished();
+                }
+
+
+                //determine if the current user is the leader, and notify the listener
+                for (GroupMemberStatus memberStatus : statuses) {
+                    if (memberStatus.isLeader() == true) {
+                        boolean isThisUserLeader = memberStatus.getUserID().equalsIgnoreCase(UserDataSource.getInstance().getUser().getUserID());
+                        groupQuizStartListener.onLeaderFound(isThisUserLeader);
+                        break;
+                    }
                 }
                 adapter.notifyDataSetChanged();
 
@@ -182,6 +197,7 @@ public class GroupWaitingAreaFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -190,7 +206,7 @@ public class GroupWaitingAreaFragment extends Fragment {
     }
 
 
-    public void onStatusUpdate(ArrayList<UserGroupStatus> statuses) {
+    public void onStatusUpdate(ArrayList<GroupMemberStatus> statuses) {
         statusLoaded = true;
         this.statuses = statuses;
         checkStatusFinished();
@@ -211,8 +227,8 @@ public class GroupWaitingAreaFragment extends Fragment {
         //loop through current users who have started the individual quiz to determine if they are all finished
         boolean groupFinished = true;
 
-        for (UserGroupStatus status : statuses) {
-            if (status.getStatus() != UserGroupStatus.Status.COMPLETE) {
+        for (GroupMemberStatus status : statuses) {
+            if (status.getStatus() != GroupMemberStatus.Status.COMPLETE) {
                 groupFinished = false;
             }
         }
@@ -235,8 +251,8 @@ public class GroupWaitingAreaFragment extends Fragment {
             return false;
         } else {
             //if all members of the group have started, check if they are all finished, and if one isnt; then the whole group cant be finished
-            for (UserGroupStatus userStatus : statuses) {
-                if (userStatus.getStatus() != UserGroupStatus.Status.COMPLETE) {
+            for (GroupMemberStatus userStatus : statuses) {
+                if (userStatus.getStatus() != GroupMemberStatus.Status.COMPLETE) {
                     wholeGroupFinished = false;
                     break;
                 }
@@ -261,12 +277,12 @@ public class GroupWaitingAreaFragment extends Fragment {
             //since the number of users in the group may not match the number of users who started the individual quiz,
             //need to tell viewholder if each member has started (has a status) or not
 
-            UserGroupStatus status = null;
-            GroupUser user = group.getMembers().get(position);
+            GroupMemberStatus status = null;
+            GroupMember user = group.getMembers().get(position);
 
             //determine if the user at this position has started the individual quiz (has a status) or not
 
-            for (UserGroupStatus s : statuses) {
+            for (GroupMemberStatus s : statuses) {
                 if (s.getUserID().toLowerCase().equals(user.getUserID().toLowerCase())) {
                     status = s;
                     break;
@@ -296,7 +312,7 @@ public class GroupWaitingAreaFragment extends Fragment {
             statusIcon = (ImageView) itemView.findViewById(R.id.group_waiting_area_list_item_status_indicator);
         }
 
-        public void bindMember(GroupUser member, UserGroupStatus status) {
+        public void bindMember(GroupMember member, GroupMemberStatus status) {
 
             memberName.setText(member.getFirstName() + " " + member.getLastName());
 
@@ -316,7 +332,7 @@ public class GroupWaitingAreaFragment extends Fragment {
                     //if they were the first to start it, denote them as the leader
 
                     if (status.getStatus()
-                            == UserGroupStatus.Status.COMPLETE) { //if the user is done, show the green indicators
+                            == GroupMemberStatus.Status.COMPLETE) { //if the user is done, show the green indicators
 
                         statusIcon.setImageDrawable(doneDrawable);
 

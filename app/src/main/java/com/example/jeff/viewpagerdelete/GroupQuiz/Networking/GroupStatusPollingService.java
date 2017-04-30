@@ -6,17 +6,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupMemberStatus;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.GroupStatusDownloadCallback;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
@@ -72,9 +70,8 @@ public class GroupStatusPollingService extends IntentService {
 
         groupNetworkingService.getGroupStatus(group, course, quiz, new GroupStatusDownloadCallback() {
             @Override
-            public void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses) {
-                System.out.println("intent Received");
-                Intent RTReturn = new Intent(GroupWaitingAreaActivity.RECEIVE_JSON);
+            public void onGroupStatusSuccess(ArrayList<GroupMemberStatus> statuses) {
+                Intent RTReturn = new Intent(GroupWaitingAreaActivity.RECEIVE_GROUP_STATUS);
                 RTReturn.putExtra("json", statuses);
                 LocalBroadcastManager.getInstance(GroupStatusPollingService.this).sendBroadcast(RTReturn);
             }

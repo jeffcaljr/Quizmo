@@ -5,8 +5,8 @@
     android:background="@color/jccolorPrimary"
     android:paddingBottom="8dp"
     android:paddingTop="8dp"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
     android:layout_marginBottom="8dp">
 
     <TextView
@@ -21,11 +21,21 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/statistics_question_details_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_toRightOf="@id/statistics_question_number_label"
+        android:layout_toLeftOf="@+id/statistics_question_detail_indicator">
+
+        <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+            android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/statistics_individual_points">
 
         <ImageView
@@ -38,7 +48,7 @@
         <TextView
             android:id="@+id/statistics_username_label"
             android:text="userID"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
             android:layout_width="wrap_content"
@@ -67,8 +77,8 @@
         android:background="@color/colorWhite"
         android:layout_width="2dp"
         android:layout_height="56dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp" />
 
     <TextView
         android:id="@+id/statistics_group_points"
@@ -86,22 +96,24 @@
 
 
     <LinearLayout
+        android:id="@+id/statisics_group_details_layout"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/statistics_group_points">
 
         <ImageView
             android:src="@drawable/ic_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/statistics_groupname_label"
             android:text="groupName"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
             android:layout_width="wrap_content"
@@ -109,12 +121,15 @@
 
     </LinearLayout>
 
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/statistics_question_detail_indicator"
         android:layout_gravity="center"
-        android:src="@android:drawable/ic_menu_info_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:src="@drawable/ic_list_detail"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:scaleType="fitXY"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
 

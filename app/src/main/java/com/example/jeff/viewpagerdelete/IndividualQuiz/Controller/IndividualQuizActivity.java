@@ -293,11 +293,11 @@ public class IndividualQuizActivity extends AppCompatActivity
 
       submittingFragment.show();
 
-        quiz.setFinished(true);
 
-      //Save the quiz to the database one last time, because this method won't get called on the last page (only gets called on page change)
-      IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
-          .updateQuizInDatabase(quiz);
+        //Save the quiz to the database one last time, because this method won't get called on the last page (only gets called on page change)
+        IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
+                .updateQuizInDatabase(quiz);
+
 
         quizNetworkingService
             .uploadQuiz(course.getCourseID(),
@@ -305,6 +305,13 @@ public class IndividualQuizActivity extends AppCompatActivity
                 quiz, new IndividualQuizPostCallback() {
                   @Override
                   public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
+
+                      quiz.setFinished(true);
+
+                      //after setting the quiz to finished, save it to the database, so that when the user tries to open it after
+                      //restarting the app, the quiz will be marked as finished
+                      IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
+                              .updateQuizInDatabase(quiz);
 
                       //set the id of the graded quiz to the id of the individual quiz
                       gradedQuiz.setId(quiz.getId());

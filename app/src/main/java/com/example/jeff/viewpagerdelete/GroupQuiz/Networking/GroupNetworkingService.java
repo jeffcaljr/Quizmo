@@ -15,9 +15,8 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuizQuestion;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupQuizAnswer;
-import com.example.jeff.viewpagerdelete.GroupQuiz.Model.UserGroupStatus;
+import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GroupMemberStatus;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
-import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.Miscellaneous.RequestService;
 import com.example.jeff.viewpagerdelete.Miscellaneous.ApiURLs;
@@ -51,7 +50,7 @@ public class GroupNetworkingService {
 
     public interface GroupStatusDownloadCallback {
 
-        void onGroupStatusSuccess(ArrayList<UserGroupStatus> statuses);
+        void onGroupStatusSuccess(ArrayList<GroupMemberStatus> statuses);
 
         void onGroupStatusFailure(VolleyError error);
     }
@@ -186,12 +185,12 @@ public class GroupNetworkingService {
                 try {
                     JSONArray status = response.getJSONArray("status");
                   JSONObject leader = response.getJSONObject("leader");
-                  ArrayList<UserGroupStatus> statuses = new ArrayList<>();
+                    ArrayList<GroupMemberStatus> statuses = new ArrayList<>();
 
                     for (int i = 0; i < status.length(); i++) {
-                      UserGroupStatus userGroupStatus = new UserGroupStatus(status.getJSONObject(i),
+                        GroupMemberStatus groupMemberStatus = new GroupMemberStatus(status.getJSONObject(i),
                           leader);
-                      statuses.add(userGroupStatus);
+                        statuses.add(groupMemberStatus);
 
                     }
 

@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.View;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -52,6 +53,12 @@ public class StatisticsMasterFragment extends Fragment {
     private GradedGroupQuiz gradedGroupQuiz;
     private GradedQuiz gradedIndividualQuiz;
 
+    private OnStatisticsQuestionClickedListener mListener;
+
+    public interface OnStatisticsQuestionClickedListener {
+        void onQuestionClicked(int position, QuizQuestion questionClicked, GradedQuizQuestion individualQuizQuestion, GradedGroupQuizQuestion groupQuizQuestion);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +70,9 @@ public class StatisticsMasterFragment extends Fragment {
             quiz = (Quiz) args.getSerializable(ARG_EXTRA_QUIZ);
             gradedGroupQuiz = (GradedGroupQuiz) args.getSerializable(ARG_EXTRA_GRADED_GROUP_QUIZ);
             gradedIndividualQuiz = (GradedQuiz) args.getSerializable(ARG_EXTRA_GRADED_INDIVIDUAL_QUIZ);
+
+            Collections.sort(quiz.getQuestions());
+            Collections.sort(gradedGroupQuiz.getGradedQuestions());
         } else {
             Log.e(TAG, "Missing arguments");
         }
@@ -97,22 +107,32 @@ public class StatisticsMasterFragment extends Fragment {
         //TODO: Test code preceeding, delete later
 
 //        mBarChart.addBar(new BarModel("", 2.3f, 0xFF123456));
-//        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
-//        mBarChart.addBar(new BarModel(3.3f, 0xFF563456));
-//        mBarChart.addBar(new BarModel(1.1f, 0xFF873F56));
-//        mBarChart.addBar(new BarModel(2.7f, 0xFF56B7F1));
-//        mBarChart.addBar(new BarModel(2.f, 0xFF343456));
-//        mBarChart.addBar(new BarModel(0.4f, 0xFF1FF4AC));
-//        mBarChart.addBar(new BarModel(4.f, 0xFF1BA4E6));
 
 
         return view;
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mListener = (OnStatisticsQuestionClickedListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mBarChart.startAnimation();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mListener = null;
     }
 
     private class StatisticsQuestionAdapter extends RecyclerView.Adapter<StatisticsQuestionHolder> {
@@ -137,7 +157,7 @@ public class StatisticsMasterFragment extends Fragment {
     }
 
 
-    private class StatisticsQuestionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class StatisticsQuestionHolder extends RecyclerView.ViewHolder {
 
         private TextView questionNumberLabel;
         private TextView userNameLabel;
@@ -153,20 +173,27 @@ public class StatisticsMasterFragment extends Fragment {
             groupNameLabel = (TextView) itemView.findViewById(R.id.statistics_groupname_label);
             individualPointsEarned = (TextView) itemView.findViewById(R.id.statistics_individual_points);
             groupPointsEarned = (TextView) itemView.findViewById(R.id.statistics_group_points);
+
         }
 
-        public void bindView(QuizQuestion question, GradedQuizQuestion gradedQuizQuestion, GradedGroupQuizQuestion gradedGroupQuizQuestion) {
+        public void bindView(final QuizQuestion question, final GradedQuizQuestion gradedQuizQuestion, final GradedGroupQuizQuestion gradedGroupQuizQuestion) {
             questionNumberLabel.setText((getAdapterPosition() + 1) + ".");
             userNameLabel.setText(UserDataSource.getInstance().getUser().getUserID());
             groupNameLabel.setText(gradedGroupQuiz.getGroup().getName());
 
-            //find the correct answer for individual quiz, and set text label with points earned
-            for (GradedQuizAnswer answer : gradedQuizQuestion.getSubmittedAnswers()) {
+            GradedQuizAnswer userIndividualAnswer = null;
+
+            //find the correct answer from group quiz
+            for (GradedGroupQuizAnswer answer : gradedGroupQuizQuestion.getGradedAnswers()) {
                 if (answer.isCorrect()) {
-                    individualPointsEarned.setText(answer.getPointsEarned() + "");
+                    //use the value attribute of the correct answer to find the points earned for the user
+                    userIndividualAnswer = gradedQuizQuestion.getAnswerByValue(answer.getValue());
                     break;
                 }
             }
+
+            individualPointsEarned.setText((userIndividualAnswer == null ? "0" : userIndividualAnswer.getPointsEarned() + ""));
+
 
             for (GradedGroupQuizAnswer answer : gradedGroupQuizQuestion.getGradedAnswers()) {
                 if (answer.isCorrect()) {
@@ -174,11 +201,14 @@ public class StatisticsMasterFragment extends Fragment {
                     break;
                 }
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onQuestionClicked(getAdapterPosition() + 1, question, gradedQuizQuestion, gradedGroupQuizQuestion);
+                }
+            });
         }
 
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(getActivity(), "Should show detail view of clicked question", Toast.LENGTH_SHORT).show();
-        }
     }
 }

@@ -56,4 +56,17 @@ public class GradedQuizQuestion implements Serializable {
     public void setSubmittedAnswers(ArrayList<GradedQuizAnswer> submittedAnswers) {
         this.submittedAnswers = submittedAnswers;
     }
+
+    public GradedQuizAnswer getAnswerByValue(String value) {
+        GradedQuizAnswer answer = null;
+
+        for (GradedQuizAnswer a : this.submittedAnswers) {
+            if (a.getValue().equalsIgnoreCase(value)) {
+                answer = a;
+                break;
+            }
+        }
+
+        return answer;
+    }
 }

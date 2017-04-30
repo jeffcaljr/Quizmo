@@ -18,7 +18,7 @@ public class Group implements Serializable{
     private String id;
     private String name;
     private ArrayList<String> courseIDs;
-    private ArrayList<GroupUser> members;
+    private ArrayList<GroupMember> members;
 
     public Group(JSONObject json) {
         try {
@@ -42,7 +42,7 @@ public class Group implements Serializable{
             this.members = new ArrayList<>();
 
             for (int i = 0; i < membersJSONArray.length(); i++) {
-                this.members.add(new GroupUser(membersJSONArray.getJSONObject(i)));
+                this.members.add(new GroupMember(membersJSONArray.getJSONObject(i)));
             }
 
         } catch (JSONException e) {
@@ -53,7 +53,7 @@ public class Group implements Serializable{
     public Group() {
     }
 
-    public Group(String id, String name, ArrayList<GroupUser> members) {
+    public Group(String id, String name, ArrayList<GroupMember> members) {
         this.id = id;
         this.name = name;
         this.members = members;
@@ -76,12 +76,12 @@ public class Group implements Serializable{
     }
 
 
-  public ArrayList<GroupUser> getMembers() {
+    public ArrayList<GroupMember> getMembers() {
         Collections.sort(members);
         return members;
     }
 
-    public void setMembers(ArrayList<GroupUser> members) {
+    public void setMembers(ArrayList<GroupMember> members) {
         this.members = members;
     }
 

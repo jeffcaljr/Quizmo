@@ -11,13 +11,13 @@ import java.io.Serializable;
  * Created by Jeff on 4/18/17.
  */
 
-public class GroupUser implements Serializable, Comparable<GroupUser> {
+public class GroupMember implements Serializable, Comparable<GroupMember> {
     private String userID;
     private String email;
     private String firstName;
     private String lastName;
 
-    public GroupUser(JSONObject json) {
+    public GroupMember(JSONObject json) {
         try {
 
             this.userID = json.getString("userID");
@@ -34,10 +34,10 @@ public class GroupUser implements Serializable, Comparable<GroupUser> {
         }
     }
 
-    public GroupUser() {
+    public GroupMember() {
     }
 
-    public GroupUser(String userID, String email, String firstName, String lastName) {
+    public GroupMember(String userID, String email, String firstName, String lastName) {
         this.userID = userID;
         this.email = email;
         this.firstName = firstName;
@@ -77,7 +77,7 @@ public class GroupUser implements Serializable, Comparable<GroupUser> {
     }
 
     @Override
-    public int compareTo(@NonNull GroupUser user) {
+    public int compareTo(@NonNull GroupMember user) {
         return (userID.compareTo(user.getUserID()));
     }
 }

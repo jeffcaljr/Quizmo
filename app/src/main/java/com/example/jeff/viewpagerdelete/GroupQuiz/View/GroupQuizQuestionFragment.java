@@ -64,6 +64,14 @@ public class GroupQuizQuestionFragment extends Fragment {
     private TextView mPointsEarnedTextView;
     private TextView mQuestionLabelTextView;
 
+    //TODO: Below is a sloppy way to show users what their point distribution was for the individual quiz. Will implement better
+    private TextView pointsAllocatedTextViewA;
+    private TextView pointsAllocatedTextViewB;
+    private TextView pointsAllocatedTextViewC;
+    private TextView pointsAllocatedTextViewD;
+    //TODO: Above is a sloppy way to show users what their point distribution was for the individual quiz. Will implement better
+
+
     private RecyclerView recyclerView;
     private AnswerAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
@@ -114,9 +122,10 @@ public class GroupQuizQuestionFragment extends Fragment {
         Bundle args = getArguments();
 
         if (args != null && args.containsKey(ARG_QUIZ_QUESTION) && args
-                .containsKey(ARG_QUIZ_QUESTION_NUMBER)) {
+                .containsKey(ARG_QUIZ_QUESTION_NUMBER) && args.containsKey(ARG_IS_USER_GROUP_LEADER)) {
             question = (QuizQuestion) args.getSerializable(ARG_QUIZ_QUESTION);
             questionNumber = args.getInt(ARG_QUIZ_QUESTION_NUMBER);
+            isGroupLeader = args.getBoolean(ARG_IS_USER_GROUP_LEADER);
             Collections.sort(question.getAvailableAnswers());
         } else {
             Log.e(TAG, "Args error");
@@ -200,6 +209,18 @@ public class GroupQuizQuestionFragment extends Fragment {
 
         groupNetworkingService = new GroupNetworkingService(getActivity());
 
+        //TODO: Below is a sloppy way to show users what their point distribution was for the individual quiz. Will implement better
+        pointsAllocatedTextViewA = (TextView) view.findViewById(R.id.group_quiz_individual_point_allocation_tv_a);
+        pointsAllocatedTextViewB = (TextView) view.findViewById(R.id.group_quiz_individual_point_allocation_tv_b);
+        pointsAllocatedTextViewC = (TextView) view.findViewById(R.id.group_quiz_individual_point_allocation_tv_c);
+        pointsAllocatedTextViewD = (TextView) view.findViewById(R.id.group_quiz_individual_point_allocation_tv_d);
+
+        pointsAllocatedTextViewA.setText("A: " + question.getAnswerByValue("A").getPointsAllocated() + "");
+        pointsAllocatedTextViewB.setText("B: " + question.getAnswerByValue("B").getPointsAllocated() + "");
+        pointsAllocatedTextViewC.setText("C: " + question.getAnswerByValue("C").getPointsAllocated() + "");
+        pointsAllocatedTextViewD.setText("D: " + question.getAnswerByValue("D").getPointsAllocated() + "");
+        //TODO: Above is a sloppy way to show users what their point distribution was for the individual quiz. Will implement better
+
         return view;
     }
 
@@ -230,7 +251,6 @@ public class GroupQuizQuestionFragment extends Fragment {
                     gradedGroupQuizQuestion.setAnsweredCorrectly(true);
                     mPointsEarnedTextView.setText(gradedAnswer.getPoints() + "");
 
-                    //hide all currently visible submit buttons
                 }
             }
         }
@@ -361,7 +381,7 @@ public class GroupQuizQuestionFragment extends Fragment {
 
 
         public void bindView(final QuizAnswer answer, GradedGroupQuizAnswer gradedAnswer) {
-            mAnswerValue.setText(answer.getValue());
+            mAnswerValue.setText(answer.getValue() + ".");
             mAnswerText.setText(answer.getText());
             mAnswerText.setMovementMethod(new ScrollingMovementMethod());
             mAnswerTextPreview.setText(answer.getText());
@@ -393,6 +413,11 @@ public class GroupQuizQuestionFragment extends Fragment {
                     updateCollapsedState();
                 }
             });
+
+            //if the user is not the leader, hide the answer submit buttons
+            if (isGroupLeader == false) {
+                mSubmitAnswerButton.setVisibility(View.GONE);
+            }
 
             //if the question has been answered, and the answer hasn't, it is an unsubmitted answer
 

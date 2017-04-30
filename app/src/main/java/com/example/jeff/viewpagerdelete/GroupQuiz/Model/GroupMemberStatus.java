@@ -15,7 +15,7 @@ import java.util.TimeZone;
  * Created by Jeff on 4/18/17.
  */
 
-public class UserGroupStatus implements Serializable, Comparable<UserGroupStatus> {
+public class GroupMemberStatus implements Serializable, Comparable<GroupMemberStatus> {
 
     public enum Status {
         COMPLETE("complete"),
@@ -51,7 +51,7 @@ public class UserGroupStatus implements Serializable, Comparable<UserGroupStatus
     private int timeLimit;
   private boolean isLeader;
 
-  public UserGroupStatus(JSONObject statusJSON, JSONObject leaderJSON) {
+    public GroupMemberStatus(JSONObject statusJSON, JSONObject leaderJSON) {
 
 
         try {
@@ -79,11 +79,11 @@ public class UserGroupStatus implements Serializable, Comparable<UserGroupStatus
         }
     }
 
-  public UserGroupStatus() {
+    public GroupMemberStatus() {
     }
 
-  public UserGroupStatus(Status status, String userID, String firstName, String lastName,
-      String groupName, Date timeStarted, int timeLimit) {
+    public GroupMemberStatus(Status status, String userID, String firstName, String lastName,
+                             String groupName, Date timeStarted, int timeLimit) {
         this.status = status;
         this.userID = userID;
         this.firstName = firstName;
@@ -158,7 +158,7 @@ public class UserGroupStatus implements Serializable, Comparable<UserGroupStatus
   }
 
   @Override
-    public int compareTo(@NonNull UserGroupStatus status) {
+  public int compareTo(@NonNull GroupMemberStatus status) {
         return (this.userID.compareTo(status.getUserID()));
     }
 }

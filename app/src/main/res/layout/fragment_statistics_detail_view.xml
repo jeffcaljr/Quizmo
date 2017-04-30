@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/statistics_question_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/jccolorPrimaryDark"
+        app:cardElevation="8dp"
+        app:contentPadding="@dimen/quiz_card_content_padding"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/statistics_question_number_label"
+                android:text="1."
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true">
+
+                <TextView
+                    android:text="Correct Answer: "
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginRight="8dp" />
+
+                <TextView
+                    android:id="@+id/statistics_correct_answer_label"
+                    android:text="-"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/statistics_quiz_question_text"
+                android:text="@string/lorem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="1"
+                android:maxLines="4"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:lineSpacingMultiplier="1.02"
+                android:textIsSelectable="false"
+                android:padding="4dp"
+                android:scrollbars="vertical"
+                android:layout_below="@id/statistics_question_number_label" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/statistics_user_individual_answers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/jccolorPrimaryDark"
+        app:cardElevation="8dp"
+        app:contentPadding="@dimen/quiz_card_content_padding"
+        android:layout_below="@id/statistics_question_card"
+        android:layout_marginTop="8dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/statistics_user_answers_label"
+                android:text="Your Answers:"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:textAlignment="viewStart"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/statistics_user_answers_label"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/statistics_individual_point_allocation_tv_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="A: ?"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:layout_marginRight="16dp" />
+
+                <TextView
+                    android:id="@+id/statistics_individual_point_allocation_tv_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="B: ?"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:layout_marginRight="16dp" />
+
+                <TextView
+                    android:id="@+id/statistics_individual_point_allocation_tv_c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="C: ?"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:layout_marginRight="16dp" />
+
+                <TextView
+                    android:id="@+id/statistics_individual_point_allocation_tv_d"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="D: ?"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:layout_marginRight="16dp" />s
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/statistics_group_answers_label"
+        android:text="Group Answers:"
+        android:textColor="@color/jccolorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:textAlignment="viewStart"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statistics_user_individual_answers" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
+        android:id="@+id/statistics_group_answers_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/statistics_group_answers_label"></android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>
