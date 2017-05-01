@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,6 +62,8 @@ public class GroupQuizActivity extends AppCompatActivity implements
     private ScreenSlidePagerAdapter mAdapter;
     private DetailOnPageChangeListener onPageChangeListener;
     private TabLayout tabLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Snackbar goToStatisticsSnackbar;
 
     private GradedQuiz gradedQuiz;
     private Quiz quiz;
@@ -130,6 +133,34 @@ public class GroupQuizActivity extends AppCompatActivity implements
         tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 
+        goToStatisticsSnackbar = Snackbar
+                .make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
+                        "Group quiz complete!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("View Stats", new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(GroupQuizActivity.this, StatisticsActivity.class);
+                        i.putExtra(StatisticsActivity.INTENT_EXTRA_GROUP_QUIZ, gradedGroupQuiz);
+                        i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, quiz);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.group_quiz_swipe_refresher);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateQuizProgress();
+            }
+        });
+
+        //The leader won't need to use the refreshing feature, as they are in control of the quiz
+        if (isGroupLeader == true) {
+            swipeRefreshLayout.setEnabled(false);
+        }
+
         groupNetworkingService = new GroupNetworkingService(this);
 
 
@@ -152,7 +183,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
         super.onDestroy();
         //Start listening for group quiz progress, if the user is not the group leader
 
-        GroupQuizProgressPollingService.setServiceAlarm(this, false, group, quiz);
+//        GroupQuizProgressPollingService.setServiceAlarm(this, false, group, quiz);
     }
 
     private void updateQuizProgress() {
@@ -160,6 +191,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
             @Override
             public void onGroupQuizProgressSuccess(final GradedGroupQuiz gradedGroupQuiz) {
                 GroupQuizActivity.this.gradedGroupQuiz = gradedGroupQuiz;
+                mAdapter.notifyDataSetChanged();
                 if (gradedGroupQuiz.getQuestionsAnswered() == gradedGroupQuiz.getTotalQuestions()) {
                     // the quiz is done
 
@@ -170,33 +202,24 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
                     //Prompt the user to see their statistics when the group quiz is done
 
-                    Snackbar snackbar = Snackbar
-                            .make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0),
-                                    "Group quiz complete!", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("View Stats", new OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent i = new Intent(GroupQuizActivity.this, StatisticsActivity.class);
-                                    i.putExtra(StatisticsActivity.INTENT_EXTRA_GROUP_QUIZ, gradedGroupQuiz);
-                                    i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, quiz);
-                                    startActivity(i);
-                                    finish();
-                                }
-                            });
+                    goToStatisticsSnackbar.show();
 
-                    snackbar.show();
+                    swipeRefreshLayout.setRefreshing(false);
 
                 } else {
 
                     //Start listening for group quiz progress, if the user is not the group leader
 
-                    if (isGroupLeader == false) {
-                        GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
-                    }
+//                    if (isGroupLeader == false) {
+//                        GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
+//                    }
+
+                    swipeRefreshLayout.setRefreshing(false);
 
                     Toast.makeText(GroupQuizActivity.this,
                             (gradedGroupQuiz.getTotalQuestions() - gradedGroupQuiz.getQuestionsAnswered())
                                     + "questions left", Toast.LENGTH_SHORT).show();
+
 
                 }
             }
@@ -211,9 +234,11 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
                 //Start listening for group quiz progress, if the user is not the group leader
 
-                if (isGroupLeader == false) {
-                    GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
-                }
+//                if (isGroupLeader == false) {
+//                    GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
+//                }
+
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
@@ -253,6 +278,10 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override

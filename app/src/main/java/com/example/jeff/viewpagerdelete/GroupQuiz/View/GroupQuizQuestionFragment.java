@@ -484,7 +484,6 @@ public class GroupQuizQuestionFragment extends Fragment {
                     if (isGroupLeader == true) {
                         mSubmitAnswerButton.setVisibility(View.VISIBLE);
                     }
-                    Log.d("", "");
                 }
 
             }
