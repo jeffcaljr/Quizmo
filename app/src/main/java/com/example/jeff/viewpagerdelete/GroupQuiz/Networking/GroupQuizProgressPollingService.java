@@ -30,7 +30,7 @@ public class GroupQuizProgressPollingService extends IntentService {
     public static final String EXTRA_SESSION_ID = "EXTRA_SESSION_ID";
     public static final String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
 
-    private static final int REQUEST_CODE = 1;
+    private static final int REQUEST_CODE = 101;
 
     private static final int POLL_INTERVAL = 7000;
 
@@ -79,7 +79,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
     public static void setServiceAlarm(Context context, boolean isOn, Group group, Quiz quiz) {
 
-        Intent i = GroupQuizProgressPollingService.buildIntent(context, group, quiz);
+        Intent i = GroupQuizProgressPollingService.buildIntent(context.getApplicationContext(), group, quiz);
 
         //TODO: Couldn't get #onHandleIntent to recieve extras after wrapping intent in PendingIntent inside #setServiceAlarm
         //TODO: As a temporary workaround, I set the paramaters needed for the network call through static variables. Should revise later
@@ -87,13 +87,13 @@ public class GroupQuizProgressPollingService extends IntentService {
 
         GroupQuizProgressPollingService.group = group;
         GroupQuizProgressPollingService.quiz = quiz;
-        PendingIntent pendingIntent = PendingIntent.getService(context, REQUEST_CODE, i, 0);
+        PendingIntent pendingIntent = PendingIntent.getService(context.getApplicationContext(), REQUEST_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
         if (isOn) {
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), POLL_INTERVAL, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), POLL_INTERVAL, pendingIntent);
 
         } else {
             alarmManager.cancel(pendingIntent);

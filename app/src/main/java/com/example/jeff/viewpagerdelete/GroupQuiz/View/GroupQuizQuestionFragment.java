@@ -480,7 +480,10 @@ public class GroupQuizQuestionFragment extends Fragment {
                     //this answer has not been attempted
                     answerMask.setVisibility(View.INVISIBLE);
                     mResultLabel.setVisibility(View.INVISIBLE);
-                    mSubmitAnswerButton.setVisibility(View.VISIBLE);
+
+                    if (isGroupLeader == true) {
+                        mSubmitAnswerButton.setVisibility(View.VISIBLE);
+                    }
                     Log.d("", "");
                 }
 

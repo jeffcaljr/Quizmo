@@ -129,7 +129,7 @@ public class GroupWaitingAreaFragment extends Fragment {
             startGroupQuizButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+                    GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
                     groupQuizStartListener.onGroupQuizStarted();
                 }
             });
@@ -168,7 +168,8 @@ public class GroupWaitingAreaFragment extends Fragment {
                 //determine if the current user is the leader, and notify the listener
                 for (GroupMemberStatus memberStatus : statuses) {
                     if (memberStatus.isLeader() == true) {
-                        boolean isThisUserLeader = memberStatus.getUserID().equalsIgnoreCase(UserDataSource.getInstance().getUser().getUserID());
+                        String userID = UserDataSource.getInstance().getUser().getUserID();
+                        boolean isThisUserLeader = memberStatus.getUserID().equalsIgnoreCase(userID);
                         groupQuizStartListener.onLeaderFound(isThisUserLeader);
                         break;
                     }
