@@ -30,6 +30,8 @@ public class GroupQuizProgressPollingService extends IntentService {
     public static final String EXTRA_SESSION_ID = "EXTRA_SESSION_ID";
     public static final String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
 
+    private static final int REQUEST_CODE = 1;
+
     private static final int POLL_INTERVAL = 7000;
 
     private static GroupNetworkingService groupNetworkingService;
@@ -85,7 +87,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
         GroupQuizProgressPollingService.group = group;
         GroupQuizProgressPollingService.quiz = quiz;
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
+        PendingIntent pendingIntent = PendingIntent.getService(context, REQUEST_CODE, i, 0);
 
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);

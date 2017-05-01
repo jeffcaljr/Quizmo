@@ -3,6 +3,8 @@ package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.Snackbar.Callback;
 import android.support.design.widget.TabLayout;
@@ -39,6 +41,9 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragm
 
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Author: Jeffery Calhoun
@@ -75,6 +80,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     private Snackbar submitSnackBar;
 
     private LoadingFragment submittingFragment;
+
+    private CountDownTimer countDownTimer;
 
 
 
@@ -136,19 +143,23 @@ public class IndividualQuizActivity extends AppCompatActivity
   protected void onResume() {
     super.onResume();
 
-    final int max = 30000;
-    quizTimerProgressBar.setMax(max);
-    quizTimerProgressBar.setProgress(0);
-
-    //TODO: If using this timer; stop it when the user submits the quiz!!!
-
-//    new CountDownTimer(max, 1000) {
+//      Calendar expiryDate = new GregorianCalendar();
+//      expiryDate.setTime(quiz.getStartTime());
+//      expiryDate.add(Calendar.MINUTE, quiz.getTimedLength());
+//      int timeBeforeExpiry = (int) (expiryDate.getTimeInMillis() - System.currentTimeMillis());
+//
+//      quizTimerProgressBar.setMax(timeBeforeExpiry);
+//      quizTimerProgressBar.setProgress(0);
+//
+//    //TODO: If using this timer; stop it when the user submits the quiz!!!
+//
+//    countDownTimer = new CountDownTimer(time, 1000) {
 //      @Override
 //      public void onTick(long l) {
-//        quizTimerProgressBar.setProgress((int) (quizTimerProgressBar.getMax() - l));
+//        quizTimerProgressBar.setProgress(quizTimerProgressBar.getMax() - (int) l);
 //
 //        if (l < max / 2) {
-//          quizTimerProgressBar.getProgressDrawable().setColorFilter(0xFFFF0000, Mode.OVERLAY);
+//          quizTimerProgressBar.getProgressDrawable().setColorFilter(0xFFFF0000, PorterDuff.Mode.OVERLAY);
 //        }
 //      }
 //
@@ -156,13 +167,21 @@ public class IndividualQuizActivity extends AppCompatActivity
 //      public void onFinish() {
 //        submittingFragment.show();
 //
-//        userConfirmedSubmission();
+////        userConfirmedSubmission();
 //
 //      }
 //    }.start();
   }
 
-  @Override
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+//        countDownTimer.cancel();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -324,8 +343,9 @@ public class IndividualQuizActivity extends AppCompatActivity
                           i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
                           i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
                           startActivity(i);
-                          finish();
                           submittingFragment.dismiss();
+                          finish();
+
                       } else {
                           submittingFragment.dismiss();
                           Toast.makeText(IndividualQuizActivity.this, "Failed to save graded quiz to DB", Toast.LENGTH_LONG).show();

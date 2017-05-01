@@ -33,6 +33,7 @@ public class Quiz implements Serializable, Comparable<Quiz> {
     private int timedLength;
     private String associatedSessionID;
     private boolean isFinished;
+    private Date startTime;
 
   private String userID; //used to idenfity same quiz for different users
 
@@ -195,6 +196,14 @@ public class Quiz implements Serializable, Comparable<Quiz> {
 
     public void setFinished(boolean finished) {
         isFinished = finished;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     //Convenience Methods

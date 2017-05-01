@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Jeff on 3/23/17.
@@ -93,6 +94,9 @@ public class QuizNetworkingService {
                     String sessionID = response.getString("sessionId");
                     Quiz downloadedQuiz = new Quiz(response.getJSONObject("quiz"));
                     downloadedQuiz.setAssociatedSessionID(sessionID);
+
+                    //TODO: quiz start time is set upon download; may not be the customer's wish
+                    downloadedQuiz.setStartTime(new Date());
                   callback.onQuizDownloadSuccess(sessionID, downloadedQuiz);
 
                 } catch (JSONException e) {

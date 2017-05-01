@@ -37,7 +37,7 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizAnswer;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
-import com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.StatisticsActivity;
+import com.example.jeff.viewpagerdelete.QuizStatistics.Controller.StatisticsActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
@@ -132,7 +132,6 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
         groupNetworkingService = new GroupNetworkingService(this);
 
-        updateQuizProgress();
 
         //listen for group status updates
         bManager = LocalBroadcastManager.getInstance(this);
@@ -140,6 +139,12 @@ public class GroupQuizActivity extends AppCompatActivity implements
         intentFilter.addAction(RECEIVE_GROUP_PROGRESS);
         bManager.registerReceiver(bReceiver, intentFilter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateQuizProgress();
     }
 
     @Override

@@ -129,7 +129,7 @@ public class GroupWaitingAreaFragment extends Fragment {
             startGroupQuizButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+//                    GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
                     groupQuizStartListener.onGroupQuizStarted();
                 }
             });
@@ -201,7 +201,7 @@ public class GroupWaitingAreaFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+//        GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
         groupQuizStartListener = null;
     }
 

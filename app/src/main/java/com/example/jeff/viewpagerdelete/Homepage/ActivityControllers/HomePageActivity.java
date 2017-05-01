@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupQuizActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.Group;
@@ -33,24 +32,23 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworkingService.UserQuizzesDownloadCallback;
 import com.example.jeff.viewpagerdelete.Miscellaneous.LoadingFragment;
-import com.example.jeff.viewpagerdelete.QuizStatistics.ActivityControllers.StatisticsActivity;
+import com.example.jeff.viewpagerdelete.QuizStatistics.Controller.StatisticsActivity;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.ActivityControllers.LoginActivity;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods;
 import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
-import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Homepage.View.TokenCodeFragment;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import java.util.ArrayList;
 
 public class HomePageActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener,
-    CourseListFragment.CourseListListener,
-    TokenCodeFragment.TokenCodeEntryListener,
-        QuizLoadTask.QuizLoadTaskListener{
+        implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener,
+        CourseListFragment.CourseListListener,
+        TokenCodeFragment.TokenCodeEntryListener,
+        QuizLoadTask.QuizLoadTaskListener {
 
-//    public static final String EXTRA_USER = "EXTRA_USER";
+    //    public static final String EXTRA_USER = "EXTRA_USER";
     public static final String FRAG_TAG_QUIZ_LIST = "FRAG_TAG_QUIZ_LIST";
     public static final String FRAG_TAG_COURSE_LIST = "FRAG_TAG_COURSE_LIST";
 
@@ -69,7 +67,7 @@ public class HomePageActivity extends AppCompatActivity
     private String sessionID;
 
 
-  private QuizNetworkingService quizNetworkingService;
+    private QuizNetworkingService quizNetworkingService;
     private GroupNetworkingService groupNetworkingService;
 
     private UserDbHelper userDbHelper;
@@ -78,7 +76,7 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_homepage);
+        setContentView(R.layout.activity_homepage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -91,12 +89,12 @@ public class HomePageActivity extends AppCompatActivity
         quizDbHelper = new IndividualQuizDbHelper(this.getApplicationContext());
         quizDB = quizDbHelper.getWritableDatabase();
 
-      quizNetworkingService = new QuizNetworkingService(this);
+        quizNetworkingService = new QuizNetworkingService(this);
         groupNetworkingService = new GroupNetworkingService(this);
 
 
         courseListFragment = (CourseListFragment) manager.findFragmentByTag(FRAG_TAG_COURSE_LIST);
-        if(courseListFragment == null){
+        if (courseListFragment == null) {
             courseListFragment = new CourseListFragment();
             Bundle args = new Bundle();
             args.putSerializable(CourseListFragment.ARG_COURSES_COURSE_LIST_FRAGMENT, UserDataSource.getInstance().getUser().getEnrolledCourses());
@@ -132,7 +130,6 @@ public class HomePageActivity extends AppCompatActivity
         loadingFragment = new LoadingFragment(this, "Loading");
 
 
-
     }
 
     @Override
@@ -160,7 +157,7 @@ public class HomePageActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_courses) {
-            if(!courseListFragment.isVisible()){
+            if (!courseListFragment.isVisible()) {
                 showCoursesFragment();
             }
         } else if (id == R.id.nav_quizzes) {
@@ -181,7 +178,7 @@ public class HomePageActivity extends AppCompatActivity
     }
 
 
-    private void showQuizzesFragment(){
+    private void showQuizzesFragment() {
         manager.beginTransaction()
                 .addToBackStack(FRAG_TAG_QUIZ_LIST)
                 .replace(R.id.list_container, quizListFragment, FRAG_TAG_QUIZ_LIST)
@@ -189,14 +186,14 @@ public class HomePageActivity extends AppCompatActivity
 
     }
 
-    private void showCoursesFragment(){
+    private void showCoursesFragment() {
         manager.beginTransaction()
                 .replace(R.id.list_container, courseListFragment, FRAG_TAG_COURSE_LIST)
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .commit();
     }
 
-    private void onQuizFound(Quiz quiz, Course course){
+    private void onQuizFound(Quiz quiz, Course course) {
         Intent i = new Intent(this, IndividualQuizActivity.class);
         Log.d("QUIZ", quiz.toJSON());
         i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, quiz);
@@ -222,52 +219,48 @@ public class HomePageActivity extends AppCompatActivity
     }
 
 
-
-
     @Override
     public void courseItemClicked(Course course) {
         courseNameTextView.setText(course.getName());
         quizNetworkingService.downloadUserQuizzes(UserDataSource.getInstance().getUser().getUserID(),
-          new UserQuizzesDownloadCallback() {
-            @Override
-            public void onUserQuizzesDownloadSuccess(ArrayList<Course> courses) {
-              HomePageActivity.this.courses = courses;
+                new UserQuizzesDownloadCallback() {
+                    @Override
+                    public void onUserQuizzesDownloadSuccess(ArrayList<Course> courses) {
+                        HomePageActivity.this.courses = courses;
 
-              quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
+                        quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
 
-              Bundle args = new Bundle();
-              args.putSerializable(QuizListFragment.ARG_COURSES_QUIZ_LIST_FRAGMENT,
-                  HomePageActivity.this.courses);
 
-              if (quizListFragment == null) {
-                quizListFragment = new QuizListFragment();
+                        if (quizListFragment == null) {
+                            Bundle args = new Bundle();
+                            args.putSerializable(QuizListFragment.ARG_COURSES_QUIZ_LIST_FRAGMENT,
+                                    HomePageActivity.this.courses);
+                            quizListFragment = new QuizListFragment();
+                            quizListFragment.setArguments(args);
 
-              }
+                        }
 
-              quizListFragment.setArguments(args);
+                        showQuizzesFragment();
+                    }
 
-              showQuizzesFragment();
-            }
-
-            @Override
-            public void onUserQuizzesDownloadFailure(VolleyError error) {
-              Toast.makeText(HomePageActivity.this, "Failed to load quizzes!", Toast.LENGTH_LONG)
-                  .show();
-            }
-          });
+                    @Override
+                    public void onUserQuizzesDownloadFailure(VolleyError error) {
+                        Toast.makeText(HomePageActivity.this, "Failed to load quizzes!", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
     }
 
     @Override
-    public void quizDownloaded( Quiz quiz, Course course) {
+    public void quizDownloaded(Quiz quiz, Course course) {
 
-      quiz.setUserID(UserDataSource.getInstance().getUser().getUserID());
+        quiz.setUserID(UserDataSource.getInstance().getUser().getUserID());
 
         boolean writeSuccess = IndividualQuizPersistence.sharedInstance(this).writeIndividualQuizToDatabase(quiz);
 
-        if(writeSuccess){
+        if (writeSuccess) {
             onQuizFound(quiz, course);
-        }
-        else{
+        } else {
             Toast.makeText(this, "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
         }
     }
@@ -277,7 +270,7 @@ public class HomePageActivity extends AppCompatActivity
 
     @Override
     public void onQuizLoadResponse(final Course course, final Quiz quiz) {
-        if(quiz != null){
+        if (quiz != null) {
             //Loaded Quiz From SQLite Successfully
 
             if (quiz.isFinished()) {
@@ -346,8 +339,7 @@ public class HomePageActivity extends AppCompatActivity
                 startActivity(i);
                 loadingFragment.dismiss();
             }
-        }
-        else{
+        } else {
             //the quiz isn't in the SQLite database, so it hasn't been started; request token code
             TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
 

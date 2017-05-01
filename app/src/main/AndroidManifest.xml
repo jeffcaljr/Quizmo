@@ -63,7 +63,7 @@
 
     <activity
       android:label="@string/title_activity_statistics"
-      android:name=".QuizStatistics.ActivityControllers.StatisticsActivity"
+        android:name=".QuizStatistics.Controller.StatisticsActivity"
       android:theme="@style/AppTheme.NoActionBar"
       android:screenOrientation="portrait"
       android:configChanges="orientation|keyboardHidden"></activity>

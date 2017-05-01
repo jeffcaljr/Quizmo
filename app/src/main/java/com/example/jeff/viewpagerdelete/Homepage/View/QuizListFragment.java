@@ -1,14 +1,17 @@
 package com.example.jeff.viewpagerdelete.Homepage.View;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -31,8 +34,11 @@ import com.example.jeff.viewpagerdelete.IndividualQuiz.Networking.QuizNetworking
 import com.example.jeff.viewpagerdelete.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jeff on 4/4/17.
@@ -283,59 +289,58 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
 
           quizNameTextView.setText(q.getDescription());
 
-//            Calendar availableDate = new GregorianCalendar();
-//            availableDate.setTime(new Date());
-//
-//            if(this.getAdapterPosition() == 0){
-//
-//                //TODO: should be set to the quizzes available date, not todays date
-//
-//                availableDate.add(Calendar.MINUTE, q.getTimedLength());
-//
-//            }
-//            else if(this.getAdapterPosition() == 1){
-//                //make quiz expire in 5 mintes and 20 seconds
-//                itemView.setEnabled(false);
-//                availableDate.add(Calendar.MINUTE, 5);
-//                availableDate.add(Calendar.SECOND, 20);
-//            }
-//            else{
-//                availableDate.setTime(q.getAvailableDate());
-//            }
-//
-//            long expiryTime = availableDate.getTimeInMillis() - new Date().getTime();
-//
-//
-//
-//            new CountDownTimer(expiryTime, 1000){
-//                @Override
-//                public void onTick(long millisecondsUntilFinished) {
-//                    timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
-//                            TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished)));
-//                    timeRemainingTextView.setText(timeRemaining);
-//
-//                    if(millisecondsUntilFinished < 5 * 60 * 1000){
-//
-//                        if(!tempDeleteThis){
-//                            itemView.startAnimation(shake);
-//                          ((CardView) itemView).setCardBackgroundColor(colorWarningYellow);
-//                            tempDeleteThis = true;
-//                        }
-//
-//
-//                    }
-//                }
 
-//                @Override
-//                public void onFinish() {
+//            CountDownTimer quizTimer;
+
+//            if(q.getStartTime() != null){
+//
+//                Calendar expiryDate = new GregorianCalendar();
+//                expiryDate.setTime(q.getStartTime());
+//                expiryDate.add(Calendar.MINUTE, q.getTimedLength());
+//                final int timeBeforeExpiry = (int) (expiryDate.getTimeInMillis() - System.currentTimeMillis());
+//
+//                if(timeBeforeExpiry < 1000){
 //                    itemView.clearAnimation();
 //                    timeRemainingTextView.setText("Expired!");
-//                  ((CardView) itemView).setCardBackgroundColor(Color.WHITE);
+//                    ((CardView) itemView).setCardBackgroundColor(Color.WHITE);
 //                    quizNameTextView.setTextColor(colorPrimaryBright);
 //                    timeRemainingTextView.setTextColor(Color.WHITE);
 //                    itemView.setEnabled(false);
 //                }
-//            }.start();
+//                else{
+//
+//                    quizTimer = new CountDownTimer(timeBeforeExpiry, 1000){
+//                        @Override
+//                        public void onTick(long millisecondsUntilFinished) {
+//                            timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished),
+//                                    TimeUnit.MILLISECONDS.toSeconds(millisecondsUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisecondsUntilFinished)));
+//                            timeRemainingTextView.setText(timeRemaining);
+//
+////                    if(millisecondsUntilFinished < 5 * 60 * 1000){
+////
+////                        if(!tempDeleteThis){
+////                            itemView.startAnimation(shake);
+////                          ((CardView) itemView).setCardBackgroundColor(colorWarningYellow);
+////                            tempDeleteThis = true;
+////                        }
+////
+////
+////                    }
+//                        }
+//
+//                        @Override
+//                        public void onFinish() {
+//                            itemView.clearAnimation();
+//                            timeRemainingTextView.setText("Expired!");
+//                            ((CardView) itemView).setCardBackgroundColor(Color.WHITE);
+//                            quizNameTextView.setTextColor(colorPrimaryBright);
+//                            timeRemainingTextView.setTextColor(Color.WHITE);
+//                            itemView.setEnabled(false);
+//                        }
+//                    }.start();
+//                }
+//
+//            }
         }
 
         @Override

@@ -478,6 +478,9 @@ public class GroupQuizQuestionFragment extends Fragment {
                     }
                 } else {
                     //this answer has not been attempted
+                    answerMask.setVisibility(View.INVISIBLE);
+                    mResultLabel.setVisibility(View.INVISIBLE);
+                    mSubmitAnswerButton.setVisibility(View.VISIBLE);
                     Log.d("", "");
                 }
 
