@@ -26,8 +26,8 @@ import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
-import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
-import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.OnUserDownloadedCallback;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.OnUserDownloadedCallback;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -238,7 +238,7 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
     UserNetworkingService userNetworkingService = new UserNetworkingService(getContext());
 
     userNetworkingService.downloadUser(UserDataSource.getInstance().getUser().getUserID(),
-        new UserFetcherCallback() {
+            new OnUserDownloadedCallback() {
           @Override
           public void userDownloadSuccess(User user) {
             UserDataSource.getInstance().setUser(user);

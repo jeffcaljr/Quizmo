@@ -15,17 +15,27 @@ import com.example.jeff.viewpagerdelete.Startup.Database.UserDbHelper;
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
 import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
-import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.UserFetcherCallback;
+import com.example.jeff.viewpagerdelete.Startup.Networking.UserNetworkingService.OnUserDownloadedCallback;
 
 import static com.example.jeff.viewpagerdelete.Startup.Database.UserDBMethods.PushUser;
 
+/**
+ * Displays splash screen to the user, while application checks to see if there is a currently "authenticated user"
+ * If there is a currently authenticated user, the user's data is pulled from the API (refreshed), and the user is taken to homescreen
+ * If there is not a currently authenticated user, user is taken to the login screen
+ */
+
 public class Splash extends AppCompatActivity {
 
-  private static final int SPLASH_MINIMUM_DISPLAY_LENGTH = 2000;
+    /**
+     * Splash screen is shown for a minimum amount of time (delayed), to prevent rapid flicker on faster devices
+     */
+    private static final int SPLASH_MINIMUM_DISPLAY_LENGTH = 2000;
+
     private User user;
     private UserDbHelper dbHelper;
     private SQLiteDatabase db;
-  private UserNetworkingService userNetworkingService;
+    private UserNetworkingService userNetworkingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,52 +44,62 @@ public class Splash extends AppCompatActivity {
 
         dbHelper = new UserDbHelper(this);
         db = dbHelper.getWritableDatabase();
-      userNetworkingService = new UserNetworkingService(this);
+        userNetworkingService = new UserNetworkingService(this);
 
     }
 
+    /**
+     * Check for authenticated user once the splash screen has appeared on screen
+     */
     @Override
     protected void onResume() {
         super.onResume();
+
+        //Display splash screen and animation for specified time, before beginning authentication check
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 //check if user is saved locally (this means the user is signed in)
                 user = UserDBMethods.PullUserInfo(db);
 
-                //if the user is signed in, fetch their current data
+                //if the user is signed in, fetch their current data from the API
                 if (user != null) {
-                  userNetworkingService.downloadUser(user.getUserID(), new UserFetcherCallback() {
-                    @Override
-                    public void userDownloadSuccess(User u) {
+                    userNetworkingService.downloadUser(user.getUserID(), new OnUserDownloadedCallback() {
+                        @Override
+                        public void userDownloadSuccess(User u) {
 
-                      user = u;
+                            user = u;
 
-                      //store user info for app-wide use
-                      UserDataSource.getInstance().setUser(user);
+                            /**
+                             * Save the user object in the UserDataSource singleton, for use throughout application
+                             */
+                            UserDataSource.getInstance().setUser(user);
 
-                      //save user to database (Sign them in)
-                      PushUser(user, db);
+                            /**
+                             * save user to database (Sign them in)
+                             */
+                            PushUser(user, db);
 
-                      //Go to home screen
-                      Intent i = new Intent(Splash.this, HomePageActivity.class);
-                      startActivity(i);
-                      finish();
+                            //Go to home screen
+                            Intent i = new Intent(Splash.this, HomePageActivity.class);
+                            startActivity(i);
+                            finish();
 
-                    }
+                        }
 
-                    @Override
-                    public void userDownloadFailure(VolleyError error) {
-                      Toast.makeText(Splash.this, "Network error fetching user info",
-                          Toast.LENGTH_LONG).show();
+                        @Override
+                        public void userDownloadFailure(VolleyError error) {
+//                            Toast.makeText(Splash.this, "Network error fetching user info",
+//                                    Toast.LENGTH_LONG).show();
 
-                      //If network error encountered for user "signed in", sign them out and go to login
-                      UserDBMethods.ClearUserDB(db);
-                      Intent i = new Intent(Splash.this, LoginActivity.class);
-                      startActivity(i);
-                      finish();
-                    }
-                  });
+                            //If network error encountered for user currently "signed in", sign them out and go to login
+                            UserDBMethods.ClearUserDB(db);
+                            Intent i = new Intent(Splash.this, LoginActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
 
                 } else {
                     //no user saved in database; go to login

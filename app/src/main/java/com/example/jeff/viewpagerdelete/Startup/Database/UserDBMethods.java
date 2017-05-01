@@ -11,8 +11,24 @@ import com.example.jeff.viewpagerdelete.Startup.Model.User;
  * Created by jamy on 3/29/17.
  */
 
+/**
+ * SQLite database methods for interacting with User database
+ * Used as a mock authentication system
+ * Logged-in users have their userID saved locally, and skip login as long as it is saved
+ * Upon logout, the userID is removed from local storage, causing the user to have to log in again
+ */
+
 public class UserDBMethods {
 
+
+    /**
+     * Read's User information from local storage
+     * Simulates retrieving auth token for currently authenticated user
+     * Assumes that there will only be one user saved to this database at a time
+     *
+     * @param db Readable database used to retrieve authenticated user info
+     * @return
+     */
     public static User PullUserInfo(SQLiteDatabase db){
         User new_user = new User();
 
@@ -31,35 +47,28 @@ public class UserDBMethods {
                 null
         );
 
-//        try {
-//            Cursor cursor = db.rawQuery("SELECT * FROM " + UserSchema.Table.NAME, null);
             if (cursor.moveToFirst()){
                 new_user.setUserID(cursor.getString(cursor.getColumnIndex(UserSchema.Cols.USER_ID)));
-//                new_user.setFirstName(cursor.getString(cursor.getColumnIndex(UserSchema.Cols.F_NAME)));
-//                new_user.setLastName(cursor.getString(cursor.getColumnIndex(UserSchema.Cols.L_NAME)));
             }
             else{
                 return null;
             }
-//        }catch (Exception e){
-//            Log.d("SQL", "PullUserInfo: ");
-//            return null;
-//        }
-
-//        if (new_user.get_id().equals("")) return null;
 
         return new_user;
     }
 
+    /**
+     * Saves User's name to local storage
+     * Serves as mock authentication system for remembering logged-in users
+     * @param usr User object representing current user
+     * @param db SQLite writable database used to store user info
+     */
     public static void PushUser(User usr, SQLiteDatabase db) {
         ClearUserDB(db);
         ContentValues values = getContentValues(usr);
-//        values.put(UserSchema.Cols._ID, usr.get_id());
-//        values.put(UserSchema.Cols.USER_ID, usr.getUserID());
-//        values.put(UserSchema.Cols.F_NAME, usr.getFirstName());
-//        values.put(UserSchema.Cols.L_NAME, usr.getLastName());
         long result = db.insert(UserSchema.Table.NAME, null, values);
     }
+
 
 //    public static int UpdateUser(User usr, SQLiteDatabase db){
 //        ContentValues values = getContentValues(usr);
@@ -75,10 +84,22 @@ public class UserDBMethods {
 //        );
 //    }
 
+
+    /**
+     * Removes user from database
+     * Simulates user logging out, thus requiring sign-in the next time the app is used
+     * @param db SQLite writable database used to remove user info
+     */
     public static void ClearUserDB(SQLiteDatabase db){
         db.delete(UserSchema.Table.NAME, null, null);
     }
 
+
+    /**
+     * Retrieves values from a User object, to be used for SQLite database access
+     * @param usr User object from which to retrieve values
+     * @return ContentValues object containing needed user properties for working with SQLite database
+     */
     private static ContentValues getContentValues(User usr){
         ContentValues values = new ContentValues();
         values.put(UserSchema.Cols.USER_ID, usr.getUserID());

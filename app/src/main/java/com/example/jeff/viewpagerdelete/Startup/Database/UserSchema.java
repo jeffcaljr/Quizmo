@@ -6,6 +6,13 @@ import android.provider.BaseColumns;
  * Created by jamy on 3/22/17.
  */
 
+/**
+ * Holds the SQLite information for storing user
+ * Used as a mock authentication system
+ * Logged-in users have their userID saved locally, and skip login as long as it is saved
+ * Upon logout, the userID is removed from local storage, causing the user to have to log in again
+ */
+
 public class UserSchema {
     public static final String DATABASE_NAME = "user.db";
     public static final class Table{
@@ -13,9 +20,7 @@ public class UserSchema {
     }
     public static final class Cols implements BaseColumns{
         public static final String USER_ID = "userID";
-//        public static final String _ID = "user_id";
-//        public static final String F_NAME = "first_name";
-//        public static final String L_NAME = "last_name";
+
     }
 
 }

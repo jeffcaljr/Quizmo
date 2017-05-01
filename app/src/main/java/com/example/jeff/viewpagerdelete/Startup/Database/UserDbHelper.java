@@ -13,7 +13,15 @@ import com.example.jeff.viewpagerdelete.Startup.Model.User;
  * Created by jamy on 3/22/17.
  */
 
+/**
+ * Helper class for creating and deleting SQLite database for storing User
+ * Used as a mock authentication system
+ * Logged-in users have their userID saved locally, and skip login as long as it is saved
+ * Upon logout, the userID is removed from local storage, causing the user to have to log in again
+ */
+
 public class UserDbHelper extends SQLiteOpenHelper {
+
     private static final int VERSION = 1;
 
     public UserDbHelper(Context context) {
@@ -23,12 +31,11 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String createTable = "CREATE TABLE " + UserSchema.Table.NAME + " (" +
                 UserSchema.Cols._ID + " INTEGER PRIMARY KEY," +
                 UserSchema.Cols.USER_ID + " TEXT)";
-//                UserSchema.Cols.USER_ID + " TEXT, " +
-//                UserSchema.Cols.F_NAME + " TEXT, " +
-//                UserSchema.Cols.L_NAME + " TEXT)";
+
         try{
             db.execSQL(createTable);
         }catch(Exception e){
