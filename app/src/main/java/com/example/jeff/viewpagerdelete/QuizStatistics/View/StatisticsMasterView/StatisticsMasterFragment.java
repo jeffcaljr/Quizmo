@@ -99,11 +99,11 @@ public class StatisticsMasterFragment extends Fragment {
         float individualPercentageGrade = mGradedIndividualQuiz.getTotalPointsScored() / totalPointsPossible;
         float groupPercentageGrade = mGradedGroupQuiz.getTotalPointsScored() / totalPointsPossible;
 
-        BarModel individualBarModel = new BarModel(UserDataSource.getInstance().getUser().getUserID(), individualPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorPrimaryDark));
-        BarModel groupBarModel = new BarModel(mGradedGroupQuiz.getGroup().getName(), groupPercentageGrade, ContextCompat.getColor(getActivity(), R.color.jccolorAccent));
+        BarModel individualBarModel = new BarModel(UserDataSource.getInstance().getUser().getUserID(), mGradedIndividualQuiz.getTotalPointsScored(), ContextCompat.getColor(getActivity(), R.color.jccolorPrimaryDark));
+        BarModel groupBarModel = new BarModel(mGradedGroupQuiz.getGroup().getName(), mGradedGroupQuiz.getTotalPointsScored(), ContextCompat.getColor(getActivity(), R.color.jccolorAccent));
 
 
-        mBarChart.setShowValues(false);
+//        mBarChart.setShowValues(false);
 
         mBarChart.addBar(individualBarModel);
         mBarChart.addBar(groupBarModel);
