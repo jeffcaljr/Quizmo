@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import android.widget.Toast;
+
 import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
@@ -46,18 +47,18 @@ import java.util.concurrent.TimeUnit;
 
 public class QuizListFragment extends Fragment implements OnRefreshListener {
 
-    public static final String ARG_COURSES_QUIZ_LIST_FRAGMENT = "ARG_COURSES_QUIZ_LIST_FRAGMENT";
+    public static final String ARG_COURSE_QUIZ_LIST_FRAGMENT = "ARG_COURSE_QUIZ_LIST_FRAGMENT";
 
-    private ArrayList<Course> courses;
-  private ArrayList<Course> coursesCopy;
+    private Course course;
+    private ArrayList<Course> coursesCopy;
 
-  private QuizNetworkingService quizNetworkingService;
+    private QuizNetworkingService quizNetworkingService;
 
     private QuizListListener mListener;
 
-  private SwipeRefreshLayout swipeRefreshLayout;
-  private SearchView searchView;
-  private RelativeLayout quizzesEmptyView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    //  private SearchView searchView;
+    private RelativeLayout quizzesEmptyView;
     private RecyclerView mRecyclerView;
     private QuizAdapter mAdapter;
 
@@ -68,113 +69,93 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
     Typeface boldFace;
     Typeface boldItalicFace;
 
-  private int colorPrimaryBright;
-  private int colorWarningYellow;
+    private int colorPrimaryBright;
+    private int colorWarningYellow;
 
-    boolean tempDeleteThis = false; //only used to prevent countdowntimer from constantly re-coloring views
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-      View view = inflater.inflate(R.layout.fragment_quizzes_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_quizzes_list, container, false);
 
         Bundle args = getArguments();
 
-        if(args != null && args.containsKey(ARG_COURSES_QUIZ_LIST_FRAGMENT)){
-            courses = (ArrayList<Course>) args.get(ARG_COURSES_QUIZ_LIST_FRAGMENT);
+        if (args != null && args.containsKey(ARG_COURSE_QUIZ_LIST_FRAGMENT)) {
+            course = (Course) args.get(ARG_COURSE_QUIZ_LIST_FRAGMENT);
 
-          //Does this work?
-          //try to sort the quizzes by available date (most recent first)
-          Collections.sort(courses, new Comparator<Course>() {
-            @Override
-            public int compare(Course course, Course t1) {
-              return (t1.getQuiz().getAvailableDate()
-                  .compareTo(course.getQuiz().getAvailableDate()));
-            }
-          });
+            //Does this work?
+            //try to sort the quizzes by available date (most recent first)
+//          Collections.sort(courses, new Comparator<Course>() {
+//            @Override
+//            public int compare(Course course, Course t1) {
+//              return (t1.getQuiz().getAvailableDate()
+//                  .compareTo(course.getQuiz().getAvailableDate()));
+//            }
+//          });
 
 
-          coursesCopy = new ArrayList<>();
+            coursesCopy = new ArrayList<>();
         }
 
-        regularFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoRegular.ttf");
-        boldFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBold.ttf");
-        boldItalicFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/robotoBoldItalic.ttf");
+        regularFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/robotoRegular.ttf");
+        boldFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/robotoBold.ttf");
+        boldItalicFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/robotoBoldItalic.ttf");
 
-      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.quiz_list_swipe_refresher);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.quiz_list_swipe_refresher);
 
-      swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
-      quizzesEmptyView = (RelativeLayout) view.findViewById(R.id.quizzes_list_empty_tv);
-      searchView = (SearchView) view.findViewById(R.id.quiz_search_view);
-
-      searchView.setOnQueryTextListener(new OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-          mAdapter.filter(query);
-          return true;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-          mAdapter.filter(newText);
-          return true;
-        }
-      });
+        quizzesEmptyView = (RelativeLayout) view.findViewById(R.id.quizzes_list_empty_tv);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.quizzes_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new QuizAdapter();
-        mRecyclerView.setAdapter(mAdapter);
 
-        try{
+
+        try {
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.getSupportActionBar().setTitle("Quizzes");
-        }
-        catch (ClassCastException e){
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
 
-      AdapterDataObserver emptyObserver = new AdapterDataObserver() {
+        AdapterDataObserver emptyObserver = new AdapterDataObserver() {
 
 
-        @Override
-        public void onChanged() {
-          Adapter<?> adapter = mAdapter;
-          if (adapter != null && quizzesEmptyView != null) {
-            if (adapter.getItemCount() == 0) {
-              quizzesEmptyView.setVisibility(View.VISIBLE);
-            } else {
-              quizzesEmptyView.setVisibility(View.GONE);
+            @Override
+            public void onChanged() {
+                Adapter<?> adapter = mAdapter;
+                if (adapter != null && quizzesEmptyView != null) {
+                    if (adapter.getItemCount() == 0) {
+                        quizzesEmptyView.setVisibility(View.VISIBLE);
+                    } else {
+                        quizzesEmptyView.setVisibility(View.GONE);
+                    }
+                }
+
             }
-          }
+        };
 
-        }
-      };
-
-      mAdapter.registerAdapterDataObserver(emptyObserver);
+        mAdapter.registerAdapterDataObserver(emptyObserver);
+        mRecyclerView.setAdapter(mAdapter);
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shakeanim);
-      colorPrimaryBright = ContextCompat.getColor(getContext(), R.color.jccolorPrimaryBright);
-      colorWarningYellow = ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow);
-
-
+        colorPrimaryBright = ContextCompat.getColor(getContext(), R.color.jccolorPrimaryBright);
+        colorWarningYellow = ContextCompat.getColor(getContext(), R.color.jccolorWarningYellow);
 
 
         return view;
     }
 
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try{
+        try {
             mListener = (QuizListListener) context;
-        }
-        catch(ClassCastException e){
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
     }
@@ -190,31 +171,31 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
         super.onSaveInstanceState(outState);
     }
 
-    public interface QuizListListener{
+    public interface QuizListListener {
         void itemClicked(Course course);
     }
 
-  //MARK: OnRefreshListener Methods
+    //MARK: OnRefreshListener Methods
 
 
-  @Override
-  public void onRefresh() {
+    @Override
+    public void onRefresh() {
 
-    Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_LONG).show();
 
-    swipeRefreshLayout.setRefreshing(false);
-  }
+        swipeRefreshLayout.setRefreshing(false);
+    }
 
-  private class QuizAdapter extends RecyclerView.Adapter<QuizHolder> {
+    private class QuizAdapter extends RecyclerView.Adapter<QuizHolder> {
 
-      public QuizAdapter() {
-        coursesCopy.addAll(courses);
-      }
+//      public QuizAdapter() {
+//        coursesCopy.addAll(courses);
+//      }
 
-      @Override
+        @Override
         public QuizHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-          View view = inflater.inflate(R.layout.list_item_quiz, parent, false);
+            View view = inflater.inflate(R.layout.list_item_quiz, parent, false);
 
             return new QuizHolder(view);
         }
@@ -222,9 +203,8 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
 
         @Override
         public void onBindViewHolder(QuizHolder holder, int position) {
-            //TODO: The following line shows the same quiz for every itemview in the recycler view
-            //this is only for test purposes
-            holder.bindQuiz(courses.get(0));
+            //there should only be one quiz per course;
+            holder.bindQuiz(course.getQuiz());
 //            holder.bindQuiz(courses.get(position));
 
         }
@@ -233,48 +213,50 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
         public int getItemCount() {
 
             //TODO: The following line is for test purposes
-                //because there is currently one quiz in the network, and I want to show a list, I
-                //am showing the same quiz multiple times
-          return courses.size();
+            //because there is currently one quiz in the network, and I want to show a list, I
+            //am showing the same quiz multiple times
+
+            //there should only be one quiz per course;
+            return (course.getQuiz() != null ? 1 : 0);
 
 
         }
 
-      public void filter(String text) {
-        courses.clear();
-        if (text.isEmpty()) {
-          courses.addAll(coursesCopy);
-        } else {
-          text = text.toLowerCase().trim();
-          for (Course course : coursesCopy) {
-            String quizName = course.getQuiz().getDescription().toLowerCase().trim();
-            if (quizName.contains(text)) {
-              courses.add(course);
-            }
-          }
-        }
-        notifyDataSetChanged();
-      }
+//      public void filter(String text) {
+//        courses.clear();
+//        if (text.isEmpty()) {
+//          courses.addAll(coursesCopy);
+//        } else {
+//          text = text.toLowerCase().trim();
+//          for (Course course : coursesCopy) {
+//            String quizName = course.getQuiz().getDescription().toLowerCase().trim();
+//            if (quizName.contains(text)) {
+//              courses.add(course);
+//            }
+//          }
+//        }
+//        notifyDataSetChanged();
+//      }
 
 
     }
 
 
-    private class QuizHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class QuizHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView quizNameTextView;
-        private TextView timeRemainingTextView;
+        //        private TextView timeRemainingTextView;
         String timeRemaining;
 
 
         public QuizHolder(final View itemView) {
             super(itemView);
 
-            timeRemainingTextView = (TextView) itemView.findViewById(R.id.quiz_time_remaining);
+//            timeRemainingTextView = (TextView) itemView.findViewById(R.id.quiz_time_remaining);
             quizNameTextView = (TextView) itemView.findViewById(R.id.quiz_name_textview);
 
-            quizNameTextView.setTypeface(regularFace);
-            timeRemainingTextView.setTypeface(boldItalicFace);
+//            quizNameTextView.setTypeface(regularFace);
+//            timeRemainingTextView.setTypeface(boldItalicFace);
 
             itemView.setOnClickListener(this);
 
@@ -282,12 +264,11 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
         }
 
 
+        public void bindQuiz(Quiz quiz) {
 
-        public void bindQuiz(Course course){
+            Quiz q = course.getQuiz();
 
-          Quiz q = course.getQuiz();
-
-          quizNameTextView.setText(q.getDescription());
+            quizNameTextView.setText(q.getDescription());
 
 
 //            CountDownTimer quizTimer;
@@ -346,7 +327,7 @@ public class QuizListFragment extends Fragment implements OnRefreshListener {
         @Override
         public void onClick(View view) {
 
-          mListener.itemClicked(courses.get(this.getAdapterPosition()));
+            mListener.itemClicked(course);
         }
     }
 

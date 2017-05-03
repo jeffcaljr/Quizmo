@@ -220,7 +220,7 @@ public class HomePageActivity extends AppCompatActivity
 
 
     @Override
-    public void courseItemClicked(Course course) {
+    public void courseItemClicked(final Course course) {
         courseNameTextView.setText(course.getName());
         quizNetworkingService.downloadUserQuizzes(UserDataSource.getInstance().getUser().getUserID(),
                 new UserQuizzesDownloadCallback() {
@@ -233,8 +233,18 @@ public class HomePageActivity extends AppCompatActivity
 
                         if (quizListFragment == null) {
                             Bundle args = new Bundle();
-                            args.putSerializable(QuizListFragment.ARG_COURSES_QUIZ_LIST_FRAGMENT,
-                                    HomePageActivity.this.courses);
+
+                            //find the quiz associated with the course you clicked
+                            Course selectedCourse = null;
+
+                            for (Course returnedCourse : courses) {
+                                if (course.getCourseID().equals(returnedCourse.getCourseID())) {
+                                    selectedCourse = returnedCourse;
+                                    break;
+                                }
+                            }
+                            args.putSerializable(QuizListFragment.ARG_COURSE_QUIZ_LIST_FRAGMENT,
+                                    selectedCourse);
                             quizListFragment = new QuizListFragment();
                             quizListFragment.setArguments(args);
 

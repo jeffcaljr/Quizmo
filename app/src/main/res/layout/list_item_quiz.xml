@@ -8,6 +8,7 @@
   android:layout_marginLeft="4dp"
   android:layout_marginRight="4dp"
   android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
   app:cardElevation="8dp"
   app:cardBackgroundColor="@color/colorWhite">
 
@@ -25,22 +26,22 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-      android:layout_below="@+id/quiz_time_remaining"
+        android:layout_centerInParent="true"
 
       android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-        <TextView
-            android:id="@+id/quiz_time_remaining"
-            android:text="20:00"
-            android:textColor="@color/jccolorPrimaryDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-          android:layout_centerHorizontal="true"
-            android:layout_marginLeft="8dp"
-          android:layout_marginBottom="12dp"
-            android:textStyle="bold"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+        <!--<TextView-->
+        <!--android:id="@+id/quiz_time_remaining"-->
+        <!--android:text="20:00"-->
+        <!--android:textColor="@color/jccolorPrimaryDark"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginBottom="12dp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />-->
 
     </RelativeLayout>
 
