@@ -13,7 +13,7 @@
       <shape
         android:shape="rectangle"
         android:thickness="4dp">
-        <solid android:color="@color/jccolorGreen"></solid>
+        <solid android:color="@color/jccolorProgressGreen"></solid>
       </shape>
     </clip>
   </item>

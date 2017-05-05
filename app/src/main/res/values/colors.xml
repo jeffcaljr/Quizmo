@@ -54,5 +54,6 @@
     <color name="jccolorInProgressYellow">#FFEB3B</color>
     <color name="jccolorAmber">#FFA000</color>
     <color name="jccolorGreen">#388E3C</color>
+    <color name="jccolorProgressGreen">#00C853</color>
     <color name="jccolorPurple">#D32F2F</color>
 </resources>
