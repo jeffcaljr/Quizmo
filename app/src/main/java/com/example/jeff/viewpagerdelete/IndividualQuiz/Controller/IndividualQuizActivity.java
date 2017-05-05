@@ -150,38 +150,39 @@ public class IndividualQuizActivity extends AppCompatActivity
   protected void onResume() {
     super.onResume();
 
-      Calendar expiryTime = new GregorianCalendar();
-      expiryTime.setTime(quiz.getStartTime());
-      expiryTime.add(Calendar.MINUTE, quiz.getTimedLength());
+//      Calendar expiryTime = new GregorianCalendar();
+//      expiryTime.setTime(quiz.getStartTime());
+//      expiryTime.add(Calendar.MINUTE, quiz.getTimedLength());
 
-      final int timeBeforeExpiry = (int) (expiryTime.getTimeInMillis() - System.currentTimeMillis());
+      final int endTime = (int) (quiz.getEndTime().getTime() - quiz.getStartTime().getTime());
+      final int timeLeft = (int) (quiz.getEndTime().getTime() - new Date().getTime());
 
 
-      quizTimerProgressBar.setMax(timeBeforeExpiry);
-//      quizTimerProgressBar.setProgress(0);
+      quizTimerProgressBar.setMax(endTime);
+      quizTimerProgressBar.setProgress(timeLeft);
 //
 //    //TODO: If using this timer; stop it when the user submits the quiz!!!
 //
-      countDownTimer = new CountDownTimer(timeBeforeExpiry, 1000) {
+      countDownTimer = new CountDownTimer(timeLeft, 1000) {
           boolean halfwayFlag = false;
           boolean threeQuartersFlag = false;
 
           @Override
           public void onTick(long l) {
-//        quizTimerProgressBar.setProgress(quizTimerProgressBar.getMax() - (int) l);
-              ObjectAnimator animation = ObjectAnimator.ofInt(quizTimerProgressBar, "progress", timeBeforeExpiry - (int) l);
-              animation.setDuration(250); // 0.5 second
+              quizTimerProgressBar.setProgress(endTime - (int) l);
+//              ObjectAnimator animation = ObjectAnimator.ofInt(quizTimerProgressBar, "progress", timeBeforeExpiry - (int) l);
+//              animation.setDuration(250); // 0.5 second
 //          animation.setInterpolator(new DecelerateInterpolator());
-              animation.start();
+//              animation.start();
 
               if (halfwayFlag == false) {
-                  if (l < timeBeforeExpiry / 2) {
+                  if (l < endTime / 2) {
                       halfwayFlag = true;
                       quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
                   }
               } else {
                   if (threeQuartersFlag == false) {
-                      if (l < (timeBeforeExpiry / 4)) {
+                      if (l < (endTime / 4)) {
                           threeQuartersFlag = true;
                           quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
                       }

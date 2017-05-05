@@ -42,7 +42,9 @@ import com.example.jeff.viewpagerdelete.Homepage.View.TokenCodeFragment;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class HomePageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -289,6 +291,12 @@ public class HomePageActivity extends AppCompatActivity
 
         quiz.setUserID(UserDataSource.getInstance().getUser().getUserID());
         quiz.setStartTime(new Date());
+
+        Calendar endTime = new GregorianCalendar();
+        endTime.setTime(quiz.getStartTime());
+        endTime.add(Calendar.MINUTE, quiz.getTimedLength());
+
+        quiz.setEndTime(endTime.getTime());
 
         boolean writeSuccess = IndividualQuizPersistence.sharedInstance(this).writeIndividualQuizToDatabase(quiz);
 

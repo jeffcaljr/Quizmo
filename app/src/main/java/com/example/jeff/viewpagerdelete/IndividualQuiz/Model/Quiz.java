@@ -34,6 +34,7 @@ public class Quiz implements Serializable, Comparable<Quiz> {
     private String associatedSessionID;
     private boolean isFinished;
     private Date startTime;
+    private Date endTime;
 
   private String userID; //used to idenfity same quiz for different users
 
@@ -76,8 +77,7 @@ public class Quiz implements Serializable, Comparable<Quiz> {
                 this.questions = questions;
 
             }
-            else{
-
+            if (json.has("timed")) {
                 boolean isTimed = json.getBoolean("timed");
                 int timedLength = json.getInt("timedLength");
 
@@ -204,6 +204,14 @@ public class Quiz implements Serializable, Comparable<Quiz> {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     //Convenience Methods

@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-    android:background="@color/jccolorAppBackground"
-  xmlns:tools="http://schemas.android.com/tools">
-
-  <android.support.v7.widget.SearchView
-    android:id="@+id/course_search_view"
-    android:queryHint="Course ID, Name, or Instructor"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:iconifiedByDefault="true"
-      android:layout_centerHorizontal="true"
-      android:foregroundTint="@color/colorWhite"
-      android:backgroundTint="@color/colorWhite"></android.support.v7.widget.SearchView>
-
-  <android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/course_list_swipe_refresher"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/course_search_view"
-    android:layout_alignParentBottom="true">
-
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/course_list_recyclerview"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
-
-  </android.support.v4.widget.SwipeRefreshLayout>
-
-
-  <RelativeLayout
-        android:id="@+id/courses_list_empty_tv"
-    android:background="@color/colorWhite"
-        android:gravity="center"
-        android:layout_width="match_parent"
     android:layout_height="match_parent"
-      android:visibility="invisible"
-      android:layout_below="@id/course_search_view"
-    android:layout_alignParentBottom="true">
+    android:background="@color/jccolorAppBackground">
 
-    <!--<ImageView-->
-    <!--android:id="@+id/empty_list_image"-->
-    <!--android:src="@drawable/empty_list"-->
-    <!--android:scaleType="centerInside"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_above="@+id/empty_list_text"-->
-    <!--android:paddingRight="64dp"-->
-    <!--android:paddingLeft="64dp" />-->
+    <android.support.v7.widget.SearchView
+        android:id="@+id/course_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/colorWhite"
+        android:foregroundTint="@color/colorWhite"
+        android:iconifiedByDefault="true"
+        android:queryHint="Course ID, Name, or Instructor"></android.support.v7.widget.SearchView>
 
-    <TextView
-      android:id="@+id/empty_list_text"
-      android:text="No Courses Found"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-      android:textStyle="bold"
-      android:textSize="24sp"
-      android:textColor="@color/jccolorPrimary" />
-  </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/course_list_swipe_refresher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/course_search_view">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/course_list_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/courses_list_empty_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/course_search_view"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <!--<ImageView-->
+        <!--android:id="@+id/empty_list_image"-->
+        <!--android:src="@drawable/empty_list"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_above="@+id/empty_list_text"-->
+        <!--android:paddingRight="64dp"-->
+        <!--android:paddingLeft="64dp" />-->
+
+        <TextView
+            android:id="@+id/empty_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Courses Found"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textColor="@color/jccolorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </RelativeLayout>
