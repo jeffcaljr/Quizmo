@@ -61,7 +61,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
             @Override
             public void onGroupQuizProgressFailure(VolleyError error) {
-                Log.d("TAG", "eror retrieving group quiz");
+                Log.d("TAG", "error retrieving group quiz");
 
             }
         });

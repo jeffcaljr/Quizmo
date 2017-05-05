@@ -294,8 +294,7 @@ public class HomePageActivity extends AppCompatActivity
 
         Calendar endTime = new GregorianCalendar();
         endTime.setTime(quiz.getStartTime());
-//        endTime.add(Calendar.MINUTE, quiz.getTimedLength());
-        endTime.add(Calendar.MINUTE, 2);
+        endTime.add(Calendar.MINUTE, quiz.getTimedLength());
 
         quiz.setEndTime(endTime.getTime());
 
