@@ -91,6 +91,9 @@ public class IndividualQuizActivity extends AppCompatActivity
     private Drawable halfwayDoneDrawable;
     private Drawable threeQuartersDoneDrawable;
 
+    boolean halfwayFlag = false;
+    boolean threeQuartersFlag = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,14 +170,23 @@ public class IndividualQuizActivity extends AppCompatActivity
               TimeUnit.MILLISECONDS.toSeconds(timeLeft) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
       timeRemainingTextView.setText(timeRemaining);
 
+      if (timeLeft < (endTime / 4)) {
+          threeQuartersFlag = true;
+          halfwayFlag = true;
+          quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
+      } else if (timeLeft < endTime / 2) {
+          halfwayFlag = true;
+          quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
+      }
+
+
 
       quizTimerProgressBar.setMax(endTime);
       quizTimerProgressBar.setProgress(timeLeft);
 
 
       countDownTimer = new CountDownTimer(timeLeft, 1000) {
-          boolean halfwayFlag = false;
-          boolean threeQuartersFlag = false;
+
 
           @Override
           public void onTick(long l) {

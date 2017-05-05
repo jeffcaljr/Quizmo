@@ -17,6 +17,7 @@
   <TextView
       android:id="@+id/time_remaining_label"
       android:text="20:00"
+      android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignTop="@id/quiz_timer_progress_bar"
