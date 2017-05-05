@@ -1,133 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_marginLeft="@dimen/quiz_card_side_margin"
-  android:layout_marginRight="@dimen/quiz_card_side_margin"
-  android:layout_marginTop="20dp"
-  android:layout_height="wrap_content"
-  app:cardElevation="@dimen/quiz_card_elevation">
-
-
-  <RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/quiz_card_side_margin"
+    android:layout_marginRight="@dimen/quiz_card_side_margin"
+    android:layout_marginTop="20dp"
+    app:cardElevation="@dimen/quiz_card_elevation">
+
 
     <RelativeLayout
-      android:id="@+id/quiz_answer_card_header"
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-        android:padding="8dp"
-      android:background="@color/jccolorPrimary">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-      <TextView
-        android:id="@+id/quiz_answer_label"
-        android:text="A."
-        android:textSize="32sp"
-        android:textColor="@color/colorWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        style="@style/nonInteractiveText" />
+        <RelativeLayout
+            android:id="@+id/quiz_answer_card_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/jccolorPrimaryDark"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-      <TextView
-        android:id="@+id/quiz_answer_text_preview"
-        android:visibility="invisible"
-        android:text="@string/lorem"
-        android:textSize="14sp"
-        android:textColor="@color/colorWhite"
-        android:gravity="center"
-        android:maxLines="2"
-        android:padding="8dp"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/group_quiz_answer_result_icon"
-        android:layout_toRightOf="@id/quiz_answer_label"
-        style="@style/nonInteractiveText" />
+            <TextView
+                android:id="@+id/quiz_answer_label"
+                style="@style/nonInteractiveText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="A."
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
-      <ImageView
-        android:id="@+id/group_quiz_answer_result_icon"
-        android:src="@drawable/ic_correct_white"
-        android:visibility="invisible"
-        android:background="#00000000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-          android:layout_centerVertical="true"
-        android:layout_alignParentRight="true" />
+            <TextView
+                android:id="@+id/quiz_answer_text_preview"
+                style="@style/nonInteractiveText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/group_quiz_answer_result_icon"
+                android:layout_toRightOf="@id/quiz_answer_label"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="8dp"
+                android:text="@string/lorem"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/group_quiz_answer_result_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="#00000000"
+                android:src="@drawable/ic_correct_white"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+
+        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            android:id="@+id/quiz_answer_card_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/quiz_answer_card_header"
+            android:padding="16dp"
+            app:ael_expanded="true">
+
+            <TextView
+                android:id="@+id/quiz_answer_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:lineSpacingMultiplier="1.1"
+                android:maxLines="5"
+                android:minLines="2"
+                android:padding="4dp"
+                android:scrollbars="vertical"
+                android:text="@string/lorem_long"
+                android:textAlignment="viewStart"
+                android:textColor="@color/jccolorPrimaryDark"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quiz_answer_text"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/group_quiz_answer_submit_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/button_rounded_edges"
+                    android:text="Submit"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
+
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+        <View
+            android:id="@+id/group_quiz_answer_graded_mask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/quiz_answer_card_content"
+            android:layout_alignTop="@id/quiz_answer_card_content"
+            android:background="@color/jccolorUnansweredMask"
+            android:visibility="gone" />
+
     </RelativeLayout>
-
-
-    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-      android:id="@+id/quiz_answer_card_content"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/quiz_answer_card_header"
-      android:layout_alignParentBottom="true"
-      android:padding="16dp"
-      app:ael_expanded="true">
-
-      <TextView
-        android:id="@+id/quiz_answer_text"
-        android:text="@string/lorem_long"
-        android:textSize="22sp"
-        android:textAlignment="viewStart"
-        android:textColor="@color/jccolorPrimaryDark"
-        android:lineSpacingMultiplier="1.1"
-        android:scrollbars="vertical"
-        android:padding="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minLines="2"
-        android:maxLines="5"
-        android:layout_alignParentTop="true" />
-
-      <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/quiz_answer_text"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
-
-        <android.support.v4.widget.Space
-          android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:layout_weight="1" />
-
-        <Button
-          android:id="@+id/group_quiz_answer_submit_btn"
-          android:text="Submit"
-          android:textSize="18sp"
-          android:textColor="@color/colorWhite"
-          android:background="@drawable/button_rounded_edges"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="2" />
-
-        <android.support.v4.widget.Space
-          android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:layout_weight="1" />
-
-
-      </LinearLayout>
-
-
-    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
-
-    <View
-      android:id="@+id/group_quiz_answer_graded_mask"
-      android:layout_alignTop="@id/quiz_answer_card_content"
-      android:layout_alignBottom="@id/quiz_answer_card_content"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:visibility="gone"
-      android:background="@color/jccolorUnansweredMask" />
-
-  </RelativeLayout>
 
 </android.support.v7.widget.CardView>

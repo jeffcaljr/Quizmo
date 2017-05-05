@@ -25,6 +25,7 @@ import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.Homepage.Database.QuizLoadTask;
 import com.example.jeff.viewpagerdelete.Homepage.View.CourseListFragment;
 import com.example.jeff.viewpagerdelete.Homepage.View.QuizListFragment;
+import com.example.jeff.viewpagerdelete.Homepage.View.StartQuizFragment;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz.IndividualQuizDbHelper;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.Quiz.IndividualQuizPersistence;
@@ -41,12 +42,13 @@ import com.example.jeff.viewpagerdelete.Homepage.View.TokenCodeFragment;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomePageActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuizListFragment.QuizListListener,
+        implements NavigationView.OnNavigationItemSelectedListener,
         CourseListFragment.CourseListListener,
         TokenCodeFragment.TokenCodeEntryListener,
-        QuizLoadTask.QuizLoadTaskListener {
+        QuizLoadTask.QuizLoadTaskListener, StartQuizFragment.OnQuizStartListener {
 
     //    public static final String EXTRA_USER = "EXTRA_USER";
     public static final String FRAG_TAG_QUIZ_LIST = "FRAG_TAG_QUIZ_LIST";
@@ -55,9 +57,10 @@ public class HomePageActivity extends AppCompatActivity
     private ArrayList<Course> courses;
 
     private FragmentManager manager;
-    private QuizListFragment quizListFragment;
+    //    private QuizListFragment quizListFragment;
     private CourseListFragment courseListFragment;
     private LoadingFragment loadingFragment;
+    private StartQuizFragment startQuizFragment;
 
     private TextView courseNameTextView;
 
@@ -178,13 +181,13 @@ public class HomePageActivity extends AppCompatActivity
     }
 
 
-    private void showQuizzesFragment() {
-        manager.beginTransaction()
-                .addToBackStack(FRAG_TAG_QUIZ_LIST)
-                .replace(R.id.list_container, quizListFragment, FRAG_TAG_QUIZ_LIST)
-                .commit();
-
-    }
+//    private void showQuizzesFragment() {
+//        manager.beginTransaction()
+//                .addToBackStack(FRAG_TAG_QUIZ_LIST)
+//                .replace(R.id.list_container, quizListFragment, FRAG_TAG_QUIZ_LIST)
+//                .commit();
+//
+//    }
 
     private void showCoursesFragment() {
         manager.beginTransaction()
@@ -204,9 +207,7 @@ public class HomePageActivity extends AppCompatActivity
     }
 
     @Override
-    public void itemClicked(Course course) {
-
-
+    public void onUserInitiatedQuizStart(Course course) {
         //try to load quiz from SQLite, and if unsuccessful, try to load quiz from network
 
         loadingFragment.show();
@@ -218,6 +219,21 @@ public class HomePageActivity extends AppCompatActivity
 
     }
 
+//    @Override
+//    public void itemClicked(Course course) {
+//
+//
+//        //try to load quiz from SQLite, and if unsuccessful, try to load quiz from network
+//
+//        loadingFragment.show();
+//
+//        //Attempt to load quiz from SQLite
+//        QuizLoadTask quizLoadTask = new QuizLoadTask(this, course);
+//        quizLoadTask.listener = this;
+//        quizLoadTask.execute();
+//
+//    }
+
 
     @Override
     public void courseItemClicked(final Course course) {
@@ -228,10 +244,11 @@ public class HomePageActivity extends AppCompatActivity
                     public void onUserQuizzesDownloadSuccess(ArrayList<Course> courses) {
                         HomePageActivity.this.courses = courses;
 
-                        quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
+//                        quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
 
+                        startQuizFragment = (StartQuizFragment) manager.findFragmentByTag(StartQuizFragment.TAG);
 
-                        if (quizListFragment == null) {
+                        if (startQuizFragment == null) {
                             Bundle args = new Bundle();
 
                             //find the quiz associated with the course you clicked
@@ -243,14 +260,20 @@ public class HomePageActivity extends AppCompatActivity
                                     break;
                                 }
                             }
-                            args.putSerializable(QuizListFragment.ARG_COURSE_QUIZ_LIST_FRAGMENT,
+                            args.putSerializable(StartQuizFragment.ARG_COURSE,
                                     selectedCourse);
-                            quizListFragment = new QuizListFragment();
-                            quizListFragment.setArguments(args);
+//                            quizListFragment = new QuizListFragment();
+//                            quizListFragment.setArguments(args);
+                            startQuizFragment = new StartQuizFragment();
+                            startQuizFragment.setArguments(args);
 
                         }
 
-                        showQuizzesFragment();
+//                        showQuizzesFragment();
+                        manager.beginTransaction()
+                                .addToBackStack(StartQuizFragment.TAG)
+                                .replace(R.id.list_container, startQuizFragment, StartQuizFragment.TAG)
+                                .commit();
                     }
 
                     @Override
@@ -265,6 +288,7 @@ public class HomePageActivity extends AppCompatActivity
     public void quizDownloaded(Quiz quiz, Course course) {
 
         quiz.setUserID(UserDataSource.getInstance().getUser().getUserID());
+        quiz.setStartTime(new Date());
 
         boolean writeSuccess = IndividualQuizPersistence.sharedInstance(this).writeIndividualQuizToDatabase(quiz);
 

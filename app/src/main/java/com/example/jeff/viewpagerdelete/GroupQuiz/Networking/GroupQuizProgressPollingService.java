@@ -38,8 +38,8 @@ public class GroupQuizProgressPollingService extends IntentService {
     private static Quiz quiz;
     private static Group group;
 
-    public GroupQuizProgressPollingService(String name) {
-        super(name);
+    public GroupQuizProgressPollingService() {
+        super(TAG);
     }
 
     @Override

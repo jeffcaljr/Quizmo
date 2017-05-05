@@ -7,7 +7,8 @@
     android:layout_gravity="center"
   tools:context="com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers.GroupWaitingAreaActivity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_group_waiting_area">
+    tools:showIn="@layout/app_bar_group_waiting_area"
+    android:background="@color/jccolorAppBackground">
 
     <FrameLayout
         android:id="@+id/group_code_fragment_container"

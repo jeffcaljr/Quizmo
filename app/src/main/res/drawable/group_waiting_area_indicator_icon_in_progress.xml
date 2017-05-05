@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <solid android:color="#FFEB3B" />
+    <solid android:color="@color/jccolorInProgressYellow" />
     <size
         android:width="@dimen/waiting_indicator_circle_icon_width"
         android:height="@dimen/waiting_indicator_circle_icon_width" />

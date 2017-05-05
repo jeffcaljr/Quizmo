@@ -1,115 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-
-  <android.support.v7.widget.CardView
-    android:id="@+id/quiz_question_card"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/jccolorPrimaryDark"
-    app:cardElevation="8dp"
-    app:contentPadding="@dimen/quiz_card_content_padding">
+    android:layout_height="match_parent"
+    android:background="@color/jccolorAppBackground"
+    android:orientation="vertical">
 
-    <RelativeLayout
-      android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-      <TextView
-        android:id="@+id/quiz_question_number_label"
-        android:text="1."
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
-
-      <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true">
-
-        <TextView
-          android:text="Remaining Pts."
-            android:textSize="14sp"
-          android:textStyle="bold"
-          android:textColor="@color/colorWhite"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:gravity="center_vertical"
-          android:layout_marginRight="8dp" />
-
-        <TextView
-          android:id="@+id/quiz_question_points_remaining_label"
-          android:text="4"
-          android:textSize="32sp"
-          android:textStyle="bold"
-          android:textColor="@color/colorWhite"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentLeft="true"
-          android:layout_alignParentTop="true" />
-
-      </LinearLayout>
-
-
-      <TextView
-        android:id="@+id/quiz_question_text"
-        android:text="@string/lorem"
+    <android.support.v7.widget.CardView
+        android:id="@+id/quiz_question_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minLines="1"
-        android:maxLines="4"
-          android:textSize="16sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textColor="@color/colorWhite"
-        android:lineSpacingMultiplier="1.02"
-        android:textIsSelectable="false"
-          android:padding="2dp"
-        android:scrollbars="vertical"
-        android:layout_below="@id/quiz_question_number_label"
+        app:cardBackgroundColor="@color/jccolorPrimaryDark"
+        app:cardElevation="8dp"
+        app:contentPadding="@dimen/quiz_card_content_padding">
 
-        />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-      <ImageButton
-        android:id="@+id/quiz_question_toggle_answers_collapse_button"
-        android:src="@drawable/ic_expand"
-        android:layout_margin="8dp"
-        android:background="#00000000"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:scaleType="fitXY"
-        android:layout_below="@id/quiz_question_text"
-        android:layout_alignParentRight="true" />
+            <TextView
+                android:id="@+id/quiz_question_number_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="1."
+                android:textColor="@color/jccolorAccent"
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
 
-  </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Remaining Pts."
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-  <!--<android.support.design.widget.TabLayout-->
-  <!--android:id="@+id/tabDots"-->
-  <!--android:layout_alignParentBottom="true"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--app:tabBackground="@drawable/tab_selector_question"-->
-  <!--app:tabGravity="center"-->
-  <!--app:tabIndicatorHeight="0dp"-->
-  <!--android:layout_marginTop="@dimen/quiz_question_card_elevation"/>-->
+                <TextView
+                    android:id="@+id/quiz_question_points_remaining_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="4"
+                    android:textColor="@color/jccolorAccent"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-  <android.support.v7.widget.RecyclerView
-    android:overScrollMode="never"
-    android:id="@+id/quiz_answer_recycler_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="58dp"
-    android:clipToPadding="false"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/quiz_question_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quiz_question_number_label"
+                android:lineSpacingMultiplier="1.02"
+                android:maxLines="4"
+                android:minLines="2"
+                android:padding="2dp"
+                android:scrollbars="vertical"
+                android:text="@string/lorem"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textIsSelectable="false"
+                android:textSize="24sp"
+                android:textStyle="bold"
+
+                />
+
+            <ImageButton
+                android:id="@+id/quiz_question_toggle_answers_collapse_button"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/quiz_question_text"
+                android:layout_margin="8dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_expand" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <!--<android.support.design.widget.TabLayout-->
+    <!--android:id="@+id/tabDots"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:tabBackground="@drawable/tab_selector_question"-->
+    <!--app:tabGravity="center"-->
+    <!--app:tabIndicatorHeight="0dp"-->
+    <!--android:layout_marginTop="@dimen/quiz_question_card_elevation"/>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/quiz_answer_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="58dp"></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

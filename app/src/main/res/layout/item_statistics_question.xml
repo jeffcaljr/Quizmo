@@ -64,7 +64,7 @@
         android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_margin="16dp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/jccolorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/statistics_separator" />
@@ -88,7 +88,7 @@
         android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_margin="16dp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/jccolorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -131,7 +131,8 @@
         android:layout_height="10dp"
         android:scaleType="fitXY"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:tint="@color/jccolorAccentMuted" />
 
 
 </RelativeLayout>

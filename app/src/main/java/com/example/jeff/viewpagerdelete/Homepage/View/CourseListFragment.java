@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
+import com.example.jeff.viewpagerdelete.Miscellaneous.ColorAlternatorUtil;
 import com.example.jeff.viewpagerdelete.R;
 
 import com.example.jeff.viewpagerdelete.Startup.Model.User;
@@ -150,8 +151,11 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
 
     private class CourseAdapter extends RecyclerView.Adapter<CourseHolder>{
 
+        public ColorAlternatorUtil colorAlternatorUtil;
+
       public CourseAdapter() {
         coursesCopy.addAll(courses);
+          colorAlternatorUtil = new ColorAlternatorUtil(getActivity());
       }
 
       @Override
@@ -165,7 +169,15 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
         @Override
         public void onBindViewHolder(CourseHolder holder, int position) {
 
-            holder.bindCourse(courses.get(position));
+            if (position >= 2) {
+                holder.bindCourse(courses.get(0), colorAlternatorUtil.getNextDefaultColorSet());
+            } else {
+                holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
+
+            }
+
+
+//            holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
 
         }
 
@@ -179,7 +191,9 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
             else{
               coursesEmptyView.setVisibility(View.INVISIBLE);
             }
-            return size;
+
+//            return size;
+            return 3;
         }
 
       public void filter(String text) {
@@ -218,7 +232,12 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
             itemView.setOnClickListener(this);
         }
 
-        public void bindCourse(Course course){
+        public void bindCourse(Course course, ColorAlternatorUtil.ColorSet colorSet) {
+            itemView.setBackgroundColor(colorSet.getBackGroundColor());
+
+            courseNameTextView.setTextColor(colorSet.getForegroundColor());
+            instructorNameTextView.setTextColor(colorSet.getForegroundColor());
+
             courseNameTextView.setText(course.getExtendedID() + ": " + course.getName());
             instructorNameTextView.setText(course.getInstructor());
         }

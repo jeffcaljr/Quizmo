@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jccolorAppBackground"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+
+    <TextView
+        android:id="@+id/start_quiz_quiz_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Quiz Name"
+        android:textSize="24sp"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/jccolorAccent" />
+
+    <TextView
+        android:id="@+id/start_quiz_instructions_title_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_quiz_quiz_name_label"
+        android:layout_centerHorizontal="true"
+        android:text="Instructions"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorWhite" />
+
+    <View
+        android:id="@+id/start_quiz_instructions_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="@color/divider"
+        android:layout_alignLeft="@id/start_quiz_instructions_title_label"
+        android:layout_alignRight="@id/start_quiz_instructions_title_label"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/start_quiz_instructions_title_label"></View>
+
+    <LinearLayout
+        android:id="@+id/start_quiz_instructions_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/start_quiz_instructions_divider"
+        android:layout_above="@+id/start_quiz_button"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="1."
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/individual_quiz_instructions_1"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="2."
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:id="@+id/start_quiz_instruction_quiz_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/individual_quiz_instructions_2"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="3."
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/individual_quiz_instructions_3"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="4."
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/individual_quiz_instructions_4"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="5."
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginRight="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/individual_quiz_instructions_5"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--<TextView-->
+    <!--android:id="@+id/start_quiz_instructions_textview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/start_quiz_instructions_title_label"-->
+    <!--android:layout_above="@id/start_quiz_button"-->
+    <!--android:scrollbars="vertical"-->
+    <!--android:text="@string/individual_quiz_instructions"-->
+    <!--android:textColor="@color/colorWhite"-->
+    <!--android:padding="4dp"-->
+    <!--android:textSize="14sp"-->
+    <!--android:textStyle="bold"-->
+    <!--android:lineSpacingExtra="1.5dp"-->
+    <!--android:letterSpacing="5dp"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+    <!--android:gravity="center_vertical|right"-->
+    <!--/>-->
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/start_quiz_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@id/password_field"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:padding="16dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="Start Quiz"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        fbutton:buttonColor="@color/jccolorBrightButton"
+        fbutton:cornerRadius="10dp"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
+</RelativeLayout>

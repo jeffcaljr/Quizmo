@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:background="#EEEEEE"
+    app:cardBackgroundColor="@color/jccolorPrimaryDark"
     app:cardElevation="6dp"
     app:contentPadding="4dp">
 
@@ -17,15 +17,16 @@
         <ImageView
             android:id="@+id/group_waiting_area_list_item_leader_icon"
             android:src="@drawable/ic_star"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:tint="@color/jccolorAccent" />
 
         <TextView
             android:id="@+id/group_waiting_area_list_item_user_name"
             android:text="User Name"
-          android:textColor="@color/jccolorPrimaryBright"
+            android:textColor="@color/colorWhite"
             android:layout_width="0dp"
             android:textSize="16dp"
             android:gravity="center"

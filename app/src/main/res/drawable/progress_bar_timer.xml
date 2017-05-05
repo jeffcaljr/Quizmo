@@ -4,7 +4,7 @@
     <shape
       android:shape="rectangle"
       android:thickness="4dp">
-      <solid android:color="@color/jccolorPrimaryMuted"></solid>
+      <solid android:color="@color/divider"></solid>
     </shape>
   </item>
 
@@ -13,7 +13,7 @@
       <shape
         android:shape="rectangle"
         android:thickness="4dp">
-        <solid android:color="@color/jccolorAccent"></solid>
+        <solid android:color="@color/jccolorGreen"></solid>
       </shape>
     </clip>
   </item>

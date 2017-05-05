@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#263238">
+    android:background="@color/jccolorAppBackground">
 
     <ImageView
         android:src="@drawable/quizmo_logo"
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateOnly="true"
-      android:indeterminateTint="@color/jccolorPrimary"
+        android:indeterminateTint="@color/jccolorAccent"
         android:layout_gravity="center" />
 
 </LinearLayout>

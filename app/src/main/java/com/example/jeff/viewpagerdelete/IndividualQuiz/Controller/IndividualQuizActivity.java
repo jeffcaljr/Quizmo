@@ -1,9 +1,11 @@
 package com.example.jeff.viewpagerdelete.IndividualQuiz.Controller;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.Snackbar.Callback;
@@ -20,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -82,7 +85,8 @@ public class IndividualQuizActivity extends AppCompatActivity
     private LoadingFragment submittingFragment;
 
     private CountDownTimer countDownTimer;
-
+    private Drawable halfwayDoneDrawable;
+    private Drawable threeQuartersDoneDrawable;
 
 
     @Override
@@ -136,6 +140,9 @@ public class IndividualQuizActivity extends AppCompatActivity
 
       submittingFragment = new LoadingFragment(IndividualQuizActivity.this, "Submitting Quiz");
 
+        halfwayDoneDrawable = ContextCompat.getDrawable(this, R.drawable.progress_bar_timer_halfway);
+        threeQuartersDoneDrawable = ContextCompat.getDrawable(this, R.drawable.progress_bar_timer_three_quarters);
+
 
     }
 
@@ -143,34 +150,54 @@ public class IndividualQuizActivity extends AppCompatActivity
   protected void onResume() {
     super.onResume();
 
-//      Calendar expiryDate = new GregorianCalendar();
-//      expiryDate.setTime(quiz.getStartTime());
-//      expiryDate.add(Calendar.MINUTE, quiz.getTimedLength());
-//      int timeBeforeExpiry = (int) (expiryDate.getTimeInMillis() - System.currentTimeMillis());
-//
-//      quizTimerProgressBar.setMax(timeBeforeExpiry);
+      Calendar expiryTime = new GregorianCalendar();
+      expiryTime.setTime(quiz.getStartTime());
+      expiryTime.add(Calendar.MINUTE, quiz.getTimedLength());
+
+      final int timeBeforeExpiry = (int) (expiryTime.getTimeInMillis() - System.currentTimeMillis());
+
+
+      quizTimerProgressBar.setMax(timeBeforeExpiry);
 //      quizTimerProgressBar.setProgress(0);
 //
 //    //TODO: If using this timer; stop it when the user submits the quiz!!!
 //
-//    countDownTimer = new CountDownTimer(time, 1000) {
-//      @Override
-//      public void onTick(long l) {
+      countDownTimer = new CountDownTimer(timeBeforeExpiry, 1000) {
+          boolean halfwayFlag = false;
+          boolean threeQuartersFlag = false;
+
+          @Override
+          public void onTick(long l) {
 //        quizTimerProgressBar.setProgress(quizTimerProgressBar.getMax() - (int) l);
-//
-//        if (l < max / 2) {
-//          quizTimerProgressBar.getProgressDrawable().setColorFilter(0xFFFF0000, PorterDuff.Mode.OVERLAY);
-//        }
-//      }
-//
-//      @Override
-//      public void onFinish() {
-//        submittingFragment.show();
-//
-////        userConfirmedSubmission();
-//
-//      }
-//    }.start();
+              ObjectAnimator animation = ObjectAnimator.ofInt(quizTimerProgressBar, "progress", timeBeforeExpiry - (int) l);
+              animation.setDuration(250); // 0.5 second
+//          animation.setInterpolator(new DecelerateInterpolator());
+              animation.start();
+
+              if (halfwayFlag == false) {
+                  if (l < timeBeforeExpiry / 2) {
+                      halfwayFlag = true;
+                      quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
+                  }
+              } else {
+                  if (threeQuartersFlag == false) {
+                      if (l < (timeBeforeExpiry / 4)) {
+                          threeQuartersFlag = true;
+                          quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
+                      }
+                  }
+              }
+
+
+          }
+
+          @Override
+          public void onFinish() {
+              quizTimerProgressBar.setProgress(quizTimerProgressBar.getMax());
+              userConfirmedSubmission();
+
+          }
+      }.start();
   }
 
 
@@ -178,7 +205,9 @@ public class IndividualQuizActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
 
-//        countDownTimer.cancel();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     @Override
@@ -311,6 +340,9 @@ public class IndividualQuizActivity extends AppCompatActivity
         //TODO: When the quiz expires, if posting is unsuccessful, what to do then? Perhaps post the quiz the next time a user clicks it on the homescreen?
 
       submittingFragment.show();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
 
 
         //Save the quiz to the database one last time, because this method won't get called on the last page (only gets called on page change)
@@ -359,6 +391,7 @@ public class IndividualQuizActivity extends AppCompatActivity
                     submittingFragment.dismiss();
                     Toast.makeText(IndividualQuizActivity.this, "Can't submit quiz yet",
                         Toast.LENGTH_LONG).show();
+                      finish();
                   }
                 });
 

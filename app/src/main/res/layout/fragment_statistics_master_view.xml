@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jccolorAppBackground">
 
 
     <org.eazegraph.lib.charts.BarChart
@@ -16,7 +18,8 @@
         app:egFixedBarWidth="true"
         app:egBarWidth="60dp"
         app:egLegendHeight="40dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:background="@color/jccolorBlueGrayLight" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/statistics_questions_recyclerview"
@@ -24,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/statistics_graph_view"
         android:layout_alignParentBottom="true"
-        android:background="@color/jccolorPrimaryMuted"
+        android:background="@color/jccolorAppBackground"
         android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

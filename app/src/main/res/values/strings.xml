@@ -1,21 +1,37 @@
 <resources>
-  <string name="app_name">Learning App</string>
+    <string name="app_name">Learning App</string>
 
-  <string name="group_name">Group Name</string>
-  <!--<string name="group_quiz_instructions">1. Please sit quietly until your instructor provides a code to begin the group quiz.\n-->
-  <!--2. The members of your group are listed above. Please do not begin interacting with them until the instructor provides the code to begin.\n-->
-  <!--3. Your group will repeat the questions in the previous quiz, this time discussing your answer choices as a group until you come to an agreement.\n-->
-  <!--4. If the answer your group chose was incorrect, choose a new answer after discussing further. Repeat until the quiz is complete.-->
-  <!--</string>-->
-  <string name="title_activity_main">MainActivity</string>
+    <string name="group_name">Group Name</string>
+    <!--<string name="group_quiz_instructions">1. Please sit quietly until your instructor provides a code to begin the group quiz.\n-->
+    <!--2. The members of your group are listed above. Please do not begin interacting with them until the instructor provides the code to begin.\n-->
+    <!--3. Your group will repeat the questions in the previous quiz, this time discussing your answer choices as a group until you come to an agreement.\n-->
+    <!--4. If the answer your group chose was incorrect, choose a new answer after discussing further. Repeat until the quiz is complete.-->
+    <!--</string>-->
 
-  <string name="navigation_drawer_open">Open navigation drawer</string>
-  <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="individual_quiz_instructions_1">
+    You are about to begin a quiz that will test your knowledge on the topic titled above.
+   </string>
+    <string name="individual_quiz_instructions_2">
+    This is a timed quiz. Upon starting, you will have %d minutes to complete the quiz.
+  </string>
+    <string name="individual_quiz_instructions_3">
+    You will have a set number of points per question, to allocate between the available answers. If you are unsure of which is correct, you should allocate more points
+    to the answer(s) based on your confidence in that answer being correct.
+  </string>
+    <string name="individual_quiz_instructions_4">
+    You may submit without finishing. However, it is highly recommended that you allocate all points available, even if you must guess.
+  </string>
+    <string name="individual_quiz_instructions_5">
+    Upon submitting, you will wait for further direction from your instructor.</string>
+    <string name="title_activity_main">MainActivity</string>
 
-  <string name="title_activity_group_quiz_code">GroupQuizCodeActivity</string>
-  <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
-  <string name="lorem_long">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
-  <string name="title_activity_statistics">Stats</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-  <string name="action_settings">Settings</string>
+    <string name="title_activity_group_quiz_code">GroupQuizCodeActivity</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="lorem_long">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="title_activity_statistics">Stats</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

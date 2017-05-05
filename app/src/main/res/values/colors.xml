@@ -17,16 +17,42 @@
     <!--<color name="colorCardBackground">#03A9F4</color>-->
     <!--<color name="colorCardBackground">#4DB6AC</color>-->
 
-    <color name="jccolorWarningYellow">#FFCA28</color>
-  <color name="jccolorPrimary">#8E1717</color>
-  <color name="jccolorPrimaryDark">#5b0000</color>
-  <color name="jccolorPrimaryBright">#c44b3e</color>
-  <color name="jccolorPrimaryMuted">#F1E3E3</color>
-  <color name="jccolorBrightButton">#F3F44336</color>
-  <color name="jccolorBrightButtonDisabled">#FAADA8</color>
-  <color name="jccolorAccent">#8BC34A</color>
+    <!--<color name="jccolorWarningYellow">#FFCA28</color>-->
+    <!--<color name="jccolorPrimary">#8E1717</color>-->
+    <!--<color name="jccolorPrimaryDark">#5b0000</color>-->
+    <!--<color name="jccolorPrimaryBright">#c44b3e</color>-->
+    <!--<color name="jccolorPrimaryMuted">#F1E3E3</color>-->
+    <!--<color name="jccolorBrightButton">#F3F44336</color>-->
+    <!--<color name="jccolorBrightButtonDisabled">#FAADA8</color>-->
+    <!--<color name="jccolorAccent">#8BC34A</color>-->
+    <!--<color name="colorWhite">#FFFFFF</color>-->
+    <!--<color name="jccolorCorrectMask">#7100FF00</color>-->
+    <!--<color name="jccolorIncorrectMask">#71FF0000</color>-->
+    <!--<color name="jccolorUnansweredMask">#71000000</color>-->
+
+
+    <color name="jccolorWarningYellow">#FFEB3B</color>
+    <color name="jccolorPrimary">#2196F3</color>
+    <color name="jccolorPrimaryDark">#1976D2</color>
+    <color name="jccolorPrimaryMuted">#BBDEFB</color>
+    <color name="jccolorPrimaryBright">#42A5F5</color>
+    <color name="jccolorAccent">#FF4081</color>
+    <color name="jccolorAccentBright">#C51162</color>
+    <color name="jccolorAccentMuted">#F48FB1</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
     <color name="colorWhite">#FFFFFF</color>
-  <color name="jccolorCorrectMask">#7100FF00</color>
-  <color name="jccolorIncorrectMask">#71FF0000</color>
-  <color name="jccolorUnansweredMask">#71000000</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="jccolorCorrectMask">#8F81C784</color>
+    <color name="jccolorIncorrectMask">#8FE57373</color>
+    <color name="jccolorUnansweredMask">#2F000000</color>
+    <color name="jccolorAppBackground">#263238</color>
+    <color name="jccolorBlueGrayLight">#263238</color>
+    <color name="jccolorBrightButton">#F50057</color>
+    <color name="jccolorDoneGreen">#4CAF50</color>
+    <color name="jccolorNotStartedRed">#F44336</color>
+    <color name="jccolorInProgressYellow">#FFEB3B</color>
+    <color name="jccolorAmber">#FFA000</color>
+    <color name="jccolorGreen">#388E3C</color>
+    <color name="jccolorPurple">#D32F2F</color>
 </resources>

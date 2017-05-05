@@ -2,18 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/colorWhite">
 
     <TextView
         android:id="@+id/token_code_dialog_title"
         android:text="Enter Token Code"
         android:textSize="24dp"
-      android:textColor="@color/jccolorPrimary"
+        android:textColor="@color/jccolorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/token_code_entry_field"
@@ -24,7 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/token_code_dialog_title"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/primary_text"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/jccolorPrimaryDark" />
 
     <RelativeLayout
         android:id="@+id/token_code_status_layout"
@@ -39,7 +45,7 @@
             android:layout_height="wrap_content"
             android:indeterminateOnly="true"
             android:layout_centerInParent="true"
-          android:indeterminateTint="@color/jccolorPrimary" />
+            android:indeterminateTint="@color/jccolorAccent" />
 
         <LinearLayout
             android:id="@+id/token_code_error_layout"
@@ -52,12 +58,13 @@
                 android:src="@drawable/ic_error"
                 android:layout_marginRight="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:tint="@color/jccolorAccent" />
             <TextView
                 android:id="@+id/token_code_error_textfield"
                 android:text="Invalid Token Code"
                 android:textSize="14dp"
-                android:textColor="@color/jccolorPrimary"
+                android:textColor="@color/primary_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -74,18 +81,19 @@
         <Button
             android:id="@+id/token_code_cancel_button"
             android:text="Cancel"
-          android:textColor="@color/jccolorPrimary"
+            android:textColor="@color/secondary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_marginRight="16dp"
             style="@android:style/Widget.Holo.Button.Borderless"/>
 
         <Button
             android:id="@+id/token_code_submit_button"
             android:text="Submit"
-          android:textColor="@color/jccolorPrimary"
+            android:textColor="@color/jccolorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             style="@android:style/Widget.Holo.Button.Borderless"/>
     </LinearLayout>
 
