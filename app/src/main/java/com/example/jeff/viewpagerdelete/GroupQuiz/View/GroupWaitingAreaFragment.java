@@ -1,11 +1,13 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.View;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,7 +70,7 @@ public class GroupWaitingAreaFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private GroupAdapter adapter;
-
+    private AlertDialog confirmStartDialog;
 
     private boolean statusLoaded = false;
 
@@ -118,6 +120,17 @@ public class GroupWaitingAreaFragment extends Fragment {
 
             recyclerView.setAdapter(adapter);
 
+            confirmStartDialog = new AlertDialog.Builder(getActivity())
+                    .setTitle("Start Group Quiz")
+                    .setMessage("Are you sure you wish to start the quiz without all members being ready?")
+                    .setPositiveButton("Start", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+                            groupQuizStartListener.onGroupQuizStarted();
+                        }
+                    }).create();
+
 
             memberNames = new ArrayList<>();
 
@@ -129,8 +142,16 @@ public class GroupWaitingAreaFragment extends Fragment {
             startGroupQuizButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
-                    groupQuizStartListener.onGroupQuizStarted();
+
+                    if (isWholeGroupFinished() == false) {
+                        confirmStartDialog.show();
+                    } else {
+                        //whole group is finished; no need to chicken test
+
+                        GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
+                        groupQuizStartListener.onGroupQuizStarted();
+                    }
+
                 }
             });
 
@@ -313,7 +334,7 @@ public class GroupWaitingAreaFragment extends Fragment {
             statusIcon = (ImageView) itemView.findViewById(R.id.group_waiting_area_list_item_status_indicator);
         }
 
-        public void bindMember(GroupMember member, GroupMemberStatus status) {
+        public void bindMember(GroupMember member, GroupMemberStatus memberStatus) {
 
             memberName.setText(member.getFirstName() + " " + member.getLastName());
 
@@ -324,7 +345,7 @@ public class GroupWaitingAreaFragment extends Fragment {
 
             if (statusLoaded) { //dont want this code to run on first recyclerview load
 
-                if (status == null) {
+                if (memberStatus == null) {
                     //user hasn't started
                     statusIcon.setImageDrawable(notStartedDrawable);
                 } else {
@@ -332,7 +353,7 @@ public class GroupWaitingAreaFragment extends Fragment {
                     //check if user has completed the quiz; and if so; were they the first to start it
                     //if they were the first to start it, denote them as the leader
 
-                    if (status.getStatus()
+                    if (memberStatus.getStatus()
                             == GroupMemberStatus.Status.COMPLETE) { //if the user is done, show the green indicators
 
                         statusIcon.setImageDrawable(doneDrawable);
@@ -341,7 +362,7 @@ public class GroupWaitingAreaFragment extends Fragment {
                         //TODO: Should indicate the leader based on who was first to finish the quiz
 
                         //if the user is done and they were the first finished, show the leader indicator
-                        if (status.isLeader()) {
+                        if (memberStatus.isLeader()) {
                             leaderIcon.setVisibility(View.VISIBLE);
                         }
 

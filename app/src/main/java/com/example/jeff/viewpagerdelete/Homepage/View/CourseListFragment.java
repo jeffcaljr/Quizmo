@@ -169,15 +169,7 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
         @Override
         public void onBindViewHolder(CourseHolder holder, int position) {
 
-            if (position >= 2) {
-                holder.bindCourse(courses.get(0), colorAlternatorUtil.getNextDefaultColorSet());
-            } else {
-                holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
-
-            }
-
-
-//            holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
+            holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
 
         }
 
@@ -192,8 +184,7 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
               coursesEmptyView.setVisibility(View.INVISIBLE);
             }
 
-//            return size;
-            return 3;
+            return size;
         }
 
       public void filter(String text) {

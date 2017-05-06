@@ -2,12 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/jccolorPrimary"
+    android:background="@color/jccolorAppBackground"
     android:paddingBottom="8dp"
     android:paddingTop="8dp"
     android:paddingRight="8dp"
-    android:paddingLeft="8dp"
-    android:layout_marginBottom="8dp">
+    android:paddingLeft="8dp">
 
     <TextView
         android:id="@+id/statistics_question_number_label"
@@ -22,13 +21,13 @@
         android:layout_centerVertical="true" />
 
     <RelativeLayout
-        android:id="@+id/statistics_question_details_layout"
+        android:id="@+id/statistics_question_individual_details_layout"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
+        android:gravity="center_vertical"
         android:layout_alignParentTop="true"
-        android:gravity="center"
         android:layout_toRightOf="@id/statistics_question_number_label"
-        android:layout_toLeftOf="@+id/statistics_question_detail_indicator">
+        android:layout_toLeftOf="@+id/statistics_separator">
 
         <LinearLayout
         android:orientation="vertical"
@@ -67,7 +66,9 @@
         android:textColor="@color/jccolorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/statistics_separator" />
+        android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
 
     <View
         android:id="@+id/statistics_separator"
@@ -80,6 +81,15 @@
         android:layout_marginRight="4dp"
         android:layout_marginLeft="4dp" />
 
+    <RelativeLayout
+        android:id="@+id/statistics_question_group_details_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/statistics_separator"
+        android:layout_toLeftOf="@+id/statistics_question_detail_indicator">
+
     <TextView
         android:id="@+id/statistics_group_points"
         android:text="4"
@@ -91,8 +101,7 @@
         android:textColor="@color/jccolorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_toRightOf="@id/statistics_separator" />
+        android:layout_alignParentLeft="true" />
 
 
     <LinearLayout
@@ -133,6 +142,12 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:tint="@color/jccolorAccentMuted" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

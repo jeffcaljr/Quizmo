@@ -21,11 +21,19 @@
         android:layout_alignParentTop="true"
         android:background="@color/jccolorBlueGrayLight" />
 
+    <View
+        android:id="@+id/stats_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#FFFFFF"
+        android:layout_below="@id/statistics_graph_view"
+        android:layout_marginBottom="8dp" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/statistics_questions_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/statistics_graph_view"
+        android:layout_below="@id/stats_divider"
         android:layout_alignParentBottom="true"
         android:background="@color/jccolorAppBackground"
         android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
