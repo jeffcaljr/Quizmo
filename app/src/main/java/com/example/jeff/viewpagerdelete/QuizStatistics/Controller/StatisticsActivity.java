@@ -1,7 +1,13 @@
 package com.example.jeff.viewpagerdelete.QuizStatistics.Controller;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,32 +19,39 @@ import android.view.Menu;
 
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuizQuestion;
+import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuizQuestion;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.QuizQuestion;
 import com.example.jeff.viewpagerdelete.QuizStatistics.View.StatisticsDetailView.StatisticsDetailFragment;
+import com.example.jeff.viewpagerdelete.QuizStatistics.View.StatisticsGroupVsGroupFragment;
 import com.example.jeff.viewpagerdelete.QuizStatistics.View.StatisticsMasterView.StatisticsMasterFragment;
 import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import android.view.MenuItem;
 
-public class StatisticsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, StatisticsMasterFragment.OnStatisticsQuestionClickedListener {
+public class StatisticsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StatisticsMasterFragment.OnStatisticsQuestionClickedListener {
 
     public static final String TAG = "StatisticsActivity";
 
     public static final String INTENT_EXTRA_GROUP_QUIZ = "INTENT_EXTRA_GROUP_QUIZ";
     public static final String INTENT_EXTRA_INDIVIDUAL_QUIZ = "INTENT_EXTRA_INDIVIDUAL_QUIZ";
+    public static final String INTENT_EXTRA_COURSE = "INTENT_EXTRA_COURSE";
 
 
     private GradedGroupQuiz gradedGroupQuiz;
     private GradedQuiz gradedQuiz;
     private Quiz individualQuiz;
+    private Course course;
+
+    private ViewPager mPager;
+    private PagerAdapter mAdapter;
 
     private StatisticsMasterFragment statisticsMasterFragment;
+    private StatisticsGroupVsGroupFragment groupVsGroupFragment;
     private FragmentManager fragmentManager;
 
     @Override
@@ -61,9 +74,11 @@ public class StatisticsActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
 
         if (extras != null && extras.containsKey(INTENT_EXTRA_INDIVIDUAL_QUIZ) && extras
-                .containsKey(INTENT_EXTRA_GROUP_QUIZ)) {
+                .containsKey(INTENT_EXTRA_GROUP_QUIZ) &&
+                extras.containsKey(INTENT_EXTRA_COURSE)) {
             gradedGroupQuiz = (GradedGroupQuiz) extras.getSerializable(INTENT_EXTRA_GROUP_QUIZ);
             individualQuiz = (Quiz) extras.getSerializable(INTENT_EXTRA_INDIVIDUAL_QUIZ);
+            course = (Course) extras.getSerializable(INTENT_EXTRA_COURSE);
             gradedQuiz = GradedQuizPersistence.sharedInstance(this).readGradedQuizFromDatabase(individualQuiz.getId(), UserDataSource.getInstance().getUser().getUserID());
         } else {
             Log.e(TAG, "Expected graded group and individual quizzes");
@@ -72,22 +87,48 @@ public class StatisticsActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        statisticsMasterFragment = (StatisticsMasterFragment) fragmentManager.findFragmentByTag(StatisticsMasterFragment.TAG);
+//        statisticsMasterFragment = (StatisticsMasterFragment) fragmentManager.findFragmentByTag(StatisticsMasterFragment.TAG);
 
-        if (statisticsMasterFragment == null) {
-            statisticsMasterFragment = new StatisticsMasterFragment();
+//        if (statisticsMasterFragment == null) {
+//            statisticsMasterFragment = new StatisticsMasterFragment();
+//            Bundle args = new Bundle();
+//            args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_QUIZ, individualQuiz);
+//            args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_GRADED_INDIVIDUAL_QUIZ, gradedQuiz);
+//            args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_GRADED_GROUP_QUIZ, gradedGroupQuiz);
+//            statisticsMasterFragment.setArguments(args);
+//
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.statistics_container, statisticsMasterFragment, StatisticsMasterFragment.TAG)
+//                    .commit();
+//
+//        }
+
+        statisticsMasterFragment = new StatisticsMasterFragment();
             Bundle args = new Bundle();
             args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_QUIZ, individualQuiz);
             args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_GRADED_INDIVIDUAL_QUIZ, gradedQuiz);
             args.putSerializable(StatisticsMasterFragment.ARG_EXTRA_GRADED_GROUP_QUIZ, gradedGroupQuiz);
             statisticsMasterFragment.setArguments(args);
 
-            fragmentManager.beginTransaction()
-                    .replace(R.id.statistics_container, statisticsMasterFragment, StatisticsMasterFragment.TAG)
-                    .commit();
+        groupVsGroupFragment = (StatisticsGroupVsGroupFragment) new StatisticsGroupVsGroupFragment();
+        Bundle groupVsGroupArgs = new Bundle();
 
-        }
+        groupVsGroupArgs.putSerializable(StatisticsGroupVsGroupFragment.ARG_QUIZ, individualQuiz);
+        groupVsGroupArgs.putSerializable(StatisticsGroupVsGroupFragment.ARG_COURSE, course);
 
+        groupVsGroupFragment.setArguments(groupVsGroupArgs);
+
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new PagerAdapter(fragmentManager));
+
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     @Override
@@ -95,6 +136,8 @@ public class StatisticsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (mPager.getCurrentItem() > 0) {
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         } else {
             super.onBackPressed();
         }
@@ -170,4 +213,36 @@ public class StatisticsActivity extends AppCompatActivity
                     .commit();
         }
     }
+
+    private class PagerAdapter extends FragmentStatePagerAdapter {
+
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return statisticsMasterFragment;
+            } else {
+                return groupVsGroupFragment;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) {
+                return "Your Group";
+            } else {
+                return "Your Class";
+            }
+        }
+    }
+
+
 }

@@ -193,6 +193,25 @@ public class User implements Serializable{
     }
 
 
+    /**
+     * Find a course a user is enrolled in by the short-form courseID
+     *
+     * @param courseID short-hand courseID
+     * @return enrolled course matching courseID if one found; else null
+     */
+    public Course getEnrolledCourseByID(String courseID) {
+        Course foundCourse = null;
+
+        for (Course course : enrolledCourses) {
+            if (course.getCourseID().equalsIgnoreCase(courseID)) {
+                foundCourse = course;
+                break;
+            }
+        }
+        return foundCourse;
+    }
+
+
     /*************************************************/
     /***************HELPER METHODS********************/
     /*************************************************/

@@ -32,6 +32,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingServ
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupQuizProgressPollingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupQuizQuestionFragment;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupQuizQuestionFragment.OnGroupQuizAnswerSelectedListener;
+import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Controller.IndividualQuizActivity.DetailOnPageChangeListener;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
@@ -55,7 +56,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
     public static final String INTENT_EXTRA_SESSION_ID = "INTENT_EXTRA_SESSION_ID";
     public static final String INTENT_EXTRA_GROUP = "INTENT_EXTRA_GROUP";
     public static final String INTENT_EXTRA_IS_LEADER = "INTENT_EXTRA_IS_LEADER";
-    //    public static final String INTENT_EXTRA_COURSE = "INTENT_EXTRA_COURSE";
+    public static final String INTENT_EXTRA_COURSE = "INTENT_EXTRA_COURSE";
     public static final String EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS = "EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS ";
 
     public ViewPager mPager;
@@ -68,7 +69,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
     private GradedQuiz gradedQuiz;
     private Quiz quiz;
     private Group group;
-    //    private Course course;
+    private Course course;
     private GradedGroupQuiz gradedGroupQuiz;
     private boolean isGroupLeader;
 
@@ -108,7 +109,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
             quiz = (Quiz) extras.getSerializable(INTENT_EXTRA_QUIZ);
             group = (Group) extras.getSerializable(INTENT_EXTRA_GROUP);
             isGroupLeader = extras.getBoolean(INTENT_EXTRA_IS_LEADER);
-//            course = (Course) extras.getSerializable(INTENT_EXTRA_COURSE);
+            course = (Course) extras.getSerializable(INTENT_EXTRA_COURSE);
         }
 
 
@@ -138,6 +139,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
                         Intent i = new Intent(GroupQuizActivity.this, StatisticsActivity.class);
                         i.putExtra(StatisticsActivity.INTENT_EXTRA_GROUP_QUIZ, gradedGroupQuiz);
                         i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, quiz);
+                        i.putExtra(StatisticsActivity.INTENT_EXTRA_COURSE, course);
                         startActivity(i);
                         finish();
                     }

@@ -247,7 +247,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP_QUIZ_PROGRESS, gradedGroupQuiz);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_IS_LEADER, isGroupLeader);
-//                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_COURSE, course);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_COURSE, course);
                         startActivity(i);
 
                         finish();
@@ -272,7 +272,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_QUIZ, quiz);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_GROUP, group);
                         i.putExtra(GroupQuizActivity.INTENT_EXTRA_IS_LEADER, isGroupLeader);
-//                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_COURSE, course);
+                        i.putExtra(GroupQuizActivity.INTENT_EXTRA_COURSE, course);
                         startActivity(i);
 
                         finish();

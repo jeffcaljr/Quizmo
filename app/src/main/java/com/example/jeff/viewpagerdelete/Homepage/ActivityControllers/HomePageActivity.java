@@ -262,6 +262,9 @@ public class HomePageActivity extends AppCompatActivity
                                     break;
                                 }
                             }
+
+                            selectedCourse.setId(course.getId());
+
                             args.putSerializable(StartQuizFragment.ARG_COURSE,
                                     selectedCourse);
 //                            quizListFragment = new QuizListFragment();
@@ -334,6 +337,7 @@ public class HomePageActivity extends AppCompatActivity
                                     Intent i = new Intent(HomePageActivity.this, StatisticsActivity.class);
                                     i.putExtra(StatisticsActivity.INTENT_EXTRA_INDIVIDUAL_QUIZ, quiz);
                                     i.putExtra(StatisticsActivity.INTENT_EXTRA_GROUP_QUIZ, gradedGroupQuiz);
+                                    i.putExtra(StatisticsActivity.INTENT_EXTRA_COURSE, course);
                                     startActivity(i);
                                     loadingFragment.dismissWithDelay(500);
                                 } else {

@@ -68,7 +68,6 @@ public class GroupNetworkingService {
 
         void onGroupQuizAnswerPostFailure(VolleyError error);
     }
-
     //API METHODS
 
 
