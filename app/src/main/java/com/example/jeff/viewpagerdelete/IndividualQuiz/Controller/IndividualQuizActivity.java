@@ -44,6 +44,7 @@ import com.example.jeff.viewpagerdelete.R;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.View.SubmissionAlertFragment;
 
 import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,9 +57,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class IndividualQuizActivity extends AppCompatActivity
         implements IndividualQuizQuestionFragment.PageFragmentListener,
-    SubmissionAlertFragment.SubmissionAlertFragmentListener {
+        SubmissionAlertFragment.SubmissionAlertFragmentListener {
 
-  //Constants used for keys/values
+    //Constants used for keys/values
     public static final String INTENT_EXTRA_QUIZ = "INTENT_EXTRA_QUIZ";
     public static final String INTENT_EXTRA_SESSION_ID = "INTENT_EXTRA_SESSION_ID";
     public static final String INTENT_EXTRA_COURSE_QUIZ = "INTENT_EXTRA_COURSE_QUIZ";
@@ -69,9 +70,9 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     public ViewPager mPager;
     private ScreenSlidePagerAdapter mAdapter;
-  private DetailOnPageChangeListener onPageChangeListener;
-  private TabLayout tabLayout;
-  private ProgressBar quizTimerProgressBar;
+    private DetailOnPageChangeListener onPageChangeListener;
+    private TabLayout tabLayout;
+    private ProgressBar quizTimerProgressBar;
     private TextView timeRemainingTextView;
 
     private AlertDialog quizSubmissionAlert;
@@ -100,16 +101,15 @@ public class IndividualQuizActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_quiz_individual);
+        setContentView(R.layout.activity_quiz_individual);
 
         Intent i = getIntent();
-        if(i.hasExtra(INTENT_EXTRA_QUIZ) && i.hasExtra(INTENT_EXTRA_COURSE_QUIZ) && i.hasExtra(INTENT_EXTRA_SESSION_ID)){
+        if (i.hasExtra(INTENT_EXTRA_QUIZ) && i.hasExtra(INTENT_EXTRA_COURSE_QUIZ) && i.hasExtra(INTENT_EXTRA_SESSION_ID)) {
             quiz = (Quiz) i.getSerializableExtra(INTENT_EXTRA_QUIZ);
             course = (Course) i.getSerializableExtra(INTENT_EXTRA_COURSE_QUIZ);
             sessionID = i.getStringExtra(INTENT_EXTRA_SESSION_ID);
 
-        }
-        else{
+        } else {
             Log.e("TAG", "No 'quizzes' extra found in IndividualQuizActivity.java");
             finish();
         }
@@ -121,34 +121,34 @@ public class IndividualQuizActivity extends AppCompatActivity
         getSupportActionBar().setTitle(quiz.getDescription());
 
         submitSnackBar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), "Ready to submit?", Snackbar.LENGTH_INDEFINITE);
-      submitSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.jccolorPrimaryBright));
+        submitSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.jccolorPrimaryBright));
         submitSnackBar.setAction("Submit", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              submitButtonClicked();
+                submitButtonClicked();
             }
         });
 
-      quizTimerProgressBar = (ProgressBar) findViewById(R.id.quiz_timer_progress_bar);
+        quizTimerProgressBar = (ProgressBar) findViewById(R.id.quiz_timer_progress_bar);
 
         timeRemainingTextView = (TextView) findViewById(R.id.time_remaining_label);
 
-      mPager = (ViewPager) findViewById(R.id.quiz_question_viewpager);
+        mPager = (ViewPager) findViewById(R.id.quiz_question_viewpager);
 //        mPager.setOffscreenPageLimit(quiz.getQuestions().size() - 1);
 
-      onPageChangeListener = new DetailOnPageChangeListener();
+        onPageChangeListener = new DetailOnPageChangeListener();
 
-      mPager.addOnPageChangeListener(onPageChangeListener);
+        mPager.addOnPageChangeListener(onPageChangeListener);
 
 
-      mPager.setPageTransformer(false, new DefaultTransformer());
+        mPager.setPageTransformer(false, new DefaultTransformer());
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
-      tabLayout = (TabLayout) findViewById(R.id.tabDots);
+        tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 
-      submittingFragment = new LoadingFragment(IndividualQuizActivity.this, "Submitting Quiz");
+        submittingFragment = new LoadingFragment(IndividualQuizActivity.this, "Submitting Quiz");
 
         halfwayDoneDrawable = ContextCompat.getDrawable(this, R.drawable.progress_bar_timer_halfway);
         threeQuartersDoneDrawable = ContextCompat.getDrawable(this, R.drawable.progress_bar_timer_three_quarters);
@@ -156,76 +156,73 @@ public class IndividualQuizActivity extends AppCompatActivity
 
     }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
+    @Override
+    protected void onResume() {
+        super.onResume();
 
 //      Calendar expiryTime = new GregorianCalendar();
 //      expiryTime.setTime(quiz.getStartTime());
 //      expiryTime.add(Calendar.MINUTE, quiz.getTimedLength());
 
 
-      final int endTime = (int) (quiz.getEndTime().getTime() - quiz.getStartTime().getTime());
-      final int timeLeft = (int) (quiz.getEndTime().getTime() - new Date().getTime());
+        final int endTime = (int) (quiz.getEndTime().getTime() - quiz.getStartTime().getTime());
+        final int timeLeft = (int) (quiz.getEndTime().getTime() - new Date().getTime());
 
-      String timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft),
-              TimeUnit.MILLISECONDS.toSeconds(timeLeft) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
-      timeRemainingTextView.setText(timeRemaining);
+        String timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft),
+                TimeUnit.MILLISECONDS.toSeconds(timeLeft) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
+        timeRemainingTextView.setText(timeRemaining);
 
-      if (timeLeft < (endTime / 4)) {
-          threeQuartersFlag = true;
-          halfwayFlag = true;
-          quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
-      } else if (timeLeft < endTime / 2) {
-          halfwayFlag = true;
-          quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
-      }
-
-
-
-      quizTimerProgressBar.setMax(endTime);
-      quizTimerProgressBar.setProgress(timeLeft);
+        if (timeLeft < (endTime / 4)) {
+            threeQuartersFlag = true;
+            halfwayFlag = true;
+            quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
+        } else if (timeLeft < endTime / 2) {
+            halfwayFlag = true;
+            quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
+        }
 
 
-      countDownTimer = new CountDownTimer(timeLeft, 1000) {
+        quizTimerProgressBar.setMax(endTime);
+        quizTimerProgressBar.setProgress(timeLeft);
 
 
-          @Override
-          public void onTick(long l) {
-              quizTimerProgressBar.setProgress(endTime - (int) l);
-              String timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(l),
-                      TimeUnit.MILLISECONDS.toSeconds(l) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
-              timeRemainingTextView.setText(timeRemaining);
+        countDownTimer = new CountDownTimer(timeLeft, 1000) {
+
+
+            @Override
+            public void onTick(long l) {
+                quizTimerProgressBar.setProgress(endTime - (int) l);
+                String timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(l),
+                        TimeUnit.MILLISECONDS.toSeconds(l) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
+                timeRemainingTextView.setText(timeRemaining);
 //              ObjectAnimator animation = ObjectAnimator.ofInt(quizTimerProgressBar, "progress", timeBeforeExpiry - (int) l);
 //              animation.setDuration(250); // 0.5 second
 //          animation.setInterpolator(new DecelerateInterpolator());
 //              animation.start();
 
-              if (halfwayFlag == false) {
-                  if (l < endTime / 2) {
-                      halfwayFlag = true;
-                      quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
-                  }
-              } else {
-                  if (threeQuartersFlag == false) {
-                      if (l < (endTime / 4)) {
-                          threeQuartersFlag = true;
-                          quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
-                      }
-                  }
-              }
+                if (halfwayFlag == false) {
+                    if (l < endTime / 2) {
+                        halfwayFlag = true;
+                        quizTimerProgressBar.setProgressDrawable(halfwayDoneDrawable);
+                    }
+                } else {
+                    if (threeQuartersFlag == false) {
+                        if (l < (endTime / 4)) {
+                            threeQuartersFlag = true;
+                            quizTimerProgressBar.setProgressDrawable(threeQuartersDoneDrawable);
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onFinish() {
+                quizTimerProgressBar.setProgress(quizTimerProgressBar.getMax());
+                userConfirmedSubmission();
 
-          }
-
-          @Override
-          public void onFinish() {
-              quizTimerProgressBar.setProgress(quizTimerProgressBar.getMax());
-              userConfirmedSubmission();
-
-          }
-      }.start();
-  }
+            }
+        }.start();
+    }
 
 
     @Override
@@ -266,7 +263,7 @@ public class IndividualQuizActivity extends AppCompatActivity
         exitDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(exitDialog != null){
+                if (exitDialog != null) {
                     //dismiss
                 }
             }
@@ -276,66 +273,64 @@ public class IndividualQuizActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public void submitButtonClicked() {
 
-      //the user has clicked the "Finish" button
+        //the user has clicked the "Finish" button
 
-            IndividualQuizPersistence.sharedInstance(this).updateQuizInDatabase(quiz);
+        IndividualQuizPersistence.sharedInstance(this).updateQuizInDatabase(quiz);
 
-            //TODO: This code passes a list of unanswered questions, and a boolean array for all questions and whether
-                //or not they are answered. The plan is to allow the QuestionsUnfinishedFragment to display a list of
-                //unanswered questions, and then navigate the user to the first unanswered question. I hav
+        //TODO: This code passes a list of unanswered questions, and a boolean array for all questions and whether
+        //or not they are answered. The plan is to allow the QuestionsUnfinishedFragment to display a list of
+        //unanswered questions, and then navigate the user to the first unanswered question. I hav
 
-            ArrayList<QuizQuestion> unansweredQuestions = new ArrayList<>();
+        ArrayList<QuizQuestion> unansweredQuestions = new ArrayList<>();
 
-            for(QuizQuestion question: quiz.getQuestions()){
-                if(question.getPointsRemaining() != 0){
-                    unansweredQuestions.add(question);
-                }
+        for (QuizQuestion question : quiz.getQuestions()) {
+            if (question.getPointsRemaining() != 0) {
+                unansweredQuestions.add(question);
             }
+        }
 
-            if(unansweredQuestions.size() == 0){
-                //show finish confirmation alert
-                SubmissionAlertFragment submissionAlert = new SubmissionAlertFragment();
-                submissionAlert.show(getSupportFragmentManager(), "CONFIRM_SUBMISSION");
+        if (unansweredQuestions.size() == 0) {
+            //show finish confirmation alert
+            SubmissionAlertFragment submissionAlert = new SubmissionAlertFragment();
+            submissionAlert.show(getSupportFragmentManager(), "CONFIRM_SUBMISSION");
 
-            }
-            else{
+        } else {
 //                //show unanswered questions alert
 
-                submitSnackBar.dismiss();
+            submitSnackBar.dismiss();
 
 
-                int unanswered = unansweredQuestions.size();
+            int unanswered = unansweredQuestions.size();
 
-                quizSubmissionAlert = new AlertDialog.Builder(this)
-                        .setTitle("Submit Incomplete Quiz?")
-                        .setMessage("You have N unfinished questions remaining.\n You can submit the quiz unfinished, but cannot come back.")
-                        .setPositiveButton("Continue Quiz", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                userAcknowledgedUnfinishedQuestions();
+            quizSubmissionAlert = new AlertDialog.Builder(this)
+                    .setTitle("Submit Incomplete Quiz?")
+                    .setMessage("You have N unfinished questions remaining.\n You can submit the quiz unfinished, but cannot come back.")
+                    .setPositiveButton("Continue Quiz", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            userAcknowledgedUnfinishedQuestions();
+                        }
+                    })
+                    .setNegativeButton("Submit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            userConfirmedSubmission();
+                        }
+                    })
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
+                                submitSnackBar.show();
                             }
-                        })
-                        .setNegativeButton("Submit", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                userConfirmedSubmission();
-                            }
-                        })
-                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
-                                    submitSnackBar.show();
-                                }
-                            }
-                        })
-                        .create();
+                        }
+                    })
+                    .create();
 
-                quizSubmissionAlert.show();
+            quizSubmissionAlert.show();
 
 //                snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), unanswered + " questions unanswered.", Snackbar.LENGTH_LONG);
 //                snackbar.setAction("GO", new View.OnClickListener() {
@@ -356,7 +351,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 //                }
 //              });
 
-            }
+        }
     }
 
 
@@ -365,15 +360,14 @@ public class IndividualQuizActivity extends AppCompatActivity
         //Transition to first unanswered question
         int firstUnansweredIndex = 0;
 
-        for(QuizQuestion question: quiz.getQuestions()){
-            if(question.getPointsRemaining() != 0){
+        for (QuizQuestion question : quiz.getQuestions()) {
+            if (question.getPointsRemaining() != 0) {
                 mPager.setCurrentItem(firstUnansweredIndex);
-              if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
+                if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
                     submitSnackBar.show();
                 }
                 break;
-            }
-            else{
+            } else {
                 ++firstUnansweredIndex;
             }
         }
@@ -394,7 +388,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
         //TODO: When the quiz expires, if posting is unsuccessful, what to do then? Perhaps post the quiz the next time a user clicks it on the homescreen?
 
-      submittingFragment.show();
+        submittingFragment.show();
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -406,49 +400,49 @@ public class IndividualQuizActivity extends AppCompatActivity
 
 
         quizNetworkingService
-            .uploadQuiz(course.getCourseID(),
-                UserDataSource.getInstance().getUser().getUserID(), quiz.getAssociatedSessionID(),
-                quiz, new IndividualQuizPostCallback() {
-                  @Override
-                  public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
+                .uploadQuiz(course.getCourseID(),
+                        UserDataSource.getInstance().getUser().getUserID(), quiz.getAssociatedSessionID(),
+                        quiz, new IndividualQuizPostCallback() {
+                            @Override
+                            public void onQuizPostSuccess(GradedQuiz gradedQuiz) {
 
-                      quiz.setFinished(true);
+                                quiz.setFinished(true);
 
-                      //after setting the quiz to finished, save it to the database, so that when the user tries to open it after
-                      //restarting the app, the quiz will be marked as finished
-                      IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
-                              .updateQuizInDatabase(quiz);
+                                //after setting the quiz to finished, save it to the database, so that when the user tries to open it after
+                                //restarting the app, the quiz will be marked as finished
+                                IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
+                                        .updateQuizInDatabase(quiz);
 
-                      //set the id of the graded quiz to the id of the individual quiz
-                      gradedQuiz.setId(quiz.getId());
+                                //set the id of the graded quiz to the id of the individual quiz
+                                gradedQuiz.setId(quiz.getId());
 
-                      boolean writeSuccess = GradedQuizPersistence.sharedInstance(IndividualQuizActivity.this).writeGradedQuizToDatabase(gradedQuiz);
+                                boolean writeSuccess = GradedQuizPersistence.sharedInstance(IndividualQuizActivity.this).writeGradedQuizToDatabase(gradedQuiz);
 
-                      if (writeSuccess == true) {
-                          Intent i = new Intent(IndividualQuizActivity.this,
-                                  GroupWaitingAreaActivity.class);
-                          i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
-                          i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
-                          startActivity(i);
-                          submittingFragment.dismiss();
-                          finish();
+                                if (writeSuccess == true) {
+                                    Intent i = new Intent(IndividualQuizActivity.this,
+                                            GroupWaitingAreaActivity.class);
+                                    i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
+                                    i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
+                                    startActivity(i);
+                                    submittingFragment.dismiss();
+                                    finish();
 
-                      } else {
-                          submittingFragment.dismiss();
-                          Toast.makeText(IndividualQuizActivity.this, "Failed to save graded quiz to DB", Toast.LENGTH_LONG).show();
+                                } else {
+                                    submittingFragment.dismiss();
+                                    Toast.makeText(IndividualQuizActivity.this, "Failed to save graded quiz to DB", Toast.LENGTH_LONG).show();
 
-                      }
+                                }
 
-                  }
+                            }
 
-                  @Override
-                  public void onQuizPostFailure(VolleyError error) {
-                    submittingFragment.dismiss();
-                    Toast.makeText(IndividualQuizActivity.this, "Can't submit quiz yet",
-                        Toast.LENGTH_LONG).show();
-                      finish();
-                  }
-                });
+                            @Override
+                            public void onQuizPostFailure(VolleyError error) {
+                                submittingFragment.dismiss();
+                                Toast.makeText(IndividualQuizActivity.this, "Can't submit quiz yet",
+                                        Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
 
     }
 
@@ -458,66 +452,66 @@ public class IndividualQuizActivity extends AppCompatActivity
     }
 
 
-  //ViewPager Helper Classes
+    //ViewPager Helper Classes
 
-  private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    public ScreenSlidePagerAdapter(FragmentManager fm) {
-      super(fm);
-    }
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-    @Override
-    public Fragment getItem(int position) {
-      IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
-      Bundle extras = new Bundle();
-      extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
-      extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
-      extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
-      newFrag.setArguments(extras);
-      return newFrag;
-    }
+        @Override
+        public Fragment getItem(int position) {
+            IndividualQuizQuestionFragment newFrag = new IndividualQuizQuestionFragment();
+            Bundle extras = new Bundle();
+            extras.putInt(EXTRA_QUIZ_QUESTION_NUMBER, position + 1);
+            extras.putSerializable(EXTRA_QUIZ_QUESTION, quiz.getQuestions().get(position));
+            extras.putInt(EXTRA_QUIZ_QUESTION_TOTAL_QUESTIONS, this.getCount());
+            newFrag.setArguments(extras);
+            return newFrag;
+        }
 
-    @Override
-    public int getCount() {
-      return quiz.getQuestions().size();
-    }
-
-  }
-
-  public class DetailOnPageChangeListener implements OnPageChangeListener {
-
-    private int currentPage;
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        @Override
+        public int getCount() {
+            return quiz.getQuestions().size();
+        }
 
     }
 
-    @Override
-    public void onPageSelected(int position) {
-      //Page was changed; save quiz
-      currentPage = position;
-      IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
-          .updateQuizInDatabase(quiz);
+    public class DetailOnPageChangeListener implements OnPageChangeListener {
 
-      if (position == mAdapter.getCount() - 1) {
-        submitSnackBar.show();
-      } else {
-        submitSnackBar.dismiss();
-      }
+        private int currentPage;
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            //Page was changed; save quiz
+            currentPage = position;
+            IndividualQuizPersistence.sharedInstance(IndividualQuizActivity.this.getApplicationContext())
+                    .updateQuizInDatabase(quiz);
+
+            if (position == mAdapter.getCount() - 1) {
+                submitSnackBar.show();
+            } else {
+                submitSnackBar.dismiss();
+            }
 
 
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+
+        public final int getCurrentPage() {
+            return currentPage;
+        }
     }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    public final int getCurrentPage() {
-      return currentPage;
-    }
-  }
 
 
 }
