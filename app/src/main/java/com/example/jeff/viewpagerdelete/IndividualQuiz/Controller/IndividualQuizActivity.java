@@ -307,7 +307,7 @@ public class IndividualQuizActivity extends AppCompatActivity
 
             quizSubmissionAlert = new AlertDialog.Builder(this)
                     .setTitle("Submit Incomplete Quiz?")
-                    .setMessage("You have N unfinished questions remaining.\n You can submit the quiz unfinished, but cannot come back.")
+                    .setMessage("You have " + unanswered + " unfinished questions remaining.\n You can submit the quiz unfinished, but cannot come back.")
                     .setPositiveButton("Continue Quiz", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

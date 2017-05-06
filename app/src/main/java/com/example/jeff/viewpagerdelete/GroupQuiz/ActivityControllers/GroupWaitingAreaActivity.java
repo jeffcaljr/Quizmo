@@ -131,6 +131,13 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         TextView emailTextView = (TextView) headerView.findViewById(R.id.header_email);
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
 
+        userNameTextView.setText("@" + UserDataSource.getInstance().getUser().getUserID());
+
+        fullNameTextView.setText(UserDataSource.getInstance().getUser().getFirstName() + " " + UserDataSource.getInstance().getUser().getLastName());
+
+        emailTextView.setText(UserDataSource.getInstance().getUser().getEmail());
+        courseNameTextView.setText(course.getName());
+
 
         //listen for group status updates
         bManager = LocalBroadcastManager.getInstance(this);
@@ -170,11 +177,7 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_courses) {
-            finish();
-        } else if (id == R.id.nav_quizzes) {
-            finish();
-        } else if (id == R.id.nav_logout) {
+        if (id == R.id.nav_logout) {
             //delete user from db to simulate revoking auth token
             UserDBMethods.ClearUserDB(userDB);
             Intent i = new Intent(this, LoginActivity.class);

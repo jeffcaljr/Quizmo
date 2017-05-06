@@ -161,14 +161,7 @@ public class HomePageActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_courses) {
-            if (!courseListFragment.isVisible()) {
-                showCoursesFragment();
-            }
-        } else if (id == R.id.nav_quizzes) {
-
-
-        } else if (id == R.id.nav_logout) {
+        if (id == R.id.nav_logout) {
             //delete user from db to simulate revoking auth token
             UserDBMethods.ClearUserDB(userDB);
             Intent i = new Intent(this, LoginActivity.class);
