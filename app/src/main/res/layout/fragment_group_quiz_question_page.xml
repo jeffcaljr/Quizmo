@@ -103,27 +103,31 @@
       android:paddingBottom="8dp"
       android:clipToPadding="false"
       android:layout_below="@id/quiz_question_card"
-      android:layout_above="@+id/group_quiz_individual_points_scrollview"
+      android:layout_above="@+id/group_quiz_individual_points_layout"
       android:background="@color/jccolorAppBackground"></android.support.v7.widget.RecyclerView>
 
-    <HorizontalScrollView
-        android:id="@+id/group_quiz_individual_points_scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@color/jccolorPrimaryBright"
-        android:layout_alignParentBottom="true">
+    <!--<HorizontalScrollView-->
+    <!--android:id="@+id/group_quiz_individual_points_scrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:background="@color/jccolorPrimaryBright"-->
+    <!--android:layout_alignParentBottom="true">-->
 
 
         <RelativeLayout
+            android:id="@+id/group_quiz_individual_points_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/jccolorPrimary"
+            android:layout_alignParentBottom="true"
             android:paddingTop="4dp"
             android:paddingLeft="4dp">
 
             <TextView
                 android:id="@+id/your_answers_label"
                 android:text="Your Answers:"
-                android:textColor="@color/jccolorAccentMuted"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -131,7 +135,7 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:minWidth="300dp"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -189,7 +193,7 @@
         </RelativeLayout>
 
 
-    </HorizontalScrollView>
+    <!--</HorizontalScrollView>-->
 
 
 </RelativeLayout>

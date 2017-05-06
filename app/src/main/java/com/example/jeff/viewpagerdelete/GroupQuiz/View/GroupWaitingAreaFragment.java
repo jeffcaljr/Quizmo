@@ -59,7 +59,7 @@ public class GroupWaitingAreaFragment extends Fragment {
 
     private TextView groupNameTextView;
     private FButton startGroupQuizButton;
-    private ImageButton refreshButton;
+//    private ImageButton refreshButton;
 
     private Drawable doneDrawable;
     private Drawable inProgressDrawable;
@@ -107,7 +107,7 @@ public class GroupWaitingAreaFragment extends Fragment {
 
             startGroupQuizButton = (FButton) view.findViewById(R.id.qroup_waiting_area_start_quiz_button);
             groupNameTextView = (TextView) view.findViewById(R.id.group_name_textview);
-            refreshButton = (ImageButton) view.findViewById(R.id.group_waiting_area_refresh_imgbtn);
+//            refreshButton = (ImageButton) view.findViewById(R.id.group_waiting_area_refresh_imgbtn);
 
             groupNameTextView.setText(group.getName());
 
@@ -129,7 +129,14 @@ public class GroupWaitingAreaFragment extends Fragment {
                             GroupStatusPollingService.setServiceAlarm(getActivity(), false, group, course, quiz);
                             groupQuizStartListener.onGroupQuizStarted();
                         }
-                    }).create();
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            confirmStartDialog.dismiss();
+                        }
+                    })
+                    .create();
 
 
             memberNames = new ArrayList<>();

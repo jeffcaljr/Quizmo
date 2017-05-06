@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/quiz_card_side_margin"
@@ -59,7 +60,8 @@
                 android:layout_centerVertical="true"
                 android:background="#00000000"
                 android:src="@drawable/ic_correct_white"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:tint="@color/jccolorAccent" />
         </RelativeLayout>
 
 
@@ -84,7 +86,7 @@
                 android:scrollbars="vertical"
                 android:text="@string/lorem_long"
                 android:textAlignment="viewStart"
-                android:textColor="@color/jccolorPrimaryDark"
+                android:textColor="@color/primary_text"
                 android:textSize="22sp" />
 
             <LinearLayout
@@ -100,15 +102,23 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 
-                <Button
+
+                <info.hoang8f.widget.FButton
                     android:id="@+id/group_quiz_answer_submit_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:background="@drawable/button_rounded_edges"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/password_field"
+                    android:layout_centerHorizontal="true"
                     android:text="Submit"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    fbutton:buttonColor="@color/jccolorBrightButton"
+                    fbutton:cornerRadius="10dp"
+                    fbutton:shadowEnabled="true"
+                    fbutton:shadowHeight="5dp" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="0dp"

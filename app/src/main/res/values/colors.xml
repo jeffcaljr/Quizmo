@@ -45,10 +45,10 @@
     <color name="divider">#BDBDBD</color>
     <color name="jccolorCorrectMask">#8F81C784</color>
     <color name="jccolorIncorrectMask">#8FE57373</color>
-    <color name="jccolorUnansweredMask">#2F000000</color>
+    <color name="jccolorUnansweredMask">#8F757575</color>
     <color name="jccolorAppBackground">#263238</color>
     <color name="jccolorBlueGrayLight">#263238</color>
-    <color name="jccolorBrightButton">#F50057</color>
+    <color name="jccolorBrightButton">#2196F3</color>
     <color name="jccolorDoneGreen">#4CAF50</color>
     <color name="jccolorNotStartedRed">#F44336</color>
     <color name="jccolorInProgressYellow">#FFEB3B</color>

@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import info.hoang8f.widget.FButton;
+
 /**
  * Created by Jeff on 4/23/17.
  */
@@ -329,7 +331,7 @@ public class GroupQuizQuestionFragment extends Fragment {
         private TextView mAnswerValue;
         private TextView mAnswerText;
         private ImageView mResultLabel;
-        private Button mSubmitAnswerButton;
+        private FButton mSubmitAnswerButton;
         private TextView mAnswerTextPreview;
 
         private RelativeLayout answerCardHeader;
@@ -344,7 +346,7 @@ public class GroupQuizQuestionFragment extends Fragment {
             mAnswerValue = (TextView) itemView.findViewById(R.id.quiz_answer_label);
             mAnswerText = (TextView) itemView.findViewById(R.id.quiz_answer_text);
             mResultLabel = (ImageView) itemView.findViewById(R.id.group_quiz_answer_result_icon);
-            mSubmitAnswerButton = (Button) itemView.findViewById(R.id.group_quiz_answer_submit_btn);
+            mSubmitAnswerButton = (FButton) itemView.findViewById(R.id.group_quiz_answer_submit_btn);
             mAnswerTextPreview = (TextView) itemView.findViewById(R.id.quiz_answer_text_preview);
             answerCardHeader = (RelativeLayout) itemView.findViewById(R.id.quiz_answer_card_header);
             answerCardContent = (ExpandableRelativeLayout) itemView

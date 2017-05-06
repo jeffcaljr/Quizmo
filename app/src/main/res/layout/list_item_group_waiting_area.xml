@@ -3,46 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/jccolorPrimaryDark"
-    app:cardElevation="6dp"
-    app:contentPadding="4dp">
+    app:cardBackgroundColor="@color/jccolorAppBackground">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
-
-        <ImageView
-            android:id="@+id/group_waiting_area_list_item_leader_icon"
-            android:src="@drawable/ic_star"
-            android:visibility="visible"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:tint="@color/jccolorAccent" />
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
-        <TextView
-            android:id="@+id/group_waiting_area_list_item_user_name"
-            android:text="User Name"
-            android:textColor="@color/colorWhite"
-            android:layout_width="0dp"
-            android:textSize="16dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/group_waiting_area_list_item_status_indicator"
-            android:src="@drawable/group_waiting_area_indicator_icon_not_started"
-            android:layout_width="0dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            <ImageView
+                android:id="@+id/group_waiting_area_list_item_leader_icon"
+                android:src="@drawable/ic_star"
+                android:visibility="visible"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="@color/jccolorAccent" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/group_waiting_area_list_item_user_name"
+                android:text="User Name"
+                android:textColor="@color/colorWhite"
+                android:layout_width="0dp"
+                android:textSize="16dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/group_waiting_area_list_item_status_indicator"
+                android:src="@drawable/group_waiting_area_indicator_icon_not_started"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_height="1px"
+            android:background="@color/divider"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
 
 </android.support.v7.widget.CardView>

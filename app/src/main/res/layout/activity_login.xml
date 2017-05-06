@@ -90,32 +90,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="42dp">
-
-                <EditText
-                    android:id="@+id/user_id_field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
-                    android:drawableLeft="@drawable/ic_user"
-                    android:drawablePadding="8dp"
-                    android:hint="Username"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
-                    android:maxLines="1"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#FFFFFF" />
+                android:layout_marginBottom="16dp">
 
                 <EditText
                     android:visibility="invisible"
                     android:id="@+id/password_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_id_field"
+                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="#FFFFFF"
@@ -131,11 +113,30 @@
                     android:textColor="#FFFFFF"
                     android:textColorHint="#FFFFFF" />
 
+                <EditText
+                    android:id="@+id/user_id_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/password_field"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/ic_user"
+                    android:drawablePadding="8dp"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
+
+
                 <info.hoang8f.widget.FButton
                     android:id="@+id/login_button"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@id/password_field"
+                    android:layout_below="@id/user_id_field"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
