@@ -111,6 +111,7 @@
                     android:textColorHint="#FFFFFF" />
 
                 <EditText
+                    android:visibility="invisible"
                     android:id="@+id/password_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -150,22 +151,6 @@
                     fbutton:shadowEnabled="true"
                     fbutton:shadowHeight="5dp" />
 
-                <!--<Button-->
-                <!--android:id="@+id/login_button"-->
-                <!--android:text="Login"-->
-                <!--android:padding="16dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:background="@drawable/button_rounded_edges"-->
-                <!--android:elevation="10dp"-->
-                <!--android:textColor="@color/colorWhite"-->
-                <!--android:textSize="18sp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="8dp"-->
-                <!--android:layout_marginRight="8dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_below="@id/password_field"-->
-                <!--android:layout_marginTop="16dp"-->
-                <!--style="@android:style/Widget.DeviceDefault.Button.Inset"/>-->
             </RelativeLayout>
 
         </RelativeLayout>

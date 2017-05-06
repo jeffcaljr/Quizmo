@@ -215,9 +215,9 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
                     swipeRefreshLayout.setRefreshing(false);
 
-                    Toast.makeText(GroupQuizActivity.this,
-                            (gradedGroupQuiz.getTotalQuestions() - gradedGroupQuiz.getQuestionsAnswered())
-                                    + "questions left", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(GroupQuizActivity.this,
+//                            (gradedGroupQuiz.getTotalQuestions() - gradedGroupQuiz.getQuestionsAnswered())
+//                                    + "questions left", Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -225,9 +225,9 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
             @Override
             public void onGroupQuizProgressFailure(VolleyError error) {
-                Toast
-                        .makeText(GroupQuizActivity.this, "Error updating quiz progress", Toast.LENGTH_LONG)
-                        .show();
+//                Toast
+//                        .makeText(GroupQuizActivity.this, "Error updating quiz progress", Toast.LENGTH_LONG)
+//                        .show();
                 gradedGroupQuiz = new GradedGroupQuiz();
 
 
@@ -264,8 +264,8 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
                     @Override
                     public void onGroupQuizAnswerPostFailure(VolleyError error) {
-                        Toast.makeText(GroupQuizActivity.this, "Error submitting group quiz answer",
-                                Toast.LENGTH_LONG).show();
+//                        Toast.makeText(GroupQuizActivity.this, "Error submitting group quiz answer",
+//                                Toast.LENGTH_LONG).show();
                     }
                 });
 
