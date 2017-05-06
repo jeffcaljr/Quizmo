@@ -74,7 +74,9 @@ public class IndividualQuizActivity extends AppCompatActivity
   private ProgressBar quizTimerProgressBar;
     private TextView timeRemainingTextView;
 
-    private Snackbar snackbar;
+    private AlertDialog quizSubmissionAlert;
+
+//    private Snackbar snackbar;
 
     private Course course;
     private Quiz quiz;
@@ -304,27 +306,55 @@ public class IndividualQuizActivity extends AppCompatActivity
 //                //show unanswered questions alert
 
                 submitSnackBar.dismiss();
-                int unanswered = unansweredQuestions.size();
-                snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), unanswered + " questions unanswered.", Snackbar.LENGTH_LONG);
-              snackbar
-                  .setActionTextColor(ContextCompat.getColor(this, R.color.jccolorPrimaryBright));
-                snackbar.setAction("GO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        userAcknowledgedUnfinishedQuestions();
-                    }
-                });
 
-                snackbar.show();
-              snackbar.setCallback(new Callback() {
-                @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                  super.onDismissed(snackbar, event);
-                  if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
-                    submitSnackBar.show();
-                  }
-                }
-              });
+
+                int unanswered = unansweredQuestions.size();
+
+                quizSubmissionAlert = new AlertDialog.Builder(this)
+                        .setTitle("Submit Incomplete Quiz?")
+                        .setMessage("You have N unfinished questions remaining.\n You can submit the quiz unfinished, but cannot come back.")
+                        .setPositiveButton("Continue Quiz", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                userAcknowledgedUnfinishedQuestions();
+                            }
+                        })
+                        .setNegativeButton("Submit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                userConfirmedSubmission();
+                            }
+                        })
+                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
+                                    submitSnackBar.show();
+                                }
+                            }
+                        })
+                        .create();
+
+                quizSubmissionAlert.show();
+
+//                snackbar = Snackbar.make(((ViewGroup) findViewById(android.R.id.content)).getChildAt(0), unanswered + " questions unanswered.", Snackbar.LENGTH_LONG);
+//                snackbar.setAction("GO", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        userAcknowledgedUnfinishedQuestions();
+//                    }
+//                });
+
+//                snackbar.show();
+//              snackbar.setCallback(new Callback() {
+//                @Override
+//                public void onDismissed(Snackbar snackbar, int event) {
+//                  super.onDismissed(snackbar, event);
+//                  if (onPageChangeListener.getCurrentPage() == mAdapter.getCount() - 1) {
+//                    submitSnackBar.show();
+//                  }
+//                }
+//              });
 
             }
     }

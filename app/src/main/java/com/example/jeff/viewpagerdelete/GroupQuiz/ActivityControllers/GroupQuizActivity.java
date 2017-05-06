@@ -209,9 +209,9 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
                     //Start listening for group quiz progress, if the user is not the group leader
 
-//                    if (isGroupLeader == false) {
+                    if (isGroupLeader == false) {
                     GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
-//                    }
+                    }
 
                     swipeRefreshLayout.setRefreshing(false);
 
@@ -233,9 +233,9 @@ public class GroupQuizActivity extends AppCompatActivity implements
 
                 //Start listening for group quiz progress, if the user is not the group leader
 
-//                if (isGroupLeader == false) {
+                if (isGroupLeader == false) {
                 GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
-//                }
+                }
 
                 swipeRefreshLayout.setRefreshing(false);
 

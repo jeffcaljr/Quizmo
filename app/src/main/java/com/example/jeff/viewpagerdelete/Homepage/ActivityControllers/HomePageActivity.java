@@ -276,7 +276,7 @@ public class HomePageActivity extends AppCompatActivity
 
 //                        showQuizzesFragment();
                         manager.beginTransaction()
-//                                .addToBackStack(StartQuizFragment.TAG)
+                                .addToBackStack(StartQuizFragment.TAG)
                                 .replace(R.id.list_container, startQuizFragment, StartQuizFragment.TAG)
                                 .commit();
                     }
