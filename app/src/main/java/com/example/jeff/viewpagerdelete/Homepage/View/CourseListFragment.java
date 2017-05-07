@@ -38,6 +38,8 @@ import java.util.Collections;
 
 public class CourseListFragment extends Fragment implements OnRefreshListener {
 
+    public static final String TAG = "CourseListFragment";
+
     public static final String ARG_COURSES_COURSE_LIST_FRAGMENT = "ARG_COURSES_COURSE_LIST_FRAGMENT";
 
     private ArrayList<Course> courses;

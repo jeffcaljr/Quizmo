@@ -205,31 +205,40 @@ public class HomePageActivity extends AppCompatActivity
 
     private void showCoursesFragment() {
         manager.beginTransaction()
+                .addToBackStack(CourseListFragment.TAG)
                 .replace(R.id.list_container, courseListFragment, FRAG_TAG_COURSE_LIST)
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .commit();
     }
 
     private void onQuizFound(Quiz quiz, Course course) {
+        loadingFragment.show();
         Intent i = new Intent(this, IndividualQuizActivity.class);
         Log.d("QUIZ", quiz.toJSON());
         i.putExtra(IndividualQuizActivity.INTENT_EXTRA_QUIZ, quiz);
         i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
         i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
-
         startActivity(i);
+        getSupportFragmentManager().popBackStack(StartQuizFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        loadingFragment.dismissWithDelay(500);
     }
 
     @Override
     public void onUserInitiatedQuizStart(Course course) {
         //try to load quiz from SQLite, and if unsuccessful, try to load quiz from network
 
-        loadingFragment.show();
+        TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
 
-        //Attempt to load quiz from SQLite
-        QuizLoadTask quizLoadTask = new QuizLoadTask(this, course);
-        quizLoadTask.listener = this;
-        quizLoadTask.execute();
+        loadingFragment.dismissWithDelay(500);
+
+        tokenCodeFragment.show();
+
+//        loadingFragment.show();
+//
+//        //Attempt to load quiz from SQLite
+//        QuizLoadTask quizLoadTask = new QuizLoadTask(this, course);
+//        quizLoadTask.listener = this;
+//        quizLoadTask.execute();
 
     }
 
@@ -260,37 +269,26 @@ public class HomePageActivity extends AppCompatActivity
 
 //                        quizListFragment = (QuizListFragment) manager.findFragmentByTag(FRAG_TAG_QUIZ_LIST);
 
-                        startQuizFragment = (StartQuizFragment) manager.findFragmentByTag(StartQuizFragment.TAG);
+                        //find the quiz associated with the course you clicked
+                        Course selectedCourse = null;
 
-                        if (startQuizFragment == null) {
-                            Bundle args = new Bundle();
-
-                            //find the quiz associated with the course you clicked
-                            Course selectedCourse = null;
-
-                            for (Course returnedCourse : courses) {
-                                if (course.getCourseID().equals(returnedCourse.getCourseID())) {
-                                    selectedCourse = returnedCourse;
-                                    break;
-                                }
+                        for (Course returnedCourse : courses) {
+                            if (course.getCourseID().equals(returnedCourse.getCourseID())) {
+                                selectedCourse = returnedCourse;
+                                break;
                             }
-
-                            selectedCourse.setId(course.getId());
-
-                            args.putSerializable(StartQuizFragment.ARG_COURSE,
-                                    selectedCourse);
-//                            quizListFragment = new QuizListFragment();
-//                            quizListFragment.setArguments(args);
-                            startQuizFragment = new StartQuizFragment();
-                            startQuizFragment.setArguments(args);
-
                         }
 
-//                        showQuizzesFragment();
-                        manager.beginTransaction()
-//                                .addToBackStack(StartQuizFragment.TAG)
-                                .replace(R.id.list_container, startQuizFragment, StartQuizFragment.TAG)
-                                .commit();
+                        selectedCourse.setId(course.getId());
+
+                        loadingFragment.show();
+
+                        //Attempt to load quiz from SQLite
+                        QuizLoadTask quizLoadTask = new QuizLoadTask(HomePageActivity.this, selectedCourse);
+                        quizLoadTask.listener = HomePageActivity.this;
+                        quizLoadTask.execute();
+
+
                     }
 
                     @Override
@@ -403,11 +401,32 @@ public class HomePageActivity extends AppCompatActivity
             }
         } else {
             //the quiz isn't in the SQLite database, so it hasn't been started; request token code
-            TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
+//            TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
+//
+//            loadingFragment.dismissWithDelay(500);
+//
+//            tokenCodeFragment.show();
+
+            startQuizFragment = (StartQuizFragment) manager.findFragmentByTag(StartQuizFragment.TAG);
+
+            if (startQuizFragment == null) {
+                Bundle args = new Bundle();
+
+
+                args.putSerializable(StartQuizFragment.ARG_COURSE,
+                        course);
+                startQuizFragment = new StartQuizFragment();
+                startQuizFragment.setArguments(args);
+
+            }
+
+//                        showQuizzesFragment();
+            manager.beginTransaction()
+                    .addToBackStack(StartQuizFragment.TAG)
+                    .replace(R.id.list_container, startQuizFragment, StartQuizFragment.TAG)
+                    .commit();
 
             loadingFragment.dismissWithDelay(500);
-
-            tokenCodeFragment.show();
         }
     }
 }
