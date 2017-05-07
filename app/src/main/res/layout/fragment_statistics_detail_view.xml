@@ -89,7 +89,7 @@
         android:id="@+id/statistics_user_individual_answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/jccolorPrimaryDark"
+        app:cardBackgroundColor="@color/jccolorAccent"
         app:cardElevation="8dp"
         app:contentPadding="@dimen/quiz_card_content_padding"
         android:layout_below="@id/statistics_question_card"
@@ -103,7 +103,7 @@
             <TextView
                 android:id="@+id/statistics_user_answers_label"
                 android:text="Your Answers:"
-                android:textColor="@color/jccolorAccentMuted"
+                android:textColor="@color/colorWhite"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:layout_width="match_parent"
@@ -171,7 +171,7 @@
     <TextView
         android:id="@+id/statistics_group_answers_label"
         android:text="Group Answers:"
-        android:textColor="@color/jccolorAccentMuted"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:textSize="12sp"
         android:layout_marginTop="8dp"

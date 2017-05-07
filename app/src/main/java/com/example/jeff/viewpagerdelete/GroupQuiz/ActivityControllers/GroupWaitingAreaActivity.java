@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 
+import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
@@ -49,6 +51,8 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
 
     public static final String EXTRA_COURSE = "EXTRA_COURSE";
     public static final String EXTRA_QUIZ = "EXTRA_GRADED_QUIZ";
+
+    private SwipeRefreshLayout swipeRefresher;
 
     private FragmentManager manager;
     private GroupWaitingAreaFragment groupWaitingAreaFragment;
@@ -102,6 +106,35 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         }
 
         getSupportActionBar().setTitle("Group Waiting Queue");
+
+        swipeRefresher = (SwipeRefreshLayout) findViewById(R.id.waiting_area_swipe_refresher);
+
+        swipeRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                groupNetworkingService.getGroupStatus(group, course, quiz, new GroupNetworkingService.GroupStatusDownloadCallback() {
+                    @Override
+                    public void onGroupStatusSuccess(ArrayList<GroupMemberStatus> statuses) {
+                        groupWaitingAreaFragment.onStatusUpdate(statuses);
+                        swipeRefresher.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onGroupStatusFailure(VolleyError error) {
+
+                        swipeRefresher.setRefreshing(false);
+
+                        if (error instanceof NetworkError) {
+                            Toast.makeText(GroupWaitingAreaActivity.this, "Failed to load status of group", Toast.LENGTH_LONG).show();
+                        } else {
+                            groupWaitingAreaFragment.onStatusUpdate(new ArrayList<GroupMemberStatus>());
+                        }
+
+
+                    }
+                });
+            }
+        });
 
 
         manager = getSupportFragmentManager();

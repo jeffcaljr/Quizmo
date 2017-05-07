@@ -2,6 +2,7 @@ package com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -184,6 +186,30 @@ public class GroupQuizActivity extends AppCompatActivity implements
         GroupQuizProgressPollingService.setServiceAlarm(this, false, group, quiz);
     }
 
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder exitDialog = new AlertDialog.Builder(this);
+        exitDialog.setTitle("Exit Quiz");
+        exitDialog.setMessage("Are you sure you wish to exit the quiz? You can resume later as long as your group hasn't completed it.");
+        exitDialog.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                GroupQuizActivity.super.onBackPressed();
+            }
+        });
+
+        exitDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (exitDialog != null) {
+                    //dismiss
+                }
+            }
+        });
+
+        exitDialog.create().show();
+    }
+
     private void updateQuizProgress() {
         groupNetworkingService.getGroupQuizProgress(quiz, group, new GroupQuizProgressDownloadCallback() {
             @Override
@@ -210,7 +236,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
                     //Start listening for group quiz progress, if the user is not the group leader
 
                     if (isGroupLeader == false) {
-                    GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
+                        GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
                     }
 
                     swipeRefreshLayout.setRefreshing(false);
@@ -234,7 +260,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
                 //Start listening for group quiz progress, if the user is not the group leader
 
                 if (isGroupLeader == false) {
-                GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
+                    GroupQuizProgressPollingService.setServiceAlarm(GroupQuizActivity.this, true, group, quiz);
                 }
 
                 swipeRefreshLayout.setRefreshing(false);

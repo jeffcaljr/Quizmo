@@ -87,7 +87,7 @@ public class GroupQuizProgressPollingService extends IntentService {
 
         GroupQuizProgressPollingService.group = group;
         GroupQuizProgressPollingService.quiz = quiz;
-        PendingIntent pendingIntent = PendingIntent.getService(context.getApplicationContext(), REQUEST_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(context.getApplicationContext(), REQUEST_CODE, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);

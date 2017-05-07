@@ -235,6 +235,11 @@ public class GroupWaitingAreaFragment extends Fragment {
     }
 
 
+    /**
+     * Called when the group members' statuses are updated. If whole group's status is finished, stops listening for automatic status updates
+     *
+     * @param statuses ArrayList of statuses; one for each group member who has at least started their individual quiz
+     */
     public void onStatusUpdate(ArrayList<GroupMemberStatus> statuses) {
         statusLoaded = true;
         this.statuses = statuses;
@@ -272,6 +277,11 @@ public class GroupWaitingAreaFragment extends Fragment {
         }
     }
 
+
+    /**
+     * Checks if every member of the group is finished with their individual quiz
+     * @return true if all members of the group are finished with their individual quiz; false otherwise
+     */
     private boolean isWholeGroupFinished() {
         boolean wholeGroupFinished = true;
 
@@ -291,6 +301,10 @@ public class GroupWaitingAreaFragment extends Fragment {
         return wholeGroupFinished;
     }
 
+
+    /**
+     * RecyclerView Classes
+     */
 
     private class GroupAdapter extends RecyclerView.Adapter<GroupMemberHolder> {
         @Override

@@ -299,7 +299,7 @@ public class HomePageActivity extends AppCompatActivity
         if (writeSuccess) {
             onQuizFound(quiz, course);
         } else {
-            Toast.makeText(this, "unable to write quiz to sqlite...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error saving quiz to local storage.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -312,7 +312,7 @@ public class HomePageActivity extends AppCompatActivity
             //Loaded Quiz From SQLite Successfully
 
             if (quiz.isFinished()) {
-                Toast.makeText(HomePageActivity.this, "Quiz is finished!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HomePageActivity.this, "Quiz is finished!", Toast.LENGTH_SHORT).show();
 
                 //Maybe check group progress for the given quiz, and move to next activity accordingly?
 
@@ -340,7 +340,7 @@ public class HomePageActivity extends AppCompatActivity
                                     i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
                                     i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
                                     startActivity(i);
-                                    loadingFragment.dismiss();
+                                    loadingFragment.dismissWithDelay(500);
                                 }
                             }
 
@@ -353,7 +353,7 @@ public class HomePageActivity extends AppCompatActivity
                                 i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
                                 i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
                                 startActivity(i);
-                                loadingFragment.dismiss();
+                                loadingFragment.dismissWithDelay(500);
                             }
                         });
                     }
@@ -376,13 +376,13 @@ public class HomePageActivity extends AppCompatActivity
                 i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
                 i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
                 startActivity(i);
-                loadingFragment.dismiss();
+                loadingFragment.dismissWithDelay(500);
             }
         } else {
             //the quiz isn't in the SQLite database, so it hasn't been started; request token code
             TokenCodeFragment tokenCodeFragment = new TokenCodeFragment(this, course);
 
-            loadingFragment.dismiss();
+            loadingFragment.dismissWithDelay(500);
 
             tokenCodeFragment.show();
         }

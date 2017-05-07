@@ -58,7 +58,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="4"
-                android:textColor="@color/jccolorAccent"
+                android:textColor="@color/jccolorAccentMuted"
                 android:textSize="28sp"
                 android:textStyle="bold" />
         </RelativeLayout>

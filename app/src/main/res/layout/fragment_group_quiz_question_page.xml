@@ -118,7 +118,7 @@
             android:id="@+id/group_quiz_individual_points_layout"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="@color/jccolorPrimary"
+            android:background="@color/jccolorAccent"
             android:layout_alignParentBottom="true"
             android:paddingTop="4dp"
             android:paddingLeft="4dp">

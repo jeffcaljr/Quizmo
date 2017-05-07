@@ -32,7 +32,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:text="@string/group_name"
-            android:textColor="@color/jccolorAccent"
+            android:textColor="@color/jccolorPrimaryBright"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginTop="4dp"
             android:text="Individual Quiz Status"
-            android:textColor="@color/jccolorAccentMuted"
+            android:textColor="@color/colorWhite"
             android:textSize="14sp"
             android:textStyle="bold" />
 

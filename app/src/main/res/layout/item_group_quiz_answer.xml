@@ -61,7 +61,7 @@
                 android:background="#00000000"
                 android:src="@drawable/ic_correct_white"
                 android:visibility="invisible"
-                android:tint="@color/jccolorAccent" />
+                android:tint="@color/jccolorAccentMuted" />
         </RelativeLayout>
 
 

@@ -151,11 +151,11 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
 
     private class CourseAdapter extends RecyclerView.Adapter<CourseHolder>{
 
-        public ColorAlternatorUtil colorAlternatorUtil;
+//        public ColorAlternatorUtil colorAlternatorUtil;
 
       public CourseAdapter() {
         coursesCopy.addAll(courses);
-          colorAlternatorUtil = new ColorAlternatorUtil(getActivity());
+//          colorAlternatorUtil = new ColorAlternatorUtil(getActivity());
       }
 
       @Override
@@ -169,7 +169,8 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
         @Override
         public void onBindViewHolder(CourseHolder holder, int position) {
 
-            holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
+//            holder.bindCourse(courses.get(position), colorAlternatorUtil.getNextDefaultColorSet());
+            holder.bindCourse(courses.get(position));
 
         }
 
@@ -223,11 +224,13 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
             itemView.setOnClickListener(this);
         }
 
-        public void bindCourse(Course course, ColorAlternatorUtil.ColorSet colorSet) {
-            itemView.setBackgroundColor(colorSet.getBackGroundColor());
+        //        public void bindCourse(Course course, ColorAlternatorUtil.ColorSet colorSet) {
+        public void bindCourse(Course course) {
 
-            courseNameTextView.setTextColor(colorSet.getForegroundColor());
-            instructorNameTextView.setTextColor(colorSet.getForegroundColor());
+//        itemView.setBackgroundColor(colorSet.getBackGroundColor());
+
+//            courseNameTextView.setTextColor(colorSet.getForegroundColor());
+//            instructorNameTextView.setTextColor(colorSet.getForegroundColor());
 
             courseNameTextView.setText(course.getExtendedID() + ": " + course.getName());
             instructorNameTextView.setText(course.getInstructor());
