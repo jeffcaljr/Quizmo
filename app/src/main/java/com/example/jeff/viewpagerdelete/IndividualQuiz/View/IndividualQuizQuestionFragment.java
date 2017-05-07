@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,11 +57,14 @@ public class IndividualQuizQuestionFragment extends Fragment {
     private RecyclerView recyclerView;
     private AnswerAdapter adapter;
 
-    private ImageButton toggleAnswersCollapsedButton;
+    private Button toggleAnswersCollapsedButton;
     private boolean toggleExpandedButtonState = true;
 
-    private Drawable collapsedDrawable;
-    private Drawable expandedDrawable;
+//    private Drawable collapsedDrawable;
+//    private Drawable expandedDrawable;
+
+    private static final String expandButtonText = "Expand All";
+    private static final String collapseButtonText = "Collapse All";
 
     private Animation rotateUp;
     private Animation rotateDown;
@@ -118,12 +122,12 @@ public class IndividualQuizQuestionFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        collapsedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_collapse);
-        expandedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand);
+//        collapsedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_collapse);
+//        expandedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand);
         rotateUp = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_up_180_degrees);
         rotateDown = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_down_180_degrees);
 
-        toggleAnswersCollapsedButton = (ImageButton) view
+        toggleAnswersCollapsedButton = (Button) view
             .findViewById(R.id.quiz_question_toggle_answers_collapse_button);
 
         toggleAnswersCollapsedButton.setOnClickListener(new OnClickListener() {
@@ -134,7 +138,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
                     allAnswersCollapsed = false;
                     allAnswersExpanded = true;
                     Arrays.fill(expandedStates, true);
-                    toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+                    toggleAnswersCollapsedButton.setText(collapseButtonText);
                     toggleExpandedButtonState = true;
 
 
@@ -142,7 +146,7 @@ public class IndividualQuizQuestionFragment extends Fragment {
                     allAnswersCollapsed = true;
                     allAnswersExpanded = false;
                     Arrays.fill(expandedStates, false);
-                    toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+                    toggleAnswersCollapsedButton.setText(expandButtonText);
                     toggleExpandedButtonState = false;
                 }
 
@@ -198,12 +202,12 @@ public class IndividualQuizQuestionFragment extends Fragment {
         if (isAllAnswersCollapsed) {
             allAnswersCollapsed = true;
             allAnswersExpanded = false;
-            toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+            toggleAnswersCollapsedButton.setText(expandButtonText);
             toggleExpandedButtonState = false;
         } else if (isAllAnswersExpanded) {
             allAnswersExpanded = true;
             allAnswersCollapsed = false;
-            toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+            toggleAnswersCollapsedButton.setText(collapseButtonText);
             toggleExpandedButtonState = true;
         }
     }

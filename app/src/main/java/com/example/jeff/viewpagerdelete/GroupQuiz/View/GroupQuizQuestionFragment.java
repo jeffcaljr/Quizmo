@@ -78,16 +78,21 @@ public class GroupQuizQuestionFragment extends Fragment {
     private AnswerAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
 
-    private ImageButton toggleAnswersCollapsedButton;
+    private Button toggleAnswersCollapsedButton;
     private boolean toggleExpandedButtonState = true;
 
-    private Drawable collapsedDrawable;
-    private Drawable expandedDrawable;
+    private static final String expandButtonText = "Expand All";
+    private static final String collapseButtonText = "Collapse All";
+
+//    private Drawable collapsedDrawable;
+//    private Drawable expandedDrawable;
+
     private Drawable correctDrawable;
     private Drawable incorrectDrawable;
     private int correctMaskColor;
     private int incorrectMaskColor;
     private int unansweredMaskColor;
+
 
 
     private int questionNumber;
@@ -168,13 +173,13 @@ public class GroupQuizQuestionFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        collapsedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_collapse);
-        expandedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand);
+//        collapsedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_collapse);
+//        expandedDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand);
         correctMaskColor = ContextCompat.getColor(getActivity(), R.color.jccolorCorrectMask);
         incorrectMaskColor = ContextCompat.getColor(getActivity(), R.color.jccolorIncorrectMask);
         unansweredMaskColor = ContextCompat.getColor(getActivity(), R.color.jccolorUnansweredMask);
 
-        toggleAnswersCollapsedButton = (ImageButton) view
+        toggleAnswersCollapsedButton = (Button) view
                 .findViewById(R.id.quiz_question_toggle_answers_collapse_button);
 
         toggleAnswersCollapsedButton.setOnClickListener(new OnClickListener() {
@@ -185,7 +190,7 @@ public class GroupQuizQuestionFragment extends Fragment {
                     allAnswersCollapsed = false;
                     allAnswersExpanded = true;
                     Arrays.fill(expandedStates, true);
-                    toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+                    toggleAnswersCollapsedButton.setText(collapseButtonText);
                     toggleExpandedButtonState = true;
 
 
@@ -193,7 +198,7 @@ public class GroupQuizQuestionFragment extends Fragment {
                     allAnswersCollapsed = true;
                     allAnswersExpanded = false;
                     Arrays.fill(expandedStates, false);
-                    toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+                    toggleAnswersCollapsedButton.setText(expandButtonText);
                     toggleExpandedButtonState = false;
                 }
 
@@ -278,12 +283,12 @@ public class GroupQuizQuestionFragment extends Fragment {
         if (isAllAnswersCollapsed) {
             allAnswersCollapsed = true;
             allAnswersExpanded = false;
-            toggleAnswersCollapsedButton.setImageDrawable(collapsedDrawable);
+            toggleAnswersCollapsedButton.setText(expandButtonText);
             toggleExpandedButtonState = false;
         } else if (isAllAnswersExpanded) {
             allAnswersExpanded = true;
             allAnswersCollapsed = false;
-            toggleAnswersCollapsedButton.setImageDrawable(expandedDrawable);
+            toggleAnswersCollapsedButton.setText(collapseButtonText);
             toggleExpandedButtonState = true;
         }
     }
