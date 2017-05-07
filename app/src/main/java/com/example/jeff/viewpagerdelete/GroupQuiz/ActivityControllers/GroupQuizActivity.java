@@ -184,6 +184,7 @@ public class GroupQuizActivity extends AppCompatActivity implements
         //Start listening for group quiz progress, if the user is not the group leader
 
         GroupQuizProgressPollingService.setServiceAlarm(this, false, group, quiz);
+        bManager.unregisterReceiver(bReceiver);
     }
 
     @Override
