@@ -30,6 +30,7 @@
         android:textColor="@color/primary_text"
         android:textColorHint="@color/primary_text"
         android:drawablePadding="8dp"
+        android:backgroundTint="@color/jccolorPrimary"
         android:drawableTint="@color/jccolorPrimaryDark" />
 
     <RelativeLayout
@@ -90,7 +91,7 @@
         <Button
             android:id="@+id/token_code_submit_button"
             android:text="Submit"
-            android:textColor="@color/jccolorAccent"
+            android:textColor="@color/jccolorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
