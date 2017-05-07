@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         videoScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                return false;
+                return true;
             }
         });
 

@@ -26,6 +26,11 @@
                 android:layout_gravity="center" />
         </ScrollView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#5F000000"></View>
+
 
     </FrameLayout>
 
@@ -136,19 +141,17 @@
                 <info.hoang8f.widget.FButton
                     android:id="@+id/login_button"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/user_id_field"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="16dp"
-                    android:padding="16dp"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
+                    android:gravity="center"
                     android:text="Login"
                     android:textColor="@color/colorWhite"
                     android:textSize="24sp"
-                    fbutton:buttonColor="@color/jccolorBrightButton"
+                    fbutton:buttonColor="@color/jccolorPrimaryDark"
                     fbutton:cornerRadius="10dp"
                     fbutton:shadowEnabled="true"
                     fbutton:shadowHeight="5dp" />

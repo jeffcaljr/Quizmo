@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.QuizStatistics.Controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.example.jeff.viewpagerdelete.Startup.Model.UserDataSource;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 public class StatisticsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, StatisticsMasterFragment.OnStatisticsQuestionClickedListener {
@@ -150,6 +152,20 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
 
         emailTextView.setText(UserDataSource.getInstance().getUser().getEmail());
         courseNameTextView.setText(course.getName());
+
+        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+
+                InputMethodManager inputMethodManager = (InputMethodManager)
+                        StatisticsActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(
+                        StatisticsActivity.this.getCurrentFocus().getWindowToken(),
+                        0
+                );
+            }
+        });
 
 
     }

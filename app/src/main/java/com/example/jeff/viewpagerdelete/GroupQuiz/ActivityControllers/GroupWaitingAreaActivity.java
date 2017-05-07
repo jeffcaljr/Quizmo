@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.GroupQuiz.ActivityControllers;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -169,7 +171,20 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         fullNameTextView.setText(UserDataSource.getInstance().getUser().getFirstName() + " " + UserDataSource.getInstance().getUser().getLastName());
 
         emailTextView.setText(UserDataSource.getInstance().getUser().getEmail());
-        courseNameTextView.setText(course.getName());
+
+
+        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                InputMethodManager inputMethodManager = (InputMethodManager)
+                        GroupWaitingAreaActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(
+                        GroupWaitingAreaActivity.this.getCurrentFocus().getWindowToken(),
+                        0
+                );
+            }
+        });
 
 
         //listen for group status updates

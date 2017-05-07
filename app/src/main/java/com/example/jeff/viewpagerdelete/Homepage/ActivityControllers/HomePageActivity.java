@@ -1,5 +1,6 @@
 package com.example.jeff.viewpagerdelete.Homepage.ActivityControllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,6 +117,7 @@ public class HomePageActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
@@ -124,6 +127,19 @@ public class HomePageActivity extends AppCompatActivity
         TextView fullNameTextView = (TextView) headerView.findViewById(R.id.header_fullname);
         TextView emailTextView = (TextView) headerView.findViewById(R.id.header_email);
         courseNameTextView = (TextView) headerView.findViewById(R.id.header_course_name);
+
+        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                InputMethodManager inputMethodManager = (InputMethodManager)
+                        HomePageActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(
+                        HomePageActivity.this.getCurrentFocus().getWindowToken(),
+                        0
+                );
+            }
+        });
 
 
         userNameTextView.setText("@" + UserDataSource.getInstance().getUser().getUserID());
@@ -362,6 +378,7 @@ public class HomePageActivity extends AppCompatActivity
                     public void onDownloadSingleGroupFailure(VolleyError error) {
 
                         //the quiz has been finished, but there was an error determining what group the user belongs to
+                        loadingFragment.dismissWithDelay(500);
                         Toast.makeText(HomePageActivity.this, "Failed to load group!", Toast.LENGTH_LONG).show();
 
                     }
