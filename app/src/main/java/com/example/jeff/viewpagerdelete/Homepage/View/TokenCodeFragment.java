@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,10 +84,21 @@ public class TokenCodeFragment extends Dialog {
             }
         });
 
+        tokenCodeField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    submitButton.performClick();
+                }
+                return false;
+
+            }
+        });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hideKeyboard();
+//                hideKeyboard();
                 setCanceledOnTouchOutside(false);
               String tokenCode = tokenCodeField.getText().toString().trim().toUpperCase();
                 errorLayout.setVisibility(View.GONE);
@@ -98,6 +111,7 @@ public class TokenCodeFragment extends Dialog {
                         public void onQuizDownloadSuccess(String sessionID, Quiz q) {
                           spinner.setVisibility(View.GONE);
                           mListener.quizDownloaded(q, course);
+                            setCanceledOnTouchOutside(true);
                           dismiss();
                         }
 
@@ -121,6 +135,7 @@ public class TokenCodeFragment extends Dialog {
 
 
     }
+
 
     private void hideKeyboard(){
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);

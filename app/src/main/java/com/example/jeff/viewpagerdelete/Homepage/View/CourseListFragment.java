@@ -89,6 +89,7 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
           adapter.filter(query);
+            searchView.clearFocus();
           return true;
 
         }
@@ -100,7 +101,8 @@ public class CourseListFragment extends Fragment implements OnRefreshListener {
         }
       });
 
-      swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.course_list_swipe_refresher);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.course_list_swipe_refresher);
 
       swipeRefreshLayout.setOnRefreshListener(this);
 

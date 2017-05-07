@@ -20,6 +20,7 @@
     <EditText
         android:id="@+id/token_code_entry_field"
         android:maxLines="1"
+        android:singleLine="true"
         android:drawableLeft="@drawable/ic_course"
         android:hint="Token Code"
         android:layout_width="match_parent"
@@ -31,7 +32,12 @@
         android:textColorHint="@color/primary_text"
         android:drawablePadding="8dp"
         android:backgroundTint="@color/jccolorPrimary"
-        android:drawableTint="@color/jccolorPrimaryDark" />
+        android:drawableTint="@color/jccolorPrimaryDark"
+        android:imeOptions="actionDone">
+
+        <requestFocus />
+    </EditText>
+    >
 
     <RelativeLayout
         android:id="@+id/token_code_status_layout"
@@ -60,7 +66,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/jccolorAccent" />
+                android:tint="@color/jccolorNotStartedRed" />
             <TextView
                 android:id="@+id/token_code_error_textfield"
                 android:text="Invalid Token Code"
