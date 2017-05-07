@@ -6,27 +6,36 @@
     android:background="@color/jccolorAppBackground">
 
 
-  <ProgressBar
-    android:id="@+id/quiz_timer_progress_bar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="?android:attr/progressBarStyleHorizontal"
-    android:layout_alignParentTop="true"
-      android:progressDrawable="@drawable/progress_bar_timer" />
-
-  <TextView
-      android:id="@+id/time_remaining_label"
-      android:text="20:00"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
+  <RelativeLayout
+      android:id="@+id/quiz_timer_progress_bar_layout"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignTop="@id/quiz_timer_progress_bar"
-      android:textColor="@color/primary_text"
-      android:layout_centerInParent="true" />
+      android:layout_alignParentTop="true">
+
+    <ProgressBar
+        android:id="@+id/quiz_timer_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/progress_bar_timer"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/time_remaining_label" />
+
+    <TextView
+        android:id="@+id/time_remaining_label"
+        android:text="20:00"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        android:layout_centerInParent="true" />
+
+  </RelativeLayout>
+
 
   <android.support.design.widget.TabLayout
     android:id="@+id/tabDots"
-    android:layout_below="@id/quiz_timer_progress_bar"
+      android:layout_below="@id/quiz_timer_progress_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:tabBackground="@drawable/tab_selector_question"
