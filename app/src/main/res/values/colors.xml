@@ -56,4 +56,5 @@
     <color name="jccolorGreen">#388E3C</color>
     <color name="jccolorProgressGreen">#00C853</color>
     <color name="jccolorPurple">#D32F2F</color>
+    <color name="jccolorNavDrawerBackground">#455A64</color>
 </resources>

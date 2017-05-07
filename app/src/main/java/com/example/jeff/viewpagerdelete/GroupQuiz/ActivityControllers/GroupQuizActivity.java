@@ -129,6 +129,30 @@ public class GroupQuizActivity extends AppCompatActivity implements
         mAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
 
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+                //Prevents issue where dragging page even slightly downward when changing would trigger swiperefreshlayout, and cancel page change
+                if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+                    swipeRefreshLayout.setEnabled(false);
+                } else {
+                    swipeRefreshLayout.setEnabled(true);
+                }
+
+            }
+        });
+
         tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 

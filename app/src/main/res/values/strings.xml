@@ -9,7 +9,7 @@
     <!--</string>-->
 
     <string name="individual_quiz_instructions_1">
-    You are about to begin a quiz that will test your knowledge on the topic titled above.
+    You are about to begin a quiz that will test your knowledge on the topic above.
    </string>
     <string name="individual_quiz_instructions_2">
     This is a timed quiz. Upon starting, you will have %d minutes to complete the quiz.
