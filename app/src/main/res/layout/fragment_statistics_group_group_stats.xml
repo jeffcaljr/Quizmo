@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jccolorAppBackground">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <org.eazegraph.lib.charts.BarChart xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/statistics_graph_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        app:egEnableScroll="true"
+        app:egFixedBarWidth="true"
+        app:egBarMargin="120dp"
+        android:padding="10dp"
+        app:egBarWidth="40dp"
+        app:egLegendHeight="40dp" />
+
+    <TextView
+        android:id="@+id/group_stats_not_found_label"
+        android:visibility="gone"
+        android:text="No Group Statistics Found"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
+
+
+    <!--<org.eazegraph.lib.charts.BarChart-->
+
+    <!--android:layout_gravity="center"-->
+    <!--android:id="@+id/statistics_graph_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="2"-->
+    <!--android:paddingLeft="10dp"-->
+    <!--android:paddingRight="10dp"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--app:egBarWidth="48dp"-->
+    <!--app:egEmptyDataText="No Group Quiz Data Found"-->
+    <!--app:egLegendHeight="40dp"-->
+    <!--app:egEnableScroll="true"-->
+    <!--android:background="@color/jccolorBlueGrayLight" />-->
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
