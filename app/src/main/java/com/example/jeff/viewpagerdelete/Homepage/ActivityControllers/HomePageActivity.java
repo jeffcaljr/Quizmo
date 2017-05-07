@@ -288,7 +288,7 @@ public class HomePageActivity extends AppCompatActivity
 
 //                        showQuizzesFragment();
                         manager.beginTransaction()
-                                .addToBackStack(StartQuizFragment.TAG)
+//                                .addToBackStack(StartQuizFragment.TAG)
                                 .replace(R.id.list_container, startQuizFragment, StartQuizFragment.TAG)
                                 .commit();
                     }
@@ -352,6 +352,7 @@ public class HomePageActivity extends AppCompatActivity
                                     i.putExtra(StatisticsActivity.INTENT_EXTRA_COURSE, course);
                                     startActivity(i);
                                     loadingFragment.dismissWithDelay(500);
+                                    finish();
                                 } else {
                                     //the group quiz is incomplete, go to waiting area page
                                     //TODO: should this go straight to the group quiz page?
@@ -359,7 +360,8 @@ public class HomePageActivity extends AppCompatActivity
                                     i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
                                     i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
                                     startActivity(i);
-                                    loadingFragment.dismissWithDelay(500);
+                                    loadingFragment.dismiss();
+                                    finish();
                                 }
                             }
 
@@ -372,7 +374,8 @@ public class HomePageActivity extends AppCompatActivity
                                 i.putExtra(GroupWaitingAreaActivity.EXTRA_COURSE, course);
                                 i.putExtra(GroupWaitingAreaActivity.EXTRA_QUIZ, quiz);
                                 startActivity(i);
-                                loadingFragment.dismissWithDelay(500);
+                                loadingFragment.dismiss();
+                                finish();
                             }
                         });
                     }
@@ -396,7 +399,7 @@ public class HomePageActivity extends AppCompatActivity
                 i.putExtra(IndividualQuizActivity.INTENT_EXTRA_COURSE_QUIZ, course);
                 i.putExtra(IndividualQuizActivity.INTENT_EXTRA_SESSION_ID, sessionID);
                 startActivity(i);
-                loadingFragment.dismissWithDelay(500);
+                loadingFragment.dismiss();
             }
         } else {
             //the quiz isn't in the SQLite database, so it hasn't been started; request token code

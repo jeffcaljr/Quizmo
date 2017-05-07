@@ -21,6 +21,7 @@ import android.view.Menu;
 
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuiz;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Model.GradedGroupQuizQuestion;
+import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Database.GradedQuiz.GradedQuizPersistence;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.GradedQuiz;
@@ -190,6 +191,8 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
         } else if (mPager.getCurrentItem() > 0) {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         } else {
+            Intent i = new Intent(this, HomePageActivity.class);
+            startActivity(i);
             super.onBackPressed();
         }
     }

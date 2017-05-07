@@ -37,6 +37,7 @@ import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingServ
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupNetworkingService.SingleGroupDownloadCallback;
 import com.example.jeff.viewpagerdelete.GroupQuiz.Networking.GroupStatusPollingService;
 import com.example.jeff.viewpagerdelete.GroupQuiz.View.GroupWaitingAreaFragment;
+import com.example.jeff.viewpagerdelete.Homepage.ActivityControllers.HomePageActivity;
 import com.example.jeff.viewpagerdelete.Homepage.Model.Course;
 import com.example.jeff.viewpagerdelete.IndividualQuiz.Model.Quiz;
 import com.example.jeff.viewpagerdelete.R;
@@ -214,6 +215,8 @@ public class GroupWaitingAreaActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            Intent i = new Intent(this, HomePageActivity.class);
+            startActivity(i);
             super.onBackPressed();
         }
     }
