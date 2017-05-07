@@ -168,8 +168,11 @@ public class IndividualQuizActivity extends AppCompatActivity
         final int endTime = (int) (quiz.getEndTime().getTime() - quiz.getStartTime().getTime());
         final int timeLeft = (int) (quiz.getEndTime().getTime() - new Date().getTime());
 
-        String timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft),
+        //Set timeRemainingLabel
+
+        String timeRemaining = timeLeft <= 0 ? "00:00" : String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft),
                 TimeUnit.MILLISECONDS.toSeconds(timeLeft) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
+
         timeRemainingTextView.setText(timeRemaining);
 
         if (timeLeft < (endTime / 4)) {
@@ -192,7 +195,7 @@ public class IndividualQuizActivity extends AppCompatActivity
             @Override
             public void onTick(long l) {
                 quizTimerProgressBar.setProgress(endTime - (int) l);
-                String timeRemaining = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(l),
+                String timeRemaining = l <= 0 ? "00:00" : String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(l),
                         TimeUnit.MILLISECONDS.toSeconds(l) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
                 timeRemainingTextView.setText(timeRemaining);
 //              ObjectAnimator animation = ObjectAnimator.ofInt(quizTimerProgressBar, "progress", timeBeforeExpiry - (int) l);
